@@ -21,16 +21,9 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
     
     if(SDL_Init(SDL_INIT_EVERYTHING) == 0){
         std::cout<< "SDL Subsystens Initialized..."<< std::endl;
-        
-        window = SDL_CreateWindow(title, xpos, ypos, width, height, flags);
-        if(window){
-            std::cout<< "Window Created" << std::endl;
-        }
-        renderer = SDL_CreateRenderer(window, -1, 0);
-        if(renderer){
-            SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-            std::cout<< "Renderer Created"<< std::endl;
-        }
+        renderer = new Renderer();
+        renderer->init(title, xpos, ypos, width, height, flags);
+
         isRunning = true;
     }else{
         isRunning = false;
@@ -51,20 +44,34 @@ void Game::handleEvents(){
 }
 
 void Game::update(){
-    
+    renderer->render();
 }
 
+/*void Game::blitToScreen(SDL_Surface *surface){
+    
+    if(surface == nullptr)        std::cout << "Null source surface" << std::endl;
+
+    SDL_Surface *surf = SDL_GetWindowSurface(window);
+    
+    if(surf == nullptr)        std::cout << "Null destination surface" << std::endl << SDL_GetError();
+
+    if(SDL_BlitSurface(surface, NULL, surf, NULL) == 0){
+        std::cout << "Blit Sucess" << std::endl;
+        
+    }else{
+        std::cout << "Blit Error" << std::endl<<SDL_GetError()<<std::endl;
+    }
+}
 void Game::render(){
     SDL_RenderClear(renderer);
     
     SDL_RenderPresent(renderer);
 }
+*/
 
-void Game::clean(){
-    SDL_DestroyWindow(window);
-    SDL_DestroyRenderer(renderer);
-}
 
 bool Game::running(){
     return isRunning;
 }
+
+

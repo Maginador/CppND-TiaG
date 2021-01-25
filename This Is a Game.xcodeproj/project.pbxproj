@@ -9,7 +9,15 @@
 /* Begin PBXBuildFile section */
 		910FE55E25BE73AD00135045 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 910FE55D25BE73AD00135045 /* main.cpp */; };
 		916EBF1825BE8402009716A3 /* Game.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 916EBF1625BE8402009716A3 /* Game.cpp */; };
-		9171081725BE74FB00DA3B3F /* SDL2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9171081625BE74FB00DA3B3F /* SDL2.framework */; };
+		916EBF1F25BEFAFE009716A3 /* Assets.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 916EBF1D25BEFAFE009716A3 /* Assets.cpp */; };
+		91B3E7A225BF7DF9007C1172 /* SDL2_image.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 912F7BD025BF76A4001C678E /* SDL2_image.framework */; };
+		91B3E7A325BF7DF9007C1172 /* SDL2_image.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 912F7BD025BF76A4001C678E /* SDL2_image.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		91B3E7A525BF7DFA007C1172 /* SDL2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9171081625BE74FB00DA3B3F /* SDL2.framework */; };
+		91B3E7A625BF7DFA007C1172 /* SDL2.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9171081625BE74FB00DA3B3F /* SDL2.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		91D98DAC25BF698C00DEDA8A /* Renderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 91D98DAA25BF698C00DEDA8A /* Renderer.cpp */; };
+		91D98DB025BF699B00DEDA8A /* Physics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 91D98DAE25BF699B00DEDA8A /* Physics.cpp */; };
+		91D98DB425BF69A700DEDA8A /* GameObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 91D98DB225BF69A700DEDA8A /* GameObject.cpp */; };
+		91D98DB825BF6A3500DEDA8A /* Time.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 91D98DB625BF6A3500DEDA8A /* Time.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -22,14 +30,37 @@
 			);
 			runOnlyForDeploymentPostprocessing = 1;
 		};
+		91B3E7A425BF7DF9007C1172 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				91B3E7A325BF7DF9007C1172 /* SDL2_image.framework in Embed Frameworks */,
+				91B3E7A625BF7DFA007C1172 /* SDL2.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		910FE55A25BE73AD00135045 /* This Is a Game */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "This Is a Game"; sourceTree = BUILT_PRODUCTS_DIR; };
 		910FE55D25BE73AD00135045 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		912F7BD025BF76A4001C678E /* SDL2_image.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2_image.framework; path = ../../../../../Library/Frameworks/SDL2_image.framework; sourceTree = "<group>"; };
 		916EBF1625BE8402009716A3 /* Game.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Game.cpp; sourceTree = "<group>"; };
 		916EBF1725BE8402009716A3 /* Game.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Game.hpp; sourceTree = "<group>"; };
+		916EBF1D25BEFAFE009716A3 /* Assets.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Assets.cpp; sourceTree = "<group>"; };
+		916EBF1E25BEFAFE009716A3 /* Assets.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Assets.hpp; sourceTree = "<group>"; };
 		9171081625BE74FB00DA3B3F /* SDL2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2.framework; path = ../../../../../../Library/Frameworks/SDL2.framework; sourceTree = "<group>"; };
+		91D98DAA25BF698C00DEDA8A /* Renderer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Renderer.cpp; sourceTree = "<group>"; };
+		91D98DAB25BF698C00DEDA8A /* Renderer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Renderer.hpp; sourceTree = "<group>"; };
+		91D98DAE25BF699B00DEDA8A /* Physics.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Physics.cpp; sourceTree = "<group>"; };
+		91D98DAF25BF699B00DEDA8A /* Physics.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Physics.hpp; sourceTree = "<group>"; };
+		91D98DB225BF69A700DEDA8A /* GameObject.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = GameObject.cpp; sourceTree = "<group>"; };
+		91D98DB325BF69A700DEDA8A /* GameObject.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = GameObject.hpp; sourceTree = "<group>"; };
+		91D98DB625BF6A3500DEDA8A /* Time.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Time.cpp; sourceTree = "<group>"; };
+		91D98DB725BF6A3500DEDA8A /* Time.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Time.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -37,7 +68,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9171081725BE74FB00DA3B3F /* SDL2.framework in Frameworks */,
+				91B3E7A225BF7DF9007C1172 /* SDL2_image.framework in Frameworks */,
+				91B3E7A525BF7DFA007C1172 /* SDL2.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -67,6 +99,16 @@
 				910FE55D25BE73AD00135045 /* main.cpp */,
 				916EBF1625BE8402009716A3 /* Game.cpp */,
 				916EBF1725BE8402009716A3 /* Game.hpp */,
+				916EBF1D25BEFAFE009716A3 /* Assets.cpp */,
+				916EBF1E25BEFAFE009716A3 /* Assets.hpp */,
+				91D98DAA25BF698C00DEDA8A /* Renderer.cpp */,
+				91D98DAB25BF698C00DEDA8A /* Renderer.hpp */,
+				91D98DAE25BF699B00DEDA8A /* Physics.cpp */,
+				91D98DAF25BF699B00DEDA8A /* Physics.hpp */,
+				91D98DB225BF69A700DEDA8A /* GameObject.cpp */,
+				91D98DB325BF69A700DEDA8A /* GameObject.hpp */,
+				91D98DB625BF6A3500DEDA8A /* Time.cpp */,
+				91D98DB725BF6A3500DEDA8A /* Time.hpp */,
 			);
 			path = src;
 			sourceTree = "<group>";
@@ -74,6 +116,7 @@
 		9171081525BE74FB00DA3B3F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				912F7BD025BF76A4001C678E /* SDL2_image.framework */,
 				9171081625BE74FB00DA3B3F /* SDL2.framework */,
 			);
 			name = Frameworks;
@@ -89,6 +132,7 @@
 				910FE55625BE73AD00135045 /* Sources */,
 				910FE55725BE73AD00135045 /* Frameworks */,
 				910FE55825BE73AD00135045 /* CopyFiles */,
+				91B3E7A425BF7DF9007C1172 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -135,7 +179,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				91D98DAC25BF698C00DEDA8A /* Renderer.cpp in Sources */,
 				910FE55E25BE73AD00135045 /* main.cpp in Sources */,
+				91D98DB425BF69A700DEDA8A /* GameObject.cpp in Sources */,
+				91D98DB025BF699B00DEDA8A /* Physics.cpp in Sources */,
+				916EBF1F25BEFAFE009716A3 /* Assets.cpp in Sources */,
+				91D98DB825BF6A3500DEDA8A /* Time.cpp in Sources */,
 				916EBF1825BE8402009716A3 /* Game.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
