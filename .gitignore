@@ -30,3 +30,13 @@
 *.exe
 *.out
 *.app
+
+#xcode project 
+*.xcodeproj
+
+#exclude folders 
+/* 
+!/src
+!/assets
+/src/
+/assets/
