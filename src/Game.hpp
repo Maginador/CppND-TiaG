@@ -9,7 +9,9 @@
 #define Game_hpp
 
 #include <iostream>
+#include "Assets.hpp"
 #include <SDL2/SDL.h>
+#include "Renderer.hpp"
 
 class Game{
     
@@ -21,15 +23,11 @@ public:
     
     void handleEvents();
     void update();
-    void render();
-    void clean();
-    
     bool running();
     
 private:
     bool isRunning;
-    SDL_Window *window;
-    SDL_Renderer *renderer;
+    Renderer *renderer;
     
 };
 
