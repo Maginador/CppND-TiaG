@@ -21,6 +21,7 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
     
     if(SDL_Init(SDL_INIT_EVERYTHING) == 0){
         std::cout<< "SDL Subsystens Initialized..."<< std::endl;
+        //TODO: Remove New
         renderer = new Renderer();
         renderer->init(title, xpos, ypos, width, height, flags);
 

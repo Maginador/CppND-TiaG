@@ -7,13 +7,15 @@
 
 #include "Renderer.hpp"
 #include "Assets.hpp"
+//TODO: Replace placeholder Renderable by a list of renderables with add/remove system
 Renderable *rend = nullptr;
 
 void Renderer::render(){
     SDL_RenderClear(renderer);
-    //TODO : Create list of renderable objects and loop rendering
     
+    //TODO: Create list of renderable objects and loop rendering
     SDL_RenderCopy(renderer, rend->_texture, NULL, rend->_transform);
+    
     SDL_RenderPresent(renderer);
 }
 void Renderer::clean(){
@@ -37,16 +39,18 @@ bool Renderer::init(const char *title, int xpos, int ypos, int width, int height
         return false;
     }
     
-    //Placeholder texture
+    //Placeholder texture TODO: Remove placeholder and create system for external addition
     Assets asset = Assets();
+    //TODO: Remove New
     rend = new Renderable(asset.loadAsset(renderer, "assets/sample.png"), 60, 60, 0, 0);
     
     return true;
 }
 
-
+//TODO: create lists of custom structure for animations and states
 Renderable::Renderable(SDL_Texture *texture, int width, int height, int initX, int initY){
     _texture = texture;
+    //TODO: Remove New
     _transform = new SDL_Rect();
     _transform->w = width;
     _transform->h = height;
