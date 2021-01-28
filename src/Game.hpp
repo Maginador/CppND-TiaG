@@ -10,6 +10,7 @@
 
 #include <iostream>
 #include "Assets.hpp"
+#include "Input.hpp"
 #include <SDL2/SDL.h>
 #include "Renderer.hpp"
 
@@ -28,6 +29,7 @@ public:
 private:
     bool isRunning;
     Renderer *renderer;
+    Input *input;
     
 };
 

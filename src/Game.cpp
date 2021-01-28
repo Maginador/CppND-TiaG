@@ -21,10 +21,11 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
     
     if(SDL_Init(SDL_INIT_EVERYTHING) == 0){
         std::cout<< "SDL Subsystens Initialized..."<< std::endl;
-        //TODO: Remove New
+        //TODO: Remove New (Use shared_ptr instead of raw pointer)
         renderer = new Renderer();
         renderer->init(title, xpos, ypos, width, height, flags);
-
+        //TODO: Remove New (Use unique_ptr instead of raw pointer)
+        input = new Input();
         isRunning = true;
     }else{
         isRunning = false;
@@ -34,18 +35,53 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
 void Game::handleEvents(){
     SDL_Event event;
     SDL_PollEvent(&event);
-    switch (event.type) {
-        case SDL_QUIT:
+        if(event.type ==  SDL_QUIT)
             isRunning=false;
-            break;
-            
-        default:
-            break;
+        else if(event.type == SDL_KEYDOWN){
+            switch( event.key.keysym.sym ){
+                case SDLK_UP:
+                    input->keyDown = Input::inputKey::up;
+                    break;
+
+                    case SDLK_DOWN:
+                    input->keyDown = Input::inputKey::down;
+                    break;
+
+                    case SDLK_LEFT:
+                    input->keyDown = Input::inputKey::left;
+                    break;
+
+                    case SDLK_RIGHT:
+                    input->keyDown = Input::inputKey::right;
+                    break;
+
+                    default:
+                    input->keyDown = Input::inputKey::none;
+                    break;
+                }
+        }
+        else {
+            input->keyDown = Input::inputKey::none;
     }
 }
 
 void Game::update(){
     renderer->render();
+    
+    
+    //Move Cursor
+    if(Input::getKeyDown() == Input::inputKey::down){
+        renderer->cursor.y += 10;
+    }
+    else if(Input::getKeyDown() == Input::inputKey::up){
+        renderer->cursor.y -= 10;
+    }
+    else if(Input::getKeyDown() == Input::inputKey::right){
+        renderer->cursor.x += 10;
+    }
+    else if(Input::getKeyDown() == Input::inputKey::left){
+        renderer->cursor.x -= 10;
+    }
 }
 
 /*void Game::blitToScreen(SDL_Surface *surface){

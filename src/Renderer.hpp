@@ -24,6 +24,7 @@ class Renderer{
     
     bool init(const char *title, int xpos, int ypos, int width, int height, int flags);
     SDL_Renderer* getRenderer();
+    SDL_Rect cursor;
     private :
     //TODO : List of renderables
     //TODO : List of renderablesRects

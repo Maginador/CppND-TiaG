@@ -18,6 +18,7 @@ Assets *assets = nullptr;
 int main() {
     
     //TODO: Remove New
+    
     game = new Game();
     assets = new Assets();
     //TODO: make it possible to adjust values
@@ -31,7 +32,10 @@ int main() {
         game->update();
         
         //TODO: Add Physics processing
-        
+    
+        auto debug = Input::getKeyDown();
+        if(debug != 0)
+        std::cout << debug<<std::endl;
         
     }
     

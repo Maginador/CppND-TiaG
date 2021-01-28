@@ -12,6 +12,8 @@ Renderable *rend = nullptr;
 
 void Renderer::render(){
     SDL_RenderClear(renderer);
+    rend->_transform->x = cursor.x;
+    rend->_transform->y = cursor.y;
     
     //TODO: Create list of renderable objects and loop rendering
     SDL_RenderCopy(renderer, rend->_texture, NULL, rend->_transform);
@@ -44,6 +46,10 @@ bool Renderer::init(const char *title, int xpos, int ypos, int width, int height
     //TODO: Remove New
     rend = new Renderable(asset.loadAsset(renderer, "assets/sample.png"), 60, 60, 0, 0);
     
+    cursor.x = 0;
+    cursor.y = 0;
+    cursor.w = 0;
+    cursor.h = 0;
     return true;
 }
 
