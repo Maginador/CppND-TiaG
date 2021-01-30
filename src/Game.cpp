@@ -7,7 +7,15 @@
 
 #include "Game.hpp"
 
+const int MOVE_INTENSITY_Y = 120;
+const int CURSOR_INIT_POSITION_Y = 100;
 
+const int MOVE_INTENSITY_X = 80;
+const int CURSOR_INIT_POSITION_X = 50;
+
+
+const int GRID_WIDTH = 10;
+const int GRID_HEIGHT = 5;
 Game::Game(){
     
 }
@@ -70,45 +78,38 @@ void Game::update(){
     
     
     //Move Cursor
-    if(Input::getKeyDown() == Input::inputKey::down){
-        renderer->cursor.y += 10;
+    if(Input::getKeyDown() == Input::inputKey::down && renderer->cursor.y < CURSOR_INIT_POSITION_Y + MOVE_INTENSITY_Y * 4){
+        renderer->cursor.y += MOVE_INTENSITY_Y;
     }
-    else if(Input::getKeyDown() == Input::inputKey::up){
-        renderer->cursor.y -= 10;
+    else if(Input::getKeyDown() == Input::inputKey::up && renderer-> cursor.y > CURSOR_INIT_POSITION_Y){
+        renderer->cursor.y -= MOVE_INTENSITY_Y;
     }
-    else if(Input::getKeyDown() == Input::inputKey::right){
-        renderer->cursor.x += 10;
+    else if(Input::getKeyDown() == Input::inputKey::right && renderer-> cursor.x < CURSOR_INIT_POSITION_X + MOVE_INTENSITY_X * 10){
+        renderer->cursor.x += MOVE_INTENSITY_X;
     }
-    else if(Input::getKeyDown() == Input::inputKey::left){
-        renderer->cursor.x -= 10;
+    else if(Input::getKeyDown() == Input::inputKey::left && renderer-> cursor.x > CURSOR_INIT_POSITION_X){
+        renderer->cursor.x -= MOVE_INTENSITY_X;
     }
 }
 
-/*void Game::blitToScreen(SDL_Surface *surface){
-    
-    if(surface == nullptr)        std::cout << "Null source surface" << std::endl;
 
-    SDL_Surface *surf = SDL_GetWindowSurface(window);
-    
-    if(surf == nullptr)        std::cout << "Null destination surface" << std::endl << SDL_GetError();
-
-    if(SDL_BlitSurface(surface, NULL, surf, NULL) == 0){
-        std::cout << "Blit Sucess" << std::endl;
-        
-    }else{
-        std::cout << "Blit Error" << std::endl<<SDL_GetError()<<std::endl;
-    }
-}
-void Game::render(){
-    SDL_RenderClear(renderer);
-    
-    SDL_RenderPresent(renderer);
-}
-*/
 
 
 bool Game::running(){
     return isRunning;
+}
+
+
+void Game::createGameGrid(){
+    
+    //grid iteration
+    for(int i =0; i<GRID_WIDTH; i++){
+        for(int o =0; o<GRID_HEIGHT; o++){
+            //TODO: Create renderers
+        }
+    }
+
+    
 }
 
 

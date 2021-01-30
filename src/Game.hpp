@@ -27,6 +27,7 @@ public:
     bool running();
     
 private:
+    void createGameGrid();
     bool isRunning;
     Renderer *renderer;
     Input *input;

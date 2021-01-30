@@ -46,8 +46,8 @@ bool Renderer::init(const char *title, int xpos, int ypos, int width, int height
     //TODO: Remove New
     rend = new Renderable(asset.loadAsset(renderer, "assets/sample.png"), 60, 60, 0, 0);
     
-    cursor.x = 0;
-    cursor.y = 0;
+    cursor.x = 50;
+    cursor.y = 100;
     cursor.w = 0;
     cursor.h = 0;
     return true;
