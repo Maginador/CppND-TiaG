@@ -16,6 +16,9 @@ const int CURSOR_INIT_POSITION_X = 50;
 
 const int GRID_WIDTH = 10;
 const int GRID_HEIGHT = 5;
+
+Renderable *cursor;
+
 Game::Game(){
     
 }
@@ -38,6 +41,10 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
     }else{
         isRunning = false;
     }
+    //Create cursor
+    createGameGrid();
+    cursor =  renderer->createRenderable( "assets/sample.png", 60, 60, CURSOR_INIT_POSITION_X, CURSOR_INIT_POSITION_Y);
+
 }
 
 void Game::handleEvents(){
@@ -78,17 +85,17 @@ void Game::update(){
     
     
     //Move Cursor
-    if(Input::getKeyDown() == Input::inputKey::down && renderer->cursor.y < CURSOR_INIT_POSITION_Y + MOVE_INTENSITY_Y * 4){
-        renderer->cursor.y += MOVE_INTENSITY_Y;
+    if(Input::getKeyDown() == Input::inputKey::down && cursor->_transform->y < CURSOR_INIT_POSITION_Y + MOVE_INTENSITY_Y * 4){
+        cursor->_transform->y += MOVE_INTENSITY_Y;
     }
-    else if(Input::getKeyDown() == Input::inputKey::up && renderer-> cursor.y > CURSOR_INIT_POSITION_Y){
-        renderer->cursor.y -= MOVE_INTENSITY_Y;
+    else if(Input::getKeyDown() == Input::inputKey::up && cursor->_transform->y > CURSOR_INIT_POSITION_Y){
+        cursor->_transform->y -= MOVE_INTENSITY_Y;
     }
-    else if(Input::getKeyDown() == Input::inputKey::right && renderer-> cursor.x < CURSOR_INIT_POSITION_X + MOVE_INTENSITY_X * 10){
-        renderer->cursor.x += MOVE_INTENSITY_X;
+    else if(Input::getKeyDown() == Input::inputKey::right && cursor->_transform->x < CURSOR_INIT_POSITION_X + MOVE_INTENSITY_X * 10){
+        cursor->_transform->x += MOVE_INTENSITY_X;
     }
-    else if(Input::getKeyDown() == Input::inputKey::left && renderer-> cursor.x > CURSOR_INIT_POSITION_X){
-        renderer->cursor.x -= MOVE_INTENSITY_X;
+    else if(Input::getKeyDown() == Input::inputKey::left && cursor->_transform->x > CURSOR_INIT_POSITION_X){
+        cursor->_transform->x -= MOVE_INTENSITY_X;
     }
 }
 
@@ -106,6 +113,7 @@ void Game::createGameGrid(){
     for(int i =0; i<GRID_WIDTH; i++){
         for(int o =0; o<GRID_HEIGHT; o++){
             //TODO: Create renderers
+            renderer->createRenderable( "assets/slot.png", 60, 60, CURSOR_INIT_POSITION_X + (i*MOVE_INTENSITY_X), CURSOR_INIT_POSITION_Y + (o*MOVE_INTENSITY_Y));
         }
     }
 

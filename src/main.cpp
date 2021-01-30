@@ -32,10 +32,6 @@ int main() {
         game->update();
         
         //TODO: Add Physics processing
-    
-        auto debug = Input::getKeyDown();
-        if(debug != 0)
-        std::cout << debug<<std::endl;
         
     }
     
