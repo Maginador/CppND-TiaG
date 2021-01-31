@@ -32,7 +32,7 @@ class Renderer{
     void render();
     void clean();
     //TODO: Replace with shared_ptr
-    Renderable* createRenderable(char *assetPath, int width, int height, int x, int y);
+    Renderable* createRenderable(const char *assetPath, int width, int height, int x, int y);
     bool init(const char *title, int xpos, int ypos, int width, int height, int flags);
     SDL_Renderer* getRenderer();
     SDL_Rect cursor;
