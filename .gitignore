@@ -34,9 +34,11 @@
 #xcode project 
 *.xcodeproj
 
-#exclude folders 
-/* 
-!/src
-!/assets
-/src/
-/assets/
+#mac files 
+*.DS_Store
+
+
+#exclude dir 
+/*
+!src/
+!assets/
