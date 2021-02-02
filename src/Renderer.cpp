@@ -6,15 +6,18 @@
 //
 
 #include "Renderer.hpp"
-#include "Assets.hpp"
+
 //TODO: Replace placeholder Renderable by a list of renderables with add/remove system
 Renderable *rend = nullptr;
 
 void Renderer::render(){
     SDL_RenderClear(renderer);
-    
+   
+    for(int i =0; i<renderablesList.size();i++){
+        
+        SDL_RenderCopy(renderer, renderablesList[i]->_texture, NULL, renderablesList[i]->_transform);
+    }
     //TODO: Create list of renderable objects and loop rendering
-    SDL_RenderCopy(renderer, rend->_texture, NULL, rend->_transform);
     
     SDL_RenderPresent(renderer);
 }
@@ -40,13 +43,28 @@ bool Renderer::init(const char *title, int xpos, int ypos, int width, int height
     }
     
     //Placeholder texture TODO: Remove placeholder and create system for external addition
-    Assets asset = Assets();
-    //TODO: Remove New
-    rend = new Renderable(asset.loadAsset(renderer, "assets/sample.png"), 60, 60, 0, 0);
     
+    //TODO: Remove New
+    
+    
+    cursor.x = 50;
+    cursor.y = 100;
+    cursor.w = 0;
+    cursor.h = 0;
     return true;
 }
 
+Renderable* Renderer::createRenderable(const char *assetPath, int width, int height, int x = 0, int y = 0){
+    Assets asset = Assets();
+    
+    Renderable* rend = new Renderable(asset.loadAsset(renderer, assetPath), width, height, x, y);
+    renderablesList.emplace_back(rend);
+    
+    return std::move(rend);
+    
+    
+    
+}
 //TODO: create lists of custom structure for animations and states
 Renderable::Renderable(SDL_Texture *texture, int width, int height, int initX, int initY){
     _texture = texture;

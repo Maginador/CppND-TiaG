@@ -11,26 +11,9 @@
 #include <iostream>
 #include <SDL2/SDL.h>
 #include <SDL2_image/SDL_image.h>
-
-
-
-class Renderer{
-  
-    public :
-    Renderer(){};
-    ~Renderer(){};
-    void render();
-    void clean();
-    
-    bool init(const char *title, int xpos, int ypos, int width, int height, int flags);
-    SDL_Renderer* getRenderer();
-    private :
-    //TODO : List of renderables
-    //TODO : List of renderablesRects
-    SDL_Renderer *renderer;
-    SDL_Window *window;
-    
-};
+#include <vector>
+#include "Assets.hpp"
+#include <memory>
 
 class Renderable{
     public :
@@ -39,6 +22,25 @@ class Renderable{
     SDL_Texture *_texture;
     SDL_Rect *_transform;
     private :
+    
+};
+class Renderer{
+  
+    public :
+    Renderer(){};
+    ~Renderer(){};
+    void render();
+    void clean();
+    //TODO: Replace with shared_ptr
+    Renderable* createRenderable(const char *assetPath, int width, int height, int x, int y);
+    bool init(const char *title, int xpos, int ypos, int width, int height, int flags);
+    SDL_Renderer* getRenderer();
+    SDL_Rect cursor;
+    private :
+    //TODO: Replace with shared_ptr
+    std::vector<Renderable*> renderablesList;
+    SDL_Renderer *renderer;
+    SDL_Window *window;
     
 };
 #endif /* Renderer_hpp */

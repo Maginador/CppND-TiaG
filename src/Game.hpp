@@ -10,6 +10,7 @@
 
 #include <iostream>
 #include "Assets.hpp"
+#include "Input.hpp"
 #include <SDL2/SDL.h>
 #include "Renderer.hpp"
 
@@ -26,12 +27,11 @@ public:
     bool running();
     
 private:
+    void createGameGrid();
     bool isRunning;
     Renderer *renderer;
+    Input *input;
     
 };
-
-
-
 
 #endif /* Game_hpp */

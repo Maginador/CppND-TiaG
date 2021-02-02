@@ -7,6 +7,17 @@
 
 #include "Game.hpp"
 
+const int MOVE_INTENSITY_Y = 120;
+const int CURSOR_INIT_POSITION_Y = 100;
+
+const int MOVE_INTENSITY_X = 80;
+const int CURSOR_INIT_POSITION_X = 50;
+
+
+const int GRID_WIDTH = 10;
+const int GRID_HEIGHT = 5;
+
+Renderable *cursor;
 
 Game::Game(){
     
@@ -21,58 +32,92 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
     
     if(SDL_Init(SDL_INIT_EVERYTHING) == 0){
         std::cout<< "SDL Subsystens Initialized..."<< std::endl;
-        //TODO: Remove New
+        //TODO: Remove New (Use shared_ptr instead of raw pointer)
         renderer = new Renderer();
         renderer->init(title, xpos, ypos, width, height, flags);
-
+        //TODO: Remove New (Use unique_ptr instead of raw pointer)
+        input = new Input();
         isRunning = true;
     }else{
         isRunning = false;
     }
+    //Create cursor
+    createGameGrid();
+    cursor =  renderer->createRenderable( "assets/cursor.png", 90, 90, CURSOR_INIT_POSITION_X, CURSOR_INIT_POSITION_Y);
+
 }
 
 void Game::handleEvents(){
     SDL_Event event;
     SDL_PollEvent(&event);
-    switch (event.type) {
-        case SDL_QUIT:
+        if(event.type ==  SDL_QUIT)
             isRunning=false;
-            break;
-            
-        default:
-            break;
+        else if(event.type == SDL_KEYDOWN){
+            switch( event.key.keysym.sym ){
+                case SDLK_UP:
+                    input->keyDown = Input::inputKey::up;
+                    break;
+
+                    case SDLK_DOWN:
+                    input->keyDown = Input::inputKey::down;
+                    break;
+
+                    case SDLK_LEFT:
+                    input->keyDown = Input::inputKey::left;
+                    break;
+
+                    case SDLK_RIGHT:
+                    input->keyDown = Input::inputKey::right;
+                    break;
+
+                    default:
+                    input->keyDown = Input::inputKey::none;
+                    break;
+                }
+        }
+        else {
+            input->keyDown = Input::inputKey::none;
     }
 }
 
 void Game::update(){
     renderer->render();
-}
-
-/*void Game::blitToScreen(SDL_Surface *surface){
     
-    if(surface == nullptr)        std::cout << "Null source surface" << std::endl;
-
-    SDL_Surface *surf = SDL_GetWindowSurface(window);
     
-    if(surf == nullptr)        std::cout << "Null destination surface" << std::endl << SDL_GetError();
-
-    if(SDL_BlitSurface(surface, NULL, surf, NULL) == 0){
-        std::cout << "Blit Sucess" << std::endl;
-        
-    }else{
-        std::cout << "Blit Error" << std::endl<<SDL_GetError()<<std::endl;
+    //Move Cursor
+    if(Input::getKeyDown() == Input::inputKey::down && cursor->_transform->y < CURSOR_INIT_POSITION_Y + MOVE_INTENSITY_Y * 4){
+        cursor->_transform->y += MOVE_INTENSITY_Y;
+    }
+    else if(Input::getKeyDown() == Input::inputKey::up && cursor->_transform->y > CURSOR_INIT_POSITION_Y){
+        cursor->_transform->y -= MOVE_INTENSITY_Y;
+    }
+    else if(Input::getKeyDown() == Input::inputKey::right && cursor->_transform->x < CURSOR_INIT_POSITION_X + MOVE_INTENSITY_X * 10){
+        cursor->_transform->x += MOVE_INTENSITY_X;
+    }
+    else if(Input::getKeyDown() == Input::inputKey::left && cursor->_transform->x > CURSOR_INIT_POSITION_X){
+        cursor->_transform->x -= MOVE_INTENSITY_X;
     }
 }
-void Game::render(){
-    SDL_RenderClear(renderer);
-    
-    SDL_RenderPresent(renderer);
-}
-*/
+
+
 
 
 bool Game::running(){
     return isRunning;
+}
+
+
+void Game::createGameGrid(){
+    
+    //grid iteration
+    for(int i =0; i<GRID_WIDTH; i++){
+        for(int o =0; o<GRID_HEIGHT; o++){
+            //TODO: Create renderers
+            renderer->createRenderable( "assets/slot_floor.png", 80, 80, CURSOR_INIT_POSITION_X + (i*MOVE_INTENSITY_X), CURSOR_INIT_POSITION_Y + (o*MOVE_INTENSITY_Y));
+        }
+    }
+
+    
 }
 
 
