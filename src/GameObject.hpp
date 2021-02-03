@@ -21,7 +21,7 @@ struct Vector2{
     int _y;
     Vector2(){};
     Vector2(int x, int y);
-    //Vector2& operator=(Vector2 &b);
+    Vector2& operator=(Vector2 &b);
     
 };
 
@@ -39,7 +39,7 @@ class Transform{
 class GameObject{
   
     public :
-    GameObject(const char *name = "new GameObject", Vector2 initialPosition = Vector2 (0,0), const SDL_Texture *tex = nullptr, bool hasCollider = false );
+    GameObject(const char *name, Vector2 initialPosition, SDL_Texture *tex, Vector2 size, bool hasCollider );
     ~GameObject();
     std::string getName(){ return _name;}
     Collider* getCollider(){ return _collider.get();}

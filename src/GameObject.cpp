@@ -6,8 +6,9 @@
 //
 #include "GameObject.hpp"
 using std::unique_ptr;
+using std::make_unique;
 
-GameObject::GameObject(const char *name, Vector2 initialPosition, const SDL_Texture *tex, bool hasCollider ){
+GameObject::GameObject(const char *name, Vector2 initialPosition, SDL_Texture *tex, Vector2 size, bool hasCollider ){
     
     //GameObject
     _name = name;
@@ -18,6 +19,7 @@ GameObject::GameObject(const char *name, Vector2 initialPosition, const SDL_Text
     //Renderable
     if(tex != nullptr){
         //TODO: Add Renderable
+        _renderable = make_unique<Renderable>(Renderable(tex, size._x, size._y, 0, 0));
     }
     //Collider
     if(hasCollider){
@@ -39,19 +41,27 @@ void GameObject::addRenderable(){
 }
 
 
-/*
-Vector2& Vector2::operator=(Vector2 &b){
-  
-    this = b;
-};
-
-
-Transform::Transform(int x, int y){
-    this();
-    _position(x,y);
+Vector2::Vector2(int x, int y){
+    _x = x;
+    _y = y;
     
 }
 
+Vector2& Vector2::operator=(Vector2 &b){
+  
+    this->_x = b._x;
+    this->_y = b._y;
+    return *this;
+}
+
+
+Transform::Transform(int x, int y){
+    this->_position._x = x;
+    this->_position._y = y;
+
+    
+}
+/*
 Transform::Transform(Vector2 pos){
     this();
     _position(pos);
