@@ -18,14 +18,14 @@
 using std::vector;
 
 //Constants area
-const int MOVE_INTENSITY_Y = 120;
-const int CURSOR_INIT_POSITION_Y = 100;
+const int MOVE_INTENSITY_Y = 130;
+const int CURSOR_INIT_POSITION_Y = 150;
 
-const int MOVE_INTENSITY_X = 80;
-const int CURSOR_INIT_POSITION_X = 50;
+const int MOVE_INTENSITY_X = 100;
+const int CURSOR_INIT_POSITION_X = 150;
 
 
-const int GRID_WIDTH = 10;
+const int GRID_WIDTH = 8;
 const int GRID_HEIGHT = 5;
 
 const int ENEMY_SPAWN_X = CURSOR_INIT_POSITION_X + (GRID_WIDTH * MOVE_INTENSITY_X);
@@ -46,6 +46,7 @@ public:
     bool running();
     
 private:
+    void setupUI();
     void createGameGrid();
     void createCursor();
     void enemySpawner();

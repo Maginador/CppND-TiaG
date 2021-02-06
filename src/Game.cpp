@@ -10,6 +10,7 @@
 
 
 Renderable *cursor;
+Vector2 cursorGridPos;
 
 Game::Game(){
     
@@ -37,10 +38,6 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
     createGameGrid();
     createCursor();
     enemySpawner();
-    placeTower(Vector2(1,1));
-    placeTower(Vector2(2,2));
-    placeTower(Vector2(3,3));
-
 
 }
 
@@ -49,29 +46,6 @@ void Game::handleEvents(){
     SDL_PollEvent(&event);
         if(event.type ==  SDL_QUIT)
             isRunning=false;
-        else if(event.type == SDL_KEYDOWN){
-            switch( event.key.keysym.sym ){
-                case SDLK_UP:
-                    input->keyDown = Input::inputKey::up;
-                    break;
-
-                    case SDLK_DOWN:
-                    input->keyDown = Input::inputKey::down;
-                    break;
-
-                    case SDLK_LEFT:
-                    input->keyDown = Input::inputKey::left;
-                    break;
-
-                    case SDLK_RIGHT:
-                    input->keyDown = Input::inputKey::right;
-                    break;
-
-                    default:
-                    input->keyDown = Input::inputKey::none;
-                    break;
-                }
-        }
         else {
             input->keyDown = Input::inputKey::none;
     }
@@ -82,18 +56,27 @@ void Game::update(){
     
     
     //Move Cursor
-    if(Input::getKeyDown() == Input::inputKey::down && cursor->_transform->y < CURSOR_INIT_POSITION_Y + MOVE_INTENSITY_Y * 4){
+    if(Input::getKeyDown() == Input::inputKey::down && cursor->_transform->y < CURSOR_INIT_POSITION_Y + MOVE_INTENSITY_Y * GRID_HEIGHT){
         cursor->_transform->y += MOVE_INTENSITY_Y;
+        cursorGridPos._y +=1;
     }
     else if(Input::getKeyDown() == Input::inputKey::up && cursor->_transform->y > CURSOR_INIT_POSITION_Y){
         cursor->_transform->y -= MOVE_INTENSITY_Y;
+        cursorGridPos._y -=1;
     }
-    else if(Input::getKeyDown() == Input::inputKey::right && cursor->_transform->x < CURSOR_INIT_POSITION_X + MOVE_INTENSITY_X * 10){
+    else if(Input::getKeyDown() == Input::inputKey::right && cursor->_transform->x < CURSOR_INIT_POSITION_X + MOVE_INTENSITY_X * GRID_WIDTH){
         cursor->_transform->x += MOVE_INTENSITY_X;
+        cursorGridPos._x +=1;
     }
     else if(Input::getKeyDown() == Input::inputKey::left && cursor->_transform->x > CURSOR_INIT_POSITION_X){
         cursor->_transform->x -= MOVE_INTENSITY_X;
+        cursorGridPos._x -=1;
     }
+    else if(Input::getKeyDown() == Input::inputKey::space){
+        placeTower(cursorGridPos);
+    }
+    
+    
 }
 
 bool Game::running(){
@@ -121,6 +104,8 @@ void Game::createCursor(){
     GameObject *go = new GameObject("Cursor", Vector2(CURSOR_INIT_POSITION_X, CURSOR_INIT_POSITION_Y ), texture, Vector2(80,80), false);
     cursor = go->getRenderable();
     renderer->addRenderableToList(cursor);
+    cursorGridPos._x = 0;
+    cursorGridPos._y = 0;
 }
 
 //Create towers
@@ -146,10 +131,17 @@ void Game::enemySpawner(){
 
 
 
-void::Game::enemyController(){
+void Game::enemyController(){
     //Iterate in the enemy list
     //Move all enemies one speed Unity to the left
     
+}
+
+void Game::setupUI(){
+    
+    //Resources (Upper bar)
+    
+    //Guide for commands (Lower bar)
 }
 
 
