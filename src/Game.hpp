@@ -9,10 +9,29 @@
 #define Game_hpp
 
 #include <iostream>
+#include <vector>
 #include "Assets.hpp"
 #include "Input.hpp"
 #include <SDL2/SDL.h>
 #include "Renderer.hpp"
+#include "GameObject.hpp"
+using std::vector;
+
+//Constants area
+const int MOVE_INTENSITY_Y = 130;
+const int CURSOR_INIT_POSITION_Y = 150;
+
+const int MOVE_INTENSITY_X = 100;
+const int CURSOR_INIT_POSITION_X = 150;
+
+
+const int GRID_WIDTH = 8;
+const int GRID_HEIGHT = 5;
+
+const int ENEMY_SPAWN_X = CURSOR_INIT_POSITION_X + (GRID_WIDTH * MOVE_INTENSITY_X);
+const int ENEMY_SPAWN_Y = CURSOR_INIT_POSITION_Y + ((GRID_HEIGHT-1) * MOVE_INTENSITY_Y);
+
+//End constants area
 
 class Game{
     
@@ -27,10 +46,18 @@ public:
     bool running();
     
 private:
+    void setupUI();
     void createGameGrid();
+    void createCursor();
+    void enemySpawner();
+    void enemyController();
+    void placeTower(Vector2 gridSlot);
     bool isRunning;
     Renderer *renderer;
     Input *input;
+    
+    vector<GameObject*> _enemies;
+    int slotsGrid[GRID_WIDTH * GRID_HEIGHT];
     
 };
 

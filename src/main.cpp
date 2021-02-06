@@ -10,15 +10,17 @@
 
 
 //Screen dimension constants
-const int SCREEN_WIDTH = 1024;
-const int SCREEN_HEIGHT = 768;
+const int SCREEN_WIDTH = 1280;
+const int SCREEN_HEIGHT = 920;
 //TODO: Replace pointer with unique_ptr
 Game *game = nullptr;
 Assets *assets = nullptr;
+Input *input = nullptr;
+
 int main() {
     
     //TODO: Remove New
-    
+    input = new Input();
     game = new Game();
     assets = new Assets();
     //TODO: make it possible to adjust values
@@ -26,7 +28,7 @@ int main() {
     SDL_Delay(1000);
     while(game->running()){
         
-        //TODO: create Input System (Input.cpp)
+        input->handleEvents();
         game->handleEvents();
         //TODO: create FPS Control (Time.cpp)
         game->update();
@@ -37,3 +39,5 @@ int main() {
     
     
 }
+
+

@@ -10,4 +10,14 @@
 
 #include <stdio.h>
 
+
+class Physics{
+    
+};
+
+
+class Collider{
+    
+};
+
 #endif /* Physics_hpp */
