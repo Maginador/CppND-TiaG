@@ -7,15 +7,7 @@
 
 #include "Game.hpp"
 
-const int MOVE_INTENSITY_Y = 120;
-const int CURSOR_INIT_POSITION_Y = 100;
 
-const int MOVE_INTENSITY_X = 80;
-const int CURSOR_INIT_POSITION_X = 50;
-
-
-const int GRID_WIDTH = 10;
-const int GRID_HEIGHT = 5;
 
 Renderable *cursor;
 
@@ -44,6 +36,11 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
     //Create cursor
     createGameGrid();
     createCursor();
+    enemySpawner();
+    placeTower(Vector2(1,1));
+    placeTower(Vector2(2,2));
+    placeTower(Vector2(3,3));
+
 
 }
 
@@ -104,12 +101,13 @@ bool Game::running(){
 }
 
 void Game::createGameGrid(){
-    SDL_Texture *texture = renderer->createTexture("assets/slot_floor.png");
+    SDL_Texture *texture = renderer->createTexture("assets/pixelSlot.png");
     //grid iteration
     for(int i =0; i<GRID_WIDTH; i++){
         for(int o =0; o<GRID_HEIGHT; o++){
             GameObject *go = new GameObject("Environment_Slot", Vector2(CURSOR_INIT_POSITION_X + (i*MOVE_INTENSITY_X), CURSOR_INIT_POSITION_Y + (o*MOVE_INTENSITY_Y)), texture, Vector2(80,80), false);
             renderer->addRenderableToList(go->getRenderable());
+            slotsGrid[i + (GRID_WIDTH*o) ] = 0;
         }
     }
 
@@ -125,18 +123,32 @@ void Game::createCursor(){
     renderer->addRenderableToList(cursor);
 }
 
-//Create environment GameObjects
-void CreateEnvironment(){
-    
-}
-
 //Create towers
-void CreateTower(){
+void Game::placeTower(Vector2 gridSlot){
     
+    //Placeholder Spawner
+    SDL_Texture *texture = renderer->createTexture("assets/tower01.png");
+
+    GameObject *go = new GameObject("Tower", Vector2(CURSOR_INIT_POSITION_X + (gridSlot._x*MOVE_INTENSITY_X), CURSOR_INIT_POSITION_Y + (gridSlot._y*MOVE_INTENSITY_Y)), texture, Vector2(80,80), false);
+    renderer->addRenderableToList(go->getRenderable());
 }
 
 //Create enemies
-void CreateEnemies(){
+void Game::enemySpawner(){
+    
+    //Placeholder Spawner
+    SDL_Texture *texture = renderer->createTexture("assets/pixelEnemy.png");
+
+    GameObject *go = new GameObject("Enemy", Vector2(ENEMY_SPAWN_X, ENEMY_SPAWN_Y ), texture, Vector2(80,80), false);
+    renderer->addRenderableToList(go->getRenderable());
+}
+
+
+
+
+void::Game::enemyController(){
+    //Iterate in the enemy list
+    //Move all enemies one speed Unity to the left
     
 }
 
