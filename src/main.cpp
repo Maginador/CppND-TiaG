@@ -15,6 +15,7 @@ const int SCREEN_HEIGHT = 920;
 //TODO: Replace pointer with unique_ptr
 Game *game = nullptr;
 Assets *assets = nullptr;
+
 int main() {
     
     //TODO: Remove New
@@ -37,3 +38,5 @@ int main() {
     
     
 }
+
+

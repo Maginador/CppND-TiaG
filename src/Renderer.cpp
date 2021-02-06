@@ -7,9 +7,6 @@
 
 #include "Renderer.hpp"
 
-//TODO: Replace placeholder Renderable by a list of renderables with add/remove system
-Renderable *rend = nullptr;
-
 void Renderer::render(){
     SDL_RenderClear(renderer);
    
@@ -54,17 +51,27 @@ bool Renderer::init(const char *title, int xpos, int ypos, int width, int height
     return true;
 }
 
+
+void Renderer::addRenderableToList(Renderable *obj){
+    if(obj != nullptr)
+        renderablesList.emplace_back(obj);
+    
+}
 Renderable* Renderer::createRenderable(const char *assetPath, int width, int height, int x = 0, int y = 0){
     Assets asset = Assets();
     
     Renderable* rend = new Renderable(asset.loadAsset(renderer, assetPath), width, height, x, y);
     renderablesList.emplace_back(rend);
-    
     return std::move(rend);
-    
-    
-    
 }
+
+SDL_Texture* Renderer::createTexture(const char *assetPath){
+    Assets asset = Assets();
+    SDL_Texture* texture = asset.loadAsset(renderer, assetPath);
+    
+    return std::move(texture);
+}
+
 //TODO: create lists of custom structure for animations and states
 Renderable::Renderable(SDL_Texture *texture, int width, int height, int initX, int initY){
     _texture = texture;

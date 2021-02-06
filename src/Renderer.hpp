@@ -33,9 +33,12 @@ class Renderer{
     void clean();
     //TODO: Replace with shared_ptr
     Renderable* createRenderable(const char *assetPath, int width, int height, int x, int y);
+    SDL_Texture* createTexture (const char *assetPath);
     bool init(const char *title, int xpos, int ypos, int width, int height, int flags);
     SDL_Renderer* getRenderer();
     SDL_Rect cursor;
+    void addRenderableToList(Renderable* obj);
+    
     private :
     //TODO: Replace with shared_ptr
     std::vector<Renderable*> renderablesList;

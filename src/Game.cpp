@@ -43,7 +43,7 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
     }
     //Create cursor
     createGameGrid();
-    cursor =  renderer->createRenderable( "assets/cursor.png", 90, 90, CURSOR_INIT_POSITION_X, CURSOR_INIT_POSITION_Y);
+    createCursor();
 
 }
 
@@ -99,24 +99,44 @@ void Game::update(){
     }
 }
 
-
-
-
 bool Game::running(){
     return isRunning;
 }
 
-
 void Game::createGameGrid(){
-    
+    SDL_Texture *texture = renderer->createTexture("assets/slot_floor.png");
     //grid iteration
     for(int i =0; i<GRID_WIDTH; i++){
         for(int o =0; o<GRID_HEIGHT; o++){
-            //TODO: Create renderers
-            renderer->createRenderable( "assets/slot_floor.png", 80, 80, CURSOR_INIT_POSITION_X + (i*MOVE_INTENSITY_X), CURSOR_INIT_POSITION_Y + (o*MOVE_INTENSITY_Y));
+            GameObject *go = new GameObject("Environment_Slot", Vector2(CURSOR_INIT_POSITION_X + (i*MOVE_INTENSITY_X), CURSOR_INIT_POSITION_Y + (o*MOVE_INTENSITY_Y)), texture, Vector2(80,80), false);
+            renderer->addRenderableToList(go->getRenderable());
         }
     }
 
+    
+}
+
+void Game::createCursor(){
+    
+    SDL_Texture *texture = renderer->createTexture("assets/cursor.png");
+
+    GameObject *go = new GameObject("Cursor", Vector2(CURSOR_INIT_POSITION_X, CURSOR_INIT_POSITION_Y ), texture, Vector2(80,80), false);
+    cursor = go->getRenderable();
+    renderer->addRenderableToList(cursor);
+}
+
+//Create environment GameObjects
+void CreateEnvironment(){
+    
+}
+
+//Create towers
+void CreateTower(){
+    
+}
+
+//Create enemies
+void CreateEnemies(){
     
 }
 

@@ -13,6 +13,7 @@
 #include "Input.hpp"
 #include <SDL2/SDL.h>
 #include "Renderer.hpp"
+#include "GameObject.hpp"
 
 class Game{
     
@@ -28,6 +29,9 @@ public:
     
 private:
     void createGameGrid();
+    void createCursor();
+    void enemySpawner();
+    void placeTower();
     bool isRunning;
     Renderer *renderer;
     Input *input;

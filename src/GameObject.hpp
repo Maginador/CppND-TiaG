@@ -19,7 +19,7 @@ struct Vector2{
 
     int _x;
     int _y;
-    Vector2(){};
+    Vector2(){_x =0; _y=0;};
     Vector2(int x, int y);
     Vector2& operator=(Vector2 &b);
     
@@ -33,7 +33,7 @@ class Transform{
     
     Transform(Vector2 pos);
     
-    Vector2 _position;
+    Vector2 *_position;
 };
 
 class GameObject{

@@ -14,12 +14,12 @@ GameObject::GameObject(const char *name, Vector2 initialPosition, SDL_Texture *t
     _name = name;
     
     //Transform
-    _transform->_position = initialPosition;
+    _transform = std::make_unique<Transform>(initialPosition);
     
     //Renderable
     if(tex != nullptr){
         //TODO: Add Renderable
-        _renderable = make_unique<Renderable>(Renderable(tex, size._x, size._y, 0, 0));
+        _renderable = std::make_unique<Renderable>(tex, size._x, size._y, _transform->_position->_x, _transform->_position->_y);
     }
     //Collider
     if(hasCollider){
@@ -49,22 +49,20 @@ Vector2::Vector2(int x, int y){
 
 Vector2& Vector2::operator=(Vector2 &b){
   
-    this->_x = b._x;
-    this->_y = b._y;
+    
+    _x = b._x;
+    _y = b._y;
     return *this;
 }
 
 
 Transform::Transform(int x, int y){
-    this->_position._x = x;
-    this->_position._y = y;
-
+    _position = new Vector2(x,y);
     
 }
-/*
+
 Transform::Transform(Vector2 pos){
-    this();
-    _position(pos);
+    _position = new Vector2(pos);
 }
 
-*/
+
