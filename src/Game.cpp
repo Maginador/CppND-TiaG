@@ -120,6 +120,9 @@ void Game::placeTower(Vector2 gridSlot){
 
     GameObject *go = new GameObject("Tower", Vector2(CURSOR_INIT_POSITION_X + (gridSlot._x*MOVE_INTENSITY_X), CURSOR_INIT_POSITION_Y + (gridSlot._y*MOVE_INTENSITY_Y)), texture, Vector2(80,80), false);
     renderer->addRenderableToList(go->getRenderable());
+    Character *tower = new Character(go, Character::CharacterType::Tower);
+    _towers.emplace_back(tower);
+    
 }
 
 //Create enemies
@@ -142,9 +145,12 @@ void Game::enemyTimmedSpawnning(){
     
     auto timeNow = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now() - lastSpawn);
     if(timer<= timeNow){
+        //Setup timer back
         std::chrono::milliseconds cycleTime = std::chrono::milliseconds((std::rand() %(SPAWNING_TIME_UPPER_RANGE-SPAWNING_TIME_LOWER_RANGE + 1) + SPAWNING_TIME_LOWER_RANGE));
         timer = cycleTime + timeNow;
         lastSpawn = std::chrono::system_clock::now();
+        
+        //Spawn Enemy
         enemySpawner();
     }
     

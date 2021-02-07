@@ -15,6 +15,8 @@
 #include <SDL2_image/SDL_image.h>
 using std::unique_ptr;
 
+class Collider;
+
 struct Vector2{
 
     int _x;

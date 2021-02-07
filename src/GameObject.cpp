@@ -23,7 +23,7 @@ GameObject::GameObject(const char *name, Vector2 initialPosition, SDL_Texture *t
     }
     //Collider
     if(hasCollider){
-        //TODO: Add Collider
+        _collider = std::make_unique<Collider>(this, _renderable->_transform);
     }
 };
 

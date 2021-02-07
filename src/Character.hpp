@@ -13,7 +13,8 @@
 
 class Character{
     public :
-    enum CharacterType {Enemy, Tower};
+    enum CharacterType {Enemy, Tower, Bullet};
+    enum AttackType {None, Melle, Ranged};
     Character();
     Character(GameObject *go, CharacterType);
     ~Character();
@@ -25,6 +26,8 @@ class Character{
     GameObject *entity;
     int health;
     int speed;
+    AttackType attackType;
+
     void die();
     
     

@@ -35,8 +35,8 @@ const int GRID_HEIGHT = 5;
 const int ENEMY_SPAWN_X = CURSOR_INIT_POSITION_X + (GRID_WIDTH * MOVE_INTENSITY_X);
 const int ENEMY_SPAWN_Y = ((GRID_HEIGHT-1) * MOVE_INTENSITY_Y);
 
-const int SPAWNING_TIME_LOWER_RANGE = 2;
-const int SPAWNING_TIME_UPPER_RANGE = 5;
+const int SPAWNING_TIME_LOWER_RANGE = 4;
+const int SPAWNING_TIME_UPPER_RANGE = 15;
 
 //End constants area
 
@@ -64,6 +64,7 @@ private:
     Input *input;
     
     vector<Character*> _enemies;
+    vector<Character*> _towers;
     int slotsGrid[GRID_WIDTH * GRID_HEIGHT];
     
 };
