@@ -11,7 +11,8 @@
 
 Renderable *cursor;
 Vector2 cursorGridPos;
-
+std::chrono::milliseconds timer;
+std::chrono::time_point<std::chrono::system_clock> lastSpawn;
 Game::Game(){
     
 }
@@ -37,11 +38,11 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
     //Create cursor
     createGameGrid();
     createCursor();
-    enemySpawner();
+    lastSpawn = std::chrono::system_clock::now();
 
 }
 
-void Game::handleEvents(){
+void Game::windowEvents(){
     SDL_Event event;
     SDL_PollEvent(&event);
         if(event.type ==  SDL_QUIT)
@@ -53,7 +54,6 @@ void Game::handleEvents(){
 
 void Game::update(){
     renderer->render();
-    
     
     //Move Cursor
     if(Input::getKeyDown() == Input::inputKey::down && cursor->_transform->y < CURSOR_INIT_POSITION_Y + MOVE_INTENSITY_Y * GRID_HEIGHT){
@@ -76,7 +76,11 @@ void Game::update(){
         placeTower(cursorGridPos);
     }
     
-    
+    //Update enemies
+    for(int i =0; i<_enemies.size(); i++){
+        _enemies[i]->act();
+    }
+    enemyTimmedSpawnning();
 }
 
 bool Game::running(){
@@ -121,19 +125,28 @@ void Game::placeTower(Vector2 gridSlot){
 //Create enemies
 void Game::enemySpawner(){
     
+    int slot = (std::rand() % GRID_HEIGHT);
     //Placeholder Spawner
     SDL_Texture *texture = renderer->createTexture("assets/pixelEnemy.png");
 
-    GameObject *go = new GameObject("Enemy", Vector2(ENEMY_SPAWN_X, ENEMY_SPAWN_Y ), texture, Vector2(80,80), false);
+    GameObject *go = new GameObject("Enemy", Vector2(ENEMY_SPAWN_X, CURSOR_INIT_POSITION_Y + (slot *MOVE_INTENSITY_Y)), texture, Vector2(80,80), false);
     renderer->addRenderableToList(go->getRenderable());
+    
+    Character *enemy = new Character(go, Character::CharacterType::Enemy);
+    _enemies.emplace_back(enemy);
 }
 
-
-
-
-void Game::enemyController(){
-    //Iterate in the enemy list
-    //Move all enemies one speed Unity to the left
+//TODO: Replace all spawnning methods by a separate class
+void Game::enemyTimmedSpawnning(){
+    
+    
+    auto timeNow = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now() - lastSpawn);
+    if(timer<= timeNow){
+        std::chrono::milliseconds cycleTime = std::chrono::milliseconds((std::rand() %(SPAWNING_TIME_UPPER_RANGE-SPAWNING_TIME_LOWER_RANGE + 1) + SPAWNING_TIME_LOWER_RANGE));
+        timer = cycleTime + timeNow;
+        lastSpawn = std::chrono::system_clock::now();
+        enemySpawner();
+    }
     
 }
 

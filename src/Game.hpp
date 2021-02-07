@@ -15,6 +15,10 @@
 #include <SDL2/SDL.h>
 #include "Renderer.hpp"
 #include "GameObject.hpp"
+#include "Character.hpp"
+#include <chrono>
+#include <random>
+
 using std::vector;
 
 //Constants area
@@ -29,7 +33,10 @@ const int GRID_WIDTH = 8;
 const int GRID_HEIGHT = 5;
 
 const int ENEMY_SPAWN_X = CURSOR_INIT_POSITION_X + (GRID_WIDTH * MOVE_INTENSITY_X);
-const int ENEMY_SPAWN_Y = CURSOR_INIT_POSITION_Y + ((GRID_HEIGHT-1) * MOVE_INTENSITY_Y);
+const int ENEMY_SPAWN_Y = ((GRID_HEIGHT-1) * MOVE_INTENSITY_Y);
+
+const int SPAWNING_TIME_LOWER_RANGE = 2;
+const int SPAWNING_TIME_UPPER_RANGE = 5;
 
 //End constants area
 
@@ -41,7 +48,7 @@ public:
     
     void init(const char* title, int xpos, int ypos, int width, int height, bool fullscreen);
     
-    void handleEvents();
+    void windowEvents();
     void update();
     bool running();
     
@@ -50,13 +57,13 @@ private:
     void createGameGrid();
     void createCursor();
     void enemySpawner();
-    void enemyController();
+    void enemyTimmedSpawnning();
     void placeTower(Vector2 gridSlot);
     bool isRunning;
     Renderer *renderer;
     Input *input;
     
-    vector<GameObject*> _enemies;
+    vector<Character*> _enemies;
     int slotsGrid[GRID_WIDTH * GRID_HEIGHT];
     
 };
