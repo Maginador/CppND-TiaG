@@ -7,7 +7,7 @@
 
 #include <iostream>
 #include "Game.hpp"
-
+#include <SDL2/SDL.h>
 
 //Screen dimension constants
 const int SCREEN_WIDTH = 1280;
@@ -19,6 +19,10 @@ Input *input = nullptr;
 
 int main() {
     
+    
+    Uint32 frameStart;
+    int frameTime;
+    
     //TODO: Remove New
     input = new Input();
     game = new Game();
@@ -28,13 +32,18 @@ int main() {
     SDL_Delay(1000);
     while(game->running()){
         
+        frameStart = SDL_GetTicks();
         input->handleEvents();
         game->windowEvents();
         //TODO: create FPS Control (Time.cpp)
         game->update();
         
         //TODO: Add Physics processing
+        frameTime = SDL_GetTicks() - frameStart;
         
+        if(SCREEN_TICKS_PER_FRAME > frameTime){
+            SDL_Delay(SCREEN_TICKS_PER_FRAME - frameTime);
+        }
     }
     
     

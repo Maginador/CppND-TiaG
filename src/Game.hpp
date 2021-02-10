@@ -38,7 +38,13 @@ const int ENEMY_SPAWN_Y = ((GRID_HEIGHT-1) * MOVE_INTENSITY_Y);
 const int SPAWNING_TIME_LOWER_RANGE = 4;
 const int SPAWNING_TIME_UPPER_RANGE = 15;
 
+const int FRAMES_PER_SECOND = 60;
+const int SCREEN_TICKS_PER_FRAME = 1000/FRAMES_PER_SECOND;
+
+
 //End constants area
+
+
 //Foward reference for circle header include
 class Character;
 
