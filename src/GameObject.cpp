@@ -29,6 +29,11 @@ GameObject::GameObject(const char *name, Vector2 initialPosition, SDL_Texture *t
 
 GameObject::~GameObject(){
     //TODO: Object Destruction
+    _name = nullptr;
+    delete(_collider);
+    delete(_transform);
+    delete(_character);
+    delete(_renderable);
 };
 
 //Rule of five implementation
@@ -36,6 +41,7 @@ GameObject::~GameObject(){
 GameObject::GameObject(const GameObject &b){
     
     _name = b._name;
+    _character = b._character;
     _collider = std::move(b._collider);
     _transform = b._transform;
     _renderable = b._renderable;
@@ -49,6 +55,7 @@ GameObject& GameObject::operator=(const GameObject &b){
     }
 
     _name = b._name;
+    _character = b._character;
     _collider = b._collider;
     _transform = b._transform;
     _renderable = b._renderable;
@@ -60,11 +67,13 @@ GameObject& GameObject::operator=(const GameObject &b){
 GameObject::GameObject(GameObject &&b){
 
     _name = b._name;
+    _character = b._character;
     _collider = b._collider;
     _transform = b._transform;
     _renderable = b._renderable;
     
     b._name = nullptr;
+    b._character = nullptr;
     b._collider = nullptr;
     b._transform = NULL;
     b._renderable = nullptr;
@@ -79,11 +88,13 @@ GameObject& GameObject::operator=(GameObject &&b){
     }
 
     _name = b._name;
+    _character = b._character;
     _collider = b._collider;
     _transform = b._transform;
     _renderable = b._renderable;
     
     b._name = nullptr;
+    b._character = nullptr;
     b._collider = nullptr;
     b._transform = NULL;
     b._renderable = nullptr;
@@ -99,6 +110,9 @@ void GameObject::addRenderable(){
     //TODO: a way to add renderable on the fly
 }
 
+void GameObject::addCharacter(Character* character){
+    _character = character;
+}
 
 Vector2::Vector2(int x, int y){
     _x = x;

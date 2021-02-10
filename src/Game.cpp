@@ -34,6 +34,8 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
         //TODO: Remove New (Use unique_ptr instead of raw pointer)
         input = new Input();
         isRunning = true;
+        
+        physics = new Physics();
     }else{
         isRunning = false;
     }
@@ -56,7 +58,7 @@ void Game::windowEvents(){
 
 void Game::update(){
     renderer->render();
-    
+    physics->simulate();
     //Move Cursor
     if(Input::getKeyDown() == Input::inputKey::down && cursor->_transform->y < CURSOR_INIT_POSITION_Y + MOVE_INTENSITY_Y * GRID_HEIGHT){
         cursor->_transform->y += MOVE_INTENSITY_Y;
@@ -80,12 +82,15 @@ void Game::update(){
     
     //Update enemies
     for(int i =0; i<_enemies.size(); i++){
+        if(!_enemies[i]) _enemies.erase(_enemies.begin()+i);
         _enemies[i]->act();
     }
     for(int i =0; i<_towers.size(); i++){
+        if(!_towers[i]) _towers.erase(_towers.begin()+i);
         _towers[i]->act();
     }
     for(int i =0; i<_bullets.size(); i++){
+        if(!_bullets[i]) _bullets.erase(_bullets.begin()+i);
         _bullets[i]->act();
     }
     enemyTimmedSpawnning();
@@ -149,6 +154,19 @@ void Game::enemySpawner(){
 
 void Game::addBulletToList(Character *bullet){
     _bullets.emplace_back(bullet);
+}
+void Game::removeBulletToList(Character *bullet){
+    
+    Character::CharacterType type = bullet->getCharacterType();
+    if(type == Character::CharacterType::Bullet){
+        for(int i =0; i<_bullets.size(); i++) if(_bullets[i] == bullet) _bullets.erase(_bullets.begin() + i);
+    }
+    if(type == Character::CharacterType::Tower){
+        for(int i =0; i<_towers.size(); i++) if(_towers[i] == bullet) _towers.erase(_towers.begin() + i);
+    }
+    if(type == Character::CharacterType::Enemy){
+        for(int i =0; i<_enemies.size(); i++) if(_enemies[i] == bullet) _enemies.erase(_enemies.begin() + i);
+    }
 }
 
 //TODO: Replace all spawnning methods by a separate class

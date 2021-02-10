@@ -18,7 +18,7 @@ void Renderer::render(){
     SDL_RenderClear(renderer);
    
     for(int i =0; i<renderablesList.size();i++){
-        
+        if(!renderablesList[i] || !renderablesList[i]->_texture) renderablesList.erase(renderablesList.begin()+i);
         SDL_RenderCopy(renderer, renderablesList[i]->_texture, NULL, renderablesList[i]->_transform);
     }
     //TODO: Create list of renderable objects and loop rendering
@@ -58,7 +58,9 @@ bool Renderer::init(const char *title, int xpos, int ypos, int width, int height
     return true;
 }
 
-
+void Renderer::removeRenderableFromList(Renderable *obj){
+    for(int i =0; i<renderablesList.size(); i++) if(renderablesList[i] == obj) renderablesList.erase(renderablesList.begin() + i);
+}
 void Renderer::addRenderableToList(Renderable *obj){
     if(obj != nullptr)
         renderablesList.emplace_back(obj);
@@ -90,3 +92,9 @@ Renderable::Renderable(SDL_Texture *texture, int width, int height, int initX, i
     _transform->y = initY;
 
 };
+Renderable::~Renderable(){
+    std::cout<< "Deconstructor for Renderable" << std::endl;
+    delete(_transform);
+    SDL_DestroyTexture(_texture);
+    Renderer::instance->removeRenderableFromList(this);
+}

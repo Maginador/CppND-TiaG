@@ -11,11 +11,13 @@
 #include <stdio.h>
 #include "Physics.hpp"
 #include "Renderer.hpp"
+#include "Character.hpp"
 #include <memory>
 #include <SDL2_image/SDL_image.h>
 using std::unique_ptr;
 //declaration for circle include 'GameObject/Collider'
 class Collider;
+class Character;
 
 struct Vector2{
 
@@ -57,9 +59,12 @@ class GameObject{
     std::string getName(){ return _name;}
     Collider* getCollider(){ return _collider;}
     Renderable* getRenderable(){ return _renderable;}
+    Character* getChar(){ return _character;}
     void addCollider(); 
     void addRenderable();
+    void addCharacter(Character *character);
     private :
+    Character *_character = nullptr;
     Collider *_collider = nullptr;
     Renderable *_renderable = nullptr;
     Transform *_transform = nullptr;

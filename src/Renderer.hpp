@@ -18,7 +18,7 @@
 class Renderable{
     public :
     Renderable(SDL_Texture *texture, int width, int height, int initX, int initY);
-    ~Renderable(){};
+    ~Renderable();
     SDL_Texture *_texture;
     SDL_Rect *_transform;
     private :
@@ -28,7 +28,7 @@ class Renderer{
   
     public :
     Renderer();
-    ~Renderer(){};
+    ~Renderer();
     static Renderer *instance;
     void render();
     void clean();
@@ -39,7 +39,7 @@ class Renderer{
     SDL_Renderer* getRenderer();
     SDL_Rect cursor;
     void addRenderableToList(Renderable* obj);
-    
+    void removeRenderableFromList(Renderable* obj);
     private :
     //TODO: Replace with shared_ptr
     std::vector<Renderable*> renderablesList;

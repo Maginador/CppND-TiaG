@@ -15,9 +15,14 @@
 #include <SDL2/SDL.h>
 #include "Renderer.hpp"
 #include "GameObject.hpp"
+#include "Physics.hpp"
 #include "Character.hpp"
 #include <chrono>
 #include <random>
+
+class GameObject;
+class Physics;
+class Vector2;
 
 using std::vector;
 
@@ -47,7 +52,6 @@ const int SCREEN_TICKS_PER_FRAME = 1000/FRAMES_PER_SECOND;
 
 //Foward reference for circle header include
 class Character;
-
 class Game{
     
 public:
@@ -62,7 +66,7 @@ public:
     
     //Public calls enabled for static instance
     void addBulletToList(Character *bullet);
-    
+    void removeBulletToList(Character *bullet);
 private:
     void setupUI();
     void createGameGrid();
@@ -73,6 +77,7 @@ private:
     bool isRunning;
     Renderer *renderer;
     Input *input;
+    Physics *physics;
     
     vector<Character*> _enemies;
     vector<Character*> _towers;

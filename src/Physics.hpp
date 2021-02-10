@@ -42,9 +42,13 @@ class Collider{
 class Physics{
     
 public:
+    Physics(){    if(instance == nullptr)
+        instance = this;};
+    ~Physics();
+    static Physics *instance; 
     void simulate();
     void includeBodyToSimulation(Collider *col);
-    
+    void removeBodyToSimulations(Collider *col);
     private :
     std::vector<Collider*> _simulationColliders;
     bool calculateBoundingCollision(SDL_Rect *a, SDL_Rect *b);

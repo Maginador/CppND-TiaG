@@ -26,6 +26,7 @@ class Character{
     int takeDamage(int damage);
     GameObject* getEntity(){return entity;}
     int getHealth() {return health;}
+    CharacterType getCharacterType(){return charType;};
     private :
     GameObject *entity;
     int health;
@@ -34,6 +35,8 @@ class Character{
     std::chrono::milliseconds bulletTimer;
     std::chrono::time_point<std::chrono::system_clock> bulletLastSpawn;
     AttackType attackType;
+    //TODO: Replace all type related stuff with subclasses for each type
+    CharacterType charType;
 
     void die();
     
