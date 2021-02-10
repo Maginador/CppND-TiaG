@@ -52,7 +52,6 @@ const int SCREEN_TICKS_PER_FRAME = 1000/FRAMES_PER_SECOND;
 
 //Foward reference for circle header include
 class Character;
-
 class Game{
     
 public:
@@ -67,7 +66,7 @@ public:
     
     //Public calls enabled for static instance
     void addBulletToList(Character *bullet);
-    
+    void removeBulletToList(Character *bullet);
 private:
     void setupUI();
     void createGameGrid();

@@ -29,6 +29,11 @@ GameObject::GameObject(const char *name, Vector2 initialPosition, SDL_Texture *t
 
 GameObject::~GameObject(){
     //TODO: Object Destruction
+    _name = nullptr;
+    delete(_collider);
+    delete(_transform);
+    delete(_character);
+    delete(_renderable);
 };
 
 //Rule of five implementation

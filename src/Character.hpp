@@ -26,6 +26,7 @@ class Character{
     int takeDamage(int damage);
     GameObject* getEntity(){return entity;}
     int getHealth() {return health;}
+    CharacterType getCharacterType(){return charType;};
     private :
     GameObject *entity;
     int health;

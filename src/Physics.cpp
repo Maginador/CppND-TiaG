@@ -26,6 +26,15 @@ void Physics::simulate(){
             //Calculate intersection between [i]x[o]
             Collider *aCol = _simulationColliders[i];
             Collider *bCol = _simulationColliders[o];
+            
+            if(!aCol){
+               _simulationColliders.erase(_simulationColliders.begin()+i);
+                continue;
+            }
+            if(!bCol){
+               _simulationColliders.erase(_simulationColliders.begin()+o);
+                continue;
+            }
             if(aCol == bCol) continue;
             //Calculate
             if(calculateBoundingCollision(aCol->getRect(), bCol->getRect())){
@@ -41,6 +50,10 @@ void Physics::simulate(){
 
 void Physics::includeBodyToSimulation(Collider *col){
     _simulationColliders.emplace_back(col);
+}
+
+void Physics::removeBodyToSimulations(Collider *col){
+    for(int i =0; i<_simulationColliders.size(); i++) if(_simulationColliders[i] == col) _simulationColliders.erase(_simulationColliders.begin() + i);
 }
 
 bool Physics::calculateBoundingCollision(SDL_Rect *a, SDL_Rect *b){
@@ -90,6 +103,11 @@ bool Physics::calculateBoundingCollision(SDL_Rect *a, SDL_Rect *b){
 //***Collider***
 
 //Rule of five implementation
+
+Collider::~Collider(){
+    Physics::instance->removeBodyToSimulations(this);
+    boundingBox = nullptr;
+}
 //Copy Constructor
 Collider::Collider(const Collider &b){
     
@@ -165,7 +183,6 @@ Collider::Collider(GameObject *go, SDL_Rect *rect){
     Physics::instance->includeBodyToSimulation(this);
 }
 
-Collider::~Collider(){};
 
 Collider* Collider::isColliding(){
     if(collisor)
