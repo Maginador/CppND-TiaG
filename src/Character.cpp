@@ -38,22 +38,27 @@ Character::Character(GameObject *go, Character::CharacterType type){
         speed = 1;
         attackType = AttackType::Melle;
     }
+    
+    entity->addCharacter(this);
 }
 void Character::act(){
     //Check if this entity has collider
     Collider *thiscol = entity->getCollider();
     //Check if the collider have other collisor
     Collider *col = nullptr;
-    if(thiscol)
-    col = entity->getCollider()->isColliding();
-        
+    if(thiscol){
+        col = entity->getCollider()->isColliding();
+        if(col)
+            std::cout << "Collided with : " << col->getGameObject()->getName()<<std::endl;
+    }
     //Move
-    entity->getRenderable()->_transform->x += speed;
+    //Only if no enemy collision is detected
+    if(!col ||(charType == CharacterType::Enemy && col->getGameObject()->getChar()->charType != CharacterType::Tower))
+       entity->getRenderable()->_transform->x += speed;
     //Attack
     if(attackType == AttackType::Ranged){
-       
+        return;
         auto timeNow = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now() - bulletLastSpawn);
-        std::cout<< "Timer :" << bulletTimer.count() << " : Time Now : " << timeNow.count() << std::endl;
         if(bulletTimer<= timeNow){
             //Setup timer back
             std::chrono::milliseconds cycleTime = std::chrono::milliseconds(_colldown);
@@ -62,7 +67,7 @@ void Character::act(){
             
        
         SDL_Texture *texture = Renderer::createTexture("assets/bullet.png");
-        GameObject *go = new GameObject("Bullet", Vector2(entity->getRenderable()->_transform->x + entity->getRenderable()->_transform->w/2 + 30, entity->getRenderable()->_transform->y), texture, Vector2(60,60), false);
+        GameObject *go = new GameObject("Bullet", Vector2(entity->getRenderable()->_transform->x + entity->getRenderable()->_transform->w/2 + 30, entity->getRenderable()->_transform->y), texture, Vector2(60,60), true);
         Character *bullet = new Character(go, Character::CharacterType::Bullet);
         
         Game::instance->addBulletToList(bullet);

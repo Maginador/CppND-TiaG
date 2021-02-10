@@ -42,6 +42,10 @@ class Collider{
 class Physics{
     
 public:
+    Physics(){    if(instance == nullptr)
+        instance = this;};
+    ~Physics();
+    static Physics *instance; 
     void simulate();
     void includeBodyToSimulation(Collider *col);
     

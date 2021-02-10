@@ -15,9 +15,14 @@
 #include <SDL2/SDL.h>
 #include "Renderer.hpp"
 #include "GameObject.hpp"
+#include "Physics.hpp"
 #include "Character.hpp"
 #include <chrono>
 #include <random>
+
+class GameObject;
+class Physics;
+class Vector2;
 
 using std::vector;
 
@@ -73,6 +78,7 @@ private:
     bool isRunning;
     Renderer *renderer;
     Input *input;
+    Physics *physics;
     
     vector<Character*> _enemies;
     vector<Character*> _towers;

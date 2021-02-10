@@ -8,8 +8,14 @@
 #include "Physics.hpp"
 
 //***Physics***
+Physics* Physics::instance = 0;
 void Physics::simulate(){
     int collisionMatrix[_simulationColliders.size()] [_simulationColliders.size()];
+    
+    //initialize colision matrix
+    for ( int v = 0; v<_simulationColliders.size(); v++ ){
+        for ( int e = 0; e<_simulationColliders.size(); e++ ){
+            collisionMatrix[v][e] = 0;}}
     
     for(int i =0; i<_simulationColliders.size();i++){
         for(int o = 0; o<_simulationColliders.size();o++){
@@ -20,7 +26,7 @@ void Physics::simulate(){
             //Calculate intersection between [i]x[o]
             Collider *aCol = _simulationColliders[i];
             Collider *bCol = _simulationColliders[o];
-            
+            if(aCol == bCol) continue;
             //Calculate
             if(calculateBoundingCollision(aCol->getRect(), bCol->getRect())){
                 //Insert collision if collision is true
@@ -156,6 +162,7 @@ Collider::Collider(GameObject *go, SDL_Rect *rect){
     gameObject = go;
     boundingBox = rect;
     collisor = nullptr;
+    Physics::instance->includeBodyToSimulation(this);
 }
 
 Collider::~Collider(){};

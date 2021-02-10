@@ -34,6 +34,8 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
         //TODO: Remove New (Use unique_ptr instead of raw pointer)
         input = new Input();
         isRunning = true;
+        
+        physics = new Physics();
     }else{
         isRunning = false;
     }
@@ -56,7 +58,7 @@ void Game::windowEvents(){
 
 void Game::update(){
     renderer->render();
-    
+    physics->simulate();
     //Move Cursor
     if(Input::getKeyDown() == Input::inputKey::down && cursor->_transform->y < CURSOR_INIT_POSITION_Y + MOVE_INTENSITY_Y * GRID_HEIGHT){
         cursor->_transform->y += MOVE_INTENSITY_Y;

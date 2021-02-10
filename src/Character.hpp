@@ -34,6 +34,8 @@ class Character{
     std::chrono::milliseconds bulletTimer;
     std::chrono::time_point<std::chrono::system_clock> bulletLastSpawn;
     AttackType attackType;
+    //TODO: Replace all type related stuff with subclasses for each type
+    CharacterType charType;
 
     void die();
     
