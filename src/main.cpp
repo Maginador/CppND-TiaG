@@ -29,7 +29,7 @@ int main() {
     while(game->running()){
         
         input->handleEvents();
-        game->handleEvents();
+        game->windowEvents();
         //TODO: create FPS Control (Time.cpp)
         game->update();
         

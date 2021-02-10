@@ -27,13 +27,14 @@ class Renderable{
 class Renderer{
   
     public :
-    Renderer(){};
+    Renderer();
     ~Renderer(){};
+    static Renderer *instance;
     void render();
     void clean();
     //TODO: Replace with shared_ptr
     Renderable* createRenderable(const char *assetPath, int width, int height, int x, int y);
-    SDL_Texture* createTexture (const char *assetPath);
+    static SDL_Texture* createTexture (const char *assetPath);
     bool init(const char *title, int xpos, int ypos, int width, int height, int flags);
     SDL_Renderer* getRenderer();
     SDL_Rect cursor;
@@ -42,8 +43,9 @@ class Renderer{
     private :
     //TODO: Replace with shared_ptr
     std::vector<Renderable*> renderablesList;
-    SDL_Renderer *renderer;
+    static SDL_Renderer *renderer;
     SDL_Window *window;
+    
     
 };
 #endif /* Renderer_hpp */
