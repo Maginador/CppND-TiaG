@@ -17,6 +17,11 @@ Character::Character(){
 Character::Character(GameObject *go, Character::CharacterType type){
     
     entity = go;
+    
+    //reset timers
+    bulletTimer = std::chrono::milliseconds(_colldown);
+    bulletLastSpawn = std::chrono::system_clock::now();
+                                                                            
     //Set stats for each characterType (enemies and towers)
     //TODO: replace with scripting structure, maybe using external xml,txt or similar for stats
     if(type == Character::CharacterType::Enemy){
@@ -27,7 +32,7 @@ Character::Character(GameObject *go, Character::CharacterType type){
         health = 300;
         speed = 0;
         attackType = AttackType::Ranged;
-        _colldown = 5;
+        _colldown = 1000;
     }else if(type == Character::CharacterType::Bullet){
         health = 1;
         speed = 1;
@@ -46,8 +51,9 @@ void Character::act(){
     entity->getRenderable()->_transform->x += speed;
     //Attack
     if(attackType == AttackType::Ranged){
-        
+       
         auto timeNow = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now() - bulletLastSpawn);
+        std::cout<< "Timer :" << bulletTimer.count() << " : Time Now : " << timeNow.count() << std::endl;
         if(bulletTimer<= timeNow){
             //Setup timer back
             std::chrono::milliseconds cycleTime = std::chrono::milliseconds(_colldown);
