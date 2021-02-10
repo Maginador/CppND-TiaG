@@ -8,13 +8,15 @@
 #include "Game.hpp"
 
 
+Game* Game::instance = 0;
 
 Renderable *cursor;
 Vector2 cursorGridPos;
 std::chrono::milliseconds timer;
 std::chrono::time_point<std::chrono::system_clock> lastSpawn;
 Game::Game(){
-    
+    if(instance == nullptr)
+        instance = this;
 }
 
 Game::~Game(){
@@ -80,6 +82,12 @@ void Game::update(){
     for(int i =0; i<_enemies.size(); i++){
         _enemies[i]->act();
     }
+    for(int i =0; i<_towers.size(); i++){
+        _towers[i]->act();
+    }
+    for(int i =0; i<_bullets.size(); i++){
+        _bullets[i]->act();
+    }
     enemyTimmedSpawnning();
 }
 
@@ -118,7 +126,7 @@ void Game::placeTower(Vector2 gridSlot){
     //Placeholder Spawner
     SDL_Texture *texture = renderer->createTexture("assets/tower01.png");
 
-    GameObject *go = new GameObject("Tower", Vector2(CURSOR_INIT_POSITION_X + (gridSlot._x*MOVE_INTENSITY_X), CURSOR_INIT_POSITION_Y + (gridSlot._y*MOVE_INTENSITY_Y)), texture, Vector2(80,80), false);
+    GameObject *go = new GameObject("Tower", Vector2(CURSOR_INIT_POSITION_X + (gridSlot._x*MOVE_INTENSITY_X), CURSOR_INIT_POSITION_Y + (gridSlot._y*MOVE_INTENSITY_Y)), texture, Vector2(80,80), true);
     renderer->addRenderableToList(go->getRenderable());
     Character *tower = new Character(go, Character::CharacterType::Tower);
     _towers.emplace_back(tower);
@@ -132,11 +140,15 @@ void Game::enemySpawner(){
     //Placeholder Spawner
     SDL_Texture *texture = renderer->createTexture("assets/pixelEnemy.png");
 
-    GameObject *go = new GameObject("Enemy", Vector2(ENEMY_SPAWN_X, CURSOR_INIT_POSITION_Y + (slot *MOVE_INTENSITY_Y)), texture, Vector2(80,80), false);
+    GameObject *go = new GameObject("Enemy", Vector2(ENEMY_SPAWN_X, CURSOR_INIT_POSITION_Y + (slot *MOVE_INTENSITY_Y)), texture, Vector2(80,80), true);
     renderer->addRenderableToList(go->getRenderable());
     
     Character *enemy = new Character(go, Character::CharacterType::Enemy);
     _enemies.emplace_back(enemy);
+}
+
+void Game::addBulletToList(Character *bullet){
+    _bullets.emplace_back(bullet);
 }
 
 //TODO: Replace all spawnning methods by a separate class

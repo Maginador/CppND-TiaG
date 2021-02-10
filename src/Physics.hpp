@@ -13,22 +13,30 @@
 #include "GameObject.hpp"
 #include <SDL2_image/SDL_image.h>
 #include <SDL2/SDL.h>
+//declaration for circle include 'GameObject/Collider'
 class GameObject;
 
 class Collider{
     public :
     Collider(GameObject *gameObject, SDL_Rect *rect);
     ~Collider();
+    
+    //Rule of five
+    Collider& operator=(const Collider &cb);
+    Collider(const Collider &cb);
+    Collider& operator=(Collider &&cb);
+    Collider(Collider &&cb );
+    
     Collider* isColliding();
     void setCollision(Collider *col);
     GameObject* getGameObject();
     SDL_Rect* getRect();
     
     private:
-    GameObject *transform;
-    SDL_Rect *boundingBox;
-    bool underCollision;
-    Collider *collisor;
+    GameObject *gameObject = nullptr;
+    SDL_Rect *boundingBox = nullptr;
+    bool underCollision = false;
+    Collider *collisor = nullptr;
 };
 
 class Physics{

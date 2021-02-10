@@ -14,16 +14,16 @@ GameObject::GameObject(const char *name, Vector2 initialPosition, SDL_Texture *t
     _name = name;
     
     //Transform
-    _transform = std::make_unique<Transform>(initialPosition);
+    _transform = new Transform(initialPosition);
     
     //Renderable
     if(tex != nullptr){
         //TODO: Add Renderable
-        _renderable = std::make_unique<Renderable>(tex, size._x, size._y, _transform->_position->_x, _transform->_position->_y);
+        _renderable = new Renderable(tex, size._x, size._y, _transform->_position->_x, _transform->_position->_y);
     }
     //Collider
     if(hasCollider){
-        _collider = std::make_unique<Collider>(this, _renderable->_transform);
+        _collider = new Collider(this, _renderable->_transform);
     }
 };
 
@@ -31,6 +31,65 @@ GameObject::~GameObject(){
     //TODO: Object Destruction
 };
 
+//Rule of five implementation
+//Copy Constructor
+GameObject::GameObject(const GameObject &b){
+    
+    _name = b._name;
+    _collider = std::move(b._collider);
+    _transform = b._transform;
+    _renderable = b._renderable;
+}
+
+//Copy Assingment
+GameObject& GameObject::operator=(const GameObject &b){
+
+    if(this == &b){
+        return *this;
+    }
+
+    _name = b._name;
+    _collider = b._collider;
+    _transform = b._transform;
+    _renderable = b._renderable;
+
+    return *this;
+}
+
+//Move Constructor
+GameObject::GameObject(GameObject &&b){
+
+    _name = b._name;
+    _collider = b._collider;
+    _transform = b._transform;
+    _renderable = b._renderable;
+    
+    b._name = nullptr;
+    b._collider = nullptr;
+    b._transform = NULL;
+    b._renderable = nullptr;
+
+}
+
+//Move Assignment
+GameObject& GameObject::operator=(GameObject &&b){
+ 
+    if(this == &b){
+        return *this;
+    }
+
+    _name = b._name;
+    _collider = b._collider;
+    _transform = b._transform;
+    _renderable = b._renderable;
+    
+    b._name = nullptr;
+    b._collider = nullptr;
+    b._transform = NULL;
+    b._renderable = nullptr;
+
+    return *this;
+}
 
 void GameObject::addCollider(){
     //TODO: a way to add collider on the fly

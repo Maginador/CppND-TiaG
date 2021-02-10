@@ -10,6 +10,10 @@
 
 #include <stdio.h>
 #include "GameObject.hpp"
+#include "Game.hpp"
+
+//Foward reference for circle header include
+class Game;
 
 class Character{
     public :
@@ -26,6 +30,9 @@ class Character{
     GameObject *entity;
     int health;
     int speed;
+    int _colldown;
+    std::chrono::milliseconds bulletTimer;
+    std::chrono::time_point<std::chrono::system_clock> bulletLastSpawn;
     AttackType attackType;
 
     void die();

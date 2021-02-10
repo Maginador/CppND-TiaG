@@ -14,7 +14,7 @@
 #include <memory>
 #include <SDL2_image/SDL_image.h>
 using std::unique_ptr;
-
+//declaration for circle include 'GameObject/Collider'
 class Collider;
 
 struct Vector2{
@@ -32,8 +32,13 @@ class Transform{
     Transform(){};
     ~Transform(){};
     Transform(int x, int y);
-    
     Transform(Vector2 pos);
+    
+    //Rule of five
+    Transform& operator=(const Transform &cb);
+    Transform(const Transform &cb);
+    Transform& operator=(Transform &&cb);
+    Transform(Transform &&cb );
     
     Vector2 *_position;
 };
@@ -43,16 +48,22 @@ class GameObject{
     public :
     GameObject(const char *name, Vector2 initialPosition, SDL_Texture *tex, Vector2 size, bool hasCollider );
     ~GameObject();
+    //Rule of five
+    GameObject& operator=(const GameObject &cb);
+    GameObject(const GameObject &cb);
+    GameObject& operator=(GameObject &&cb);
+    GameObject(GameObject &&cb );
+    
     std::string getName(){ return _name;}
-    Collider* getCollider(){ return _collider.get();}
-    Renderable* getRenderable(){ return _renderable.get();}
+    Collider* getCollider(){ return _collider;}
+    Renderable* getRenderable(){ return _renderable;}
     void addCollider(); 
     void addRenderable();
     private :
-    std::unique_ptr<Collider> _collider = nullptr;
-    std::unique_ptr<Renderable> _renderable = nullptr;
-    std::unique_ptr<Transform> _transform = nullptr;
-    const char *_name;
+    Collider *_collider = nullptr;
+    Renderable *_renderable = nullptr;
+    Transform *_transform = nullptr;
+    const char *_name = nullptr;
 };
 
 

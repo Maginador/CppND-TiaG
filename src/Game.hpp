@@ -39,18 +39,23 @@ const int SPAWNING_TIME_LOWER_RANGE = 4;
 const int SPAWNING_TIME_UPPER_RANGE = 15;
 
 //End constants area
+//Foward reference for circle header include
+class Character;
 
 class Game{
     
 public:
     Game();
     ~Game();
-    
+    static Game *instance;
     void init(const char* title, int xpos, int ypos, int width, int height, bool fullscreen);
     
     void windowEvents();
     void update();
     bool running();
+    
+    //Public calls enabled for static instance
+    void addBulletToList(Character *bullet);
     
 private:
     void setupUI();
@@ -65,6 +70,8 @@ private:
     
     vector<Character*> _enemies;
     vector<Character*> _towers;
+    vector<Character*> _bullets;
+
     int slotsGrid[GRID_WIDTH * GRID_HEIGHT];
     
 };

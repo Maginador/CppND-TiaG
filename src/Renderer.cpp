@@ -7,6 +7,13 @@
 
 #include "Renderer.hpp"
 
+Renderer* Renderer::instance = 0;
+SDL_Renderer* Renderer::renderer = 0;
+Renderer::Renderer(){
+    //Lazy initializtion
+    if(instance == nullptr)
+        instance = this;
+}
 void Renderer::render(){
     SDL_RenderClear(renderer);
    
