@@ -11,7 +11,7 @@
 #include <stdio.h>
 #include "GameObject.hpp"
 #include "Game.hpp"
-
+#include "Time.hpp"
 //Foward reference for circle header include
 class Game;
 class Collider;
@@ -65,6 +65,9 @@ class Tower : public Character{
     Tower(GameObject *go);
     void act();
     static int act(void* data);
+    private :
+    
+    Time *timer;
 
 };
 #endif /* Character_hpp */
