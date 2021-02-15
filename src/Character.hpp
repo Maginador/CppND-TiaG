@@ -14,20 +14,21 @@
 
 //Foward reference for circle header include
 class Game;
+class Collider;
 
 class Character{
     public :
     enum CharacterType {Enemy, Tower, Bullet};
     enum AttackType {None, Melle, Ranged};
     Character();
-    Character(GameObject *go, CharacterType);
+    Character(GameObject *go);
     ~Character();
-    void act();
+    virtual void preAct();
+    virtual void act();
     int takeDamage(int damage);
     GameObject* getEntity(){return entity;}
     int getHealth() {return health;}
-    CharacterType getCharacterType(){return charType;};
-    private :
+    protected :
     GameObject *entity;
     int health;
     int speed;
@@ -36,11 +37,31 @@ class Character{
     std::chrono::milliseconds bulletTimer;
     std::chrono::time_point<std::chrono::system_clock> bulletLastSpawn;
     AttackType attackType;
-    //TODO: Replace all type related stuff with subclasses for each type
-    CharacterType charType;
-
     void die();
+    Collider *col;
+    int mult = 0;
     
+};
+
+class Enemy : public Character{
     
+    public :
+    Enemy(GameObject *go);
+    void act();
+
+};
+
+class Bullet : public Character{
+    public :
+    Bullet(GameObject *go);
+    void act();
+
+};
+
+class Tower : public Character{
+    public :
+    Tower(GameObject *go);
+    void act();
+
 };
 #endif /* Character_hpp */

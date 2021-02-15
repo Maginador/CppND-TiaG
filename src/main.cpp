@@ -8,10 +8,8 @@
 #include <iostream>
 #include "Game.hpp"
 #include <SDL2/SDL.h>
+#include "Constants.hpp"
 
-//Screen dimension constants
-const int SCREEN_WIDTH = 1280;
-const int SCREEN_HEIGHT = 920;
 //TODO: Replace pointer with unique_ptr
 Game *game = nullptr;
 Assets *assets = nullptr;

@@ -142,7 +142,7 @@ void Game::placeTower(Vector2 gridSlot){
 
         GameObject *go = new GameObject("Tower", Vector2(CURSOR_INIT_POSITION_X + (gridSlot._x*MOVE_INTENSITY_X), CURSOR_INIT_POSITION_Y + (gridSlot._y*MOVE_INTENSITY_Y)), texture, Vector2(80,80), true);
         renderer->addRenderableToList(go->getRenderable());
-        Character *tower = new Character(go, Character::CharacterType::Tower);
+        Tower *tower = new class Tower(go);
         _towers.emplace_back(tower);
         }
 }
@@ -158,24 +158,28 @@ void Game::enemySpawner(){
     GameObject *go = new GameObject("Enemy", Vector2(ENEMY_SPAWN_X, CURSOR_INIT_POSITION_Y + (slot *MOVE_INTENSITY_Y)), texture, Vector2(80,80), true);
     renderer->addRenderableToList(go->getRenderable());
     
-    Character *enemy = new Character(go, Character::CharacterType::Enemy);
+    Enemy *enemy = new class Enemy(go);
     _enemies.emplace_back(enemy);
 }
 
-void Game::addBulletToList(Character *bullet){
+void Game::addBulletToList(Bullet *bullet){
     _bullets.emplace_back(bullet);
 }
-void Game::removeBulletToList(Character *bullet){
+void Game::removeCharacterFromList(Character *character){
     
-    Character::CharacterType type = bullet->getCharacterType();
-    if(type == Character::CharacterType::Bullet){
+    Bullet* bullet = static_cast<Bullet*> (character);
+    if(bullet){
         for(int i =0; i<_bullets.size(); i++) if(_bullets[i] == bullet) _bullets.erase(_bullets.begin() + i);
     }
-    if(type == Character::CharacterType::Tower){
-        for(int i =0; i<_towers.size(); i++) if(_towers[i] == bullet) _towers.erase(_towers.begin() + i);
+    Tower* tower = static_cast<Tower*> (character);
+
+    if(tower){
+        for(int i =0; i<_towers.size(); i++) if(_towers[i] == tower) _towers.erase(_towers.begin() + i);
     }
-    if(type == Character::CharacterType::Enemy){
-        for(int i =0; i<_enemies.size(); i++) if(_enemies[i] == bullet) _enemies.erase(_enemies.begin() + i);
+    Enemy* enemy = static_cast<Enemy*> (character);
+
+    if(enemy){
+        for(int i =0; i<_enemies.size(); i++) if(_enemies[i] == enemy) _enemies.erase(_enemies.begin() + i);
     }
 }
 

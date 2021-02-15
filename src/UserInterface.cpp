@@ -7,11 +7,7 @@
 
 #include "UserInterface.hpp"
 
-SDL_Color ACOLOR_WHITE {255,255,255,255};
-SDL_Color ACOLOR_BLACK {0,0,0,255};
-SDL_Color ACOLOR_BLUE {0,0,255,255};
-SDL_Color ACOLOR_GREEN {0,255,0,255};
-SDL_Color ACOLOR_RED {255,0,0,255};
+
 int currency = 0;
 UserInterface::UserInterface(){
     
@@ -42,7 +38,7 @@ void UserInterface::updateData(){
 }
 
 UserInterface::~UserInterface(){};
-UIElement:: UIElement(int xpos, int ypos, string text, string font, SDL_Color& color) : labelText(text), labelFont(font), labelColor(color){
+UIElement:: UIElement(int xpos, int ypos, string text, string font, SDL_Color color) : labelText(text), labelFont(font), labelColor(color){
     std::cout << "UIElement Created "<< std::endl;
     _transform = new SDL_Rect();
     _transform->x = xpos;
