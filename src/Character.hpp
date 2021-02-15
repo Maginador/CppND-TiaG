@@ -48,6 +48,7 @@ class Enemy : public Character{
     public :
     Enemy(GameObject *go);
     void act();
+    static int act(void* data);
 
 };
 

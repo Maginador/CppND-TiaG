@@ -70,6 +70,16 @@ Enemy::Enemy(GameObject *go) : Character(go){
     attackType = AttackType::Melle;
     _lootCurrency=100;
 }
+
+int Enemy::act(void* data){
+    
+    Enemy *enemy = (Enemy *)data;
+    ./
+    enemy->act();
+    
+    
+    return 0;
+}
 void Enemy::act(){
     Character::preAct();
     if(col) {
