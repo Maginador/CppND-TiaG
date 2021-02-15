@@ -31,15 +31,18 @@ Character::Character(GameObject *go, Character::CharacterType type){
         health = 100;
         speed = -1;
         attackType = AttackType::Melle;
+        _lootCurrency=100;
     }else if(type == Character::CharacterType::Tower){
         health = 300;
         speed = 0;
         attackType = AttackType::Ranged;
         _colldown = 1000;
+        _lootCurrency=0;
     }else if(type == Character::CharacterType::Bullet){
         health = 1;
         speed = 1;
         attackType = AttackType::Melle;
+        _lootCurrency=0;
     }
     
     entity->addCharacter(this);
@@ -126,6 +129,7 @@ int Character::takeDamage(int damage){
 
 void Character::die(){
     Game::instance->removeBulletToList(this);
+    Game::instance->updateCurrency(_lootCurrency);
     delete(this->entity);
     
 }

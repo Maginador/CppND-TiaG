@@ -9,13 +9,28 @@
 #define Assets_hpp
 
 #include <iostream>
+#include <map>
 #include <SDL2/SDL.h>
 #include <SDL2_image/SDL_image.h>
+#include <SDL2_ttf/SDL_ttf.h>
 #include "Renderer.hpp"
+
+using std::string;
 
 class Assets{
     
     public :
+    
+    static Assets *instance;
+    Assets();
+    ~Assets();
     SDL_Texture* loadAsset(SDL_Renderer* renderer, const char *path);
+    void addFont(string id, const char* path, int fontSize);
+    TTF_Font* getFont(string id);
+    
+    
+    private :
+    std::map<string, SDL_Texture*> textures;
+    std::map<string, TTF_Font*> fonts;
 };
 #endif /* Assets_hpp */
