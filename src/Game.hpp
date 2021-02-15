@@ -9,10 +9,12 @@
 #define Game_hpp
 
 #include <iostream>
+#include <thread>
 #include <vector>
 #include "Assets.hpp"
 #include "Input.hpp"
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_thread.h>
 #include "Renderer.hpp"
 #include "GameObject.hpp"
 #include "Physics.hpp"
@@ -21,6 +23,7 @@
 #include <chrono>
 #include <random>
 #include "Constants.hpp"
+#include "Time.hpp"
 class GameObject;
 class Physics;
 class Vector2;
@@ -56,7 +59,6 @@ private:
     void setupUI();
     void createGameGrid();
     void createCursor();
-    void enemySpawner();
     void enemyTimmedSpawnning();
     void placeTower(Vector2 gridSlot);
     bool isRunning;
@@ -71,6 +73,10 @@ private:
 
     int slotsGrid[GRID_WIDTH * GRID_HEIGHT];
     
+    
+    //Thread Methods
+    static int enemySpawner(void* data);
+
 };
 
 #endif /* Game_hpp */

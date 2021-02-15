@@ -23,6 +23,28 @@ Game::~Game(){
     
 }
 
+//Create enemies
+int Game::enemySpawner(void* data){
+    
+  
+    if(Time::timedAction(std::chrono::milliseconds(1000))){
+        int slot = (std::rand() % GRID_HEIGHT);
+        //Placeholder Spawner
+        SDL_Texture *texture = instance->renderer->createTexture("assets/pixelEnemy.png");
+
+        GameObject *go = new GameObject("Enemy", Vector2(ENEMY_SPAWN_X, CURSOR_INIT_POSITION_Y + (slot *MOVE_INTENSITY_Y)), texture, Vector2(80,80), true);
+        instance->renderer->addRenderableToList(go->getRenderable());
+        
+        Enemy *enemy = new class Enemy(go);
+        instance->_enemies.emplace_back(enemy);
+        int data = 10;
+        SDL_Thread* threadID = SDL_CreateThread(enemySpawner, "Teste", (void*)data);
+        
+    }
+    return 0;
+}
+
+
 void Game::init(const char *title, int xpos, int ypos, int width, int height, bool fullscreen){
     
     
@@ -49,7 +71,8 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
     createCursor();
     lastSpawn = std::chrono::system_clock::now();
     timer = std::chrono::milliseconds(3000);
-
+    int data = 10;
+    SDL_Thread* threadID = SDL_CreateThread(enemySpawner, "Teste", (void*)data);    
 }
 
 void Game::windowEvents(){
@@ -100,7 +123,7 @@ void Game::update(){
         if(!_bullets[i]) _bullets.erase(_bullets.begin()+i);
         _bullets[i]->act();
     }
-    enemyTimmedSpawnning();
+//    enemyTimmedSpawnning();
 }
 
 bool Game::running(){
@@ -147,20 +170,6 @@ void Game::placeTower(Vector2 gridSlot){
         }
 }
 
-//Create enemies
-void Game::enemySpawner(){
-    
-  
-    int slot = (std::rand() % GRID_HEIGHT);
-    //Placeholder Spawner
-    SDL_Texture *texture = renderer->createTexture("assets/pixelEnemy.png");
-
-    GameObject *go = new GameObject("Enemy", Vector2(ENEMY_SPAWN_X, CURSOR_INIT_POSITION_Y + (slot *MOVE_INTENSITY_Y)), texture, Vector2(80,80), true);
-    renderer->addRenderableToList(go->getRenderable());
-    
-    Enemy *enemy = new class Enemy(go);
-    _enemies.emplace_back(enemy);
-}
 
 void Game::addBulletToList(Bullet *bullet){
     _bullets.emplace_back(bullet);
@@ -195,7 +204,7 @@ void Game::enemyTimmedSpawnning(){
         lastSpawn = std::chrono::system_clock::now();
         
         //Spawn Enemy
-        enemySpawner();
+       // enemySpawner();
     }
     
 }
