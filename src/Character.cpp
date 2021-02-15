@@ -74,7 +74,7 @@ Enemy::Enemy(GameObject *go) : Character(go){
 int Enemy::act(void* data){
     
     Enemy *enemy = (Enemy *)data;
-    ./
+    
     enemy->act();
     
     
@@ -121,6 +121,16 @@ void Tower::act(){
     }
     Character::act();
 
+}
+
+int Tower::act(void* data){
+    
+    auto *tower = (Tower *)data;
+    
+    tower->act();
+    
+    
+    return 0;
 }
 
 //Bullet

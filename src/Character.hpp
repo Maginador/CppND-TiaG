@@ -56,6 +56,7 @@ class Bullet : public Character{
     public :
     Bullet(GameObject *go);
     void act();
+    
 
 };
 
@@ -63,6 +64,7 @@ class Tower : public Character{
     public :
     Tower(GameObject *go);
     void act();
+    static int act(void* data);
 
 };
 #endif /* Character_hpp */

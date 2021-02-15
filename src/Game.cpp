@@ -113,13 +113,13 @@ void Game::update(){
     //Update enemies
     for(int i =0; i<_enemies.size(); i++){
         if(!_enemies[i]) _enemies.erase(_enemies.begin()+i);
-        int data = 10;
         SDL_Thread* threadID = SDL_CreateThread(Enemy::act, "EnemyAct", (Character*)_enemies[i]);
         //_enemies[i]->act();
     }
     for(int i =0; i<_towers.size(); i++){
         if(!_towers[i]) _towers.erase(_towers.begin()+i);
-        _towers[i]->act();
+        SDL_Thread* threadID = SDL_CreateThread(Tower::act, "TowerAct", (Character*)_towers[i]);
+        //_towers[i]->act();
     }
     for(int i =0; i<_bullets.size(); i++){
         if(!_bullets[i]) _bullets.erase(_bullets.begin()+i);
