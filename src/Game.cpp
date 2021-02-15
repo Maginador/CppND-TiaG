@@ -11,7 +11,6 @@
 Game* Game::instance = 0;
 
 Renderable *cursor;
-Renderable *uielement;
 Vector2 cursorGridPos;
 std::chrono::milliseconds timer;
 std::chrono::time_point<std::chrono::system_clock> lastSpawn;
@@ -37,9 +36,10 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
         //TODO: Remove New (Use unique_ptr instead of raw pointer)
         input = new Input();
         isRunning = true;
-        
         physics = new Physics();
-        Assets::instance->addFont("arial", "fonts/arial.ttf", 50);
+        UI = new UserInterface();
+        UI->buildUI();
+        UserInterface::updateTextValue("currency", std::to_string(currency));
     }else{
         isRunning = false;
     }
@@ -49,13 +49,6 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
     createCursor();
     lastSpawn = std::chrono::system_clock::now();
     timer = std::chrono::milliseconds(3000);
-
-    
-    //Debug UI
-    
-    SDL_Color color = {255,0,0,255};
-    uielement = new UIElement(120, 120, "Debug Text2", "arial", color);
-    renderer->addRenderableToList(uielement);
 
 }
 
@@ -70,9 +63,9 @@ void Game::windowEvents(){
 }
 
 void Game::update(){
-    std::cout <<uielement->_texture << std::endl;
     renderer->render();
     physics->simulate();
+    UI->updateData();
     //Move Cursor
     if(Input::getKeyDown() == Input::inputKey::down && cursor->_transform->y < CURSOR_INIT_POSITION_Y + MOVE_INTENSITY_Y * GRID_HEIGHT){
         cursor->_transform->y += MOVE_INTENSITY_Y;
@@ -142,14 +135,16 @@ void Game::createCursor(){
 //Create towers
 void Game::placeTower(Vector2 gridSlot){
     
-    //Placeholder Spawner
-    SDL_Texture *texture = renderer->createTexture("assets/tower01.png");
+    if(currency >= TOWER_PRICE){
+        updateCurrency(-TOWER_PRICE);
+        //Placeholder Spawner
+        SDL_Texture *texture = renderer->createTexture("assets/tower01.png");
 
-    GameObject *go = new GameObject("Tower", Vector2(CURSOR_INIT_POSITION_X + (gridSlot._x*MOVE_INTENSITY_X), CURSOR_INIT_POSITION_Y + (gridSlot._y*MOVE_INTENSITY_Y)), texture, Vector2(80,80), true);
-    renderer->addRenderableToList(go->getRenderable());
-    Character *tower = new Character(go, Character::CharacterType::Tower);
-    _towers.emplace_back(tower);
-    
+        GameObject *go = new GameObject("Tower", Vector2(CURSOR_INIT_POSITION_X + (gridSlot._x*MOVE_INTENSITY_X), CURSOR_INIT_POSITION_Y + (gridSlot._y*MOVE_INTENSITY_Y)), texture, Vector2(80,80), true);
+        renderer->addRenderableToList(go->getRenderable());
+        Character *tower = new Character(go, Character::CharacterType::Tower);
+        _towers.emplace_back(tower);
+        }
 }
 
 //Create enemies
@@ -201,6 +196,11 @@ void Game::enemyTimmedSpawnning(){
     
 }
 
+void Game::updateCurrency(int c){
+    currency += c;
+    UserInterface::updateTextValue("currency", std::to_string(currency));
+
+}
 void Game::setupUI(){
     
     //Resources (Upper bar)

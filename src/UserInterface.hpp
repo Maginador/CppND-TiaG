@@ -10,6 +10,7 @@
 
 #include <stdio.h>
 #include <iostream>
+#include <map>
 #include <SDL2_ttf/SDL_ttf.h>
 #include <SDL2/SDL.h>
 #include "Renderer.hpp"
@@ -17,15 +18,9 @@
 
 using std::string;
 
-class UserInterface{
-    
-public:
-    UserInterface();
-    ~UserInterface();
-    void draw();
-    void clear();
-    void updateData();
-};
+//Color constants
+
+
 
 
 class UIElement : public Renderable {
@@ -45,4 +40,21 @@ class UIElement : public Renderable {
     SDL_Color labelColor;
     
 };
+
+
+class UserInterface{
+    
+public:
+    UserInterface();
+    ~UserInterface();
+    void draw();
+    void clear();
+    void updateData();
+    void buildUI();
+    static void updateTextValue(string uIKey, string value);
+private:
+    typedef std::map<string,UIElement*> UIMap;
+    static UIMap uiElements;
+};
+
 #endif /* UserInterface_hpp */

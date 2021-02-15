@@ -32,6 +32,7 @@ class Character{
     int health;
     int speed;
     int _colldown;
+    int _lootCurrency;
     std::chrono::milliseconds bulletTimer;
     std::chrono::time_point<std::chrono::system_clock> bulletLastSpawn;
     AttackType attackType;

@@ -47,7 +47,7 @@ const int SPAWNING_TIME_UPPER_RANGE = 15;
 const int FRAMES_PER_SECOND = 60;
 const int SCREEN_TICKS_PER_FRAME = 1000/FRAMES_PER_SECOND;
 
-
+const int TOWER_PRICE = 100;
 //End constants area
 
 
@@ -68,6 +68,7 @@ public:
     //Public calls enabled for static instance
     void addBulletToList(Character *bullet);
     void removeBulletToList(Character *bullet);
+    void updateCurrency(int currency);
 private:
     void setupUI();
     void createGameGrid();
@@ -76,10 +77,11 @@ private:
     void enemyTimmedSpawnning();
     void placeTower(Vector2 gridSlot);
     bool isRunning;
+    int currency=100;
     Renderer *renderer;
     Input *input;
     Physics *physics;
-    
+    UserInterface *UI;
     vector<Character*> _enemies;
     vector<Character*> _towers;
     vector<Character*> _bullets;

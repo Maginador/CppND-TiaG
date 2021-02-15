@@ -69,7 +69,6 @@ void Renderer::removeRenderableFromList(Renderable *obj){
     for(int i =0; i<renderablesList.size(); i++) if(renderablesList[i] == obj) renderablesList.erase(renderablesList.begin() + i);
 }
 void Renderer::addRenderableToList(Renderable *obj){
-    std::cout << "UIElement Added "<< obj <<std::endl;
         renderablesList.emplace_back(obj);
 }
 Renderable* Renderer::createRenderable(const char *assetPath, int width, int height, int x = 0, int y = 0){
