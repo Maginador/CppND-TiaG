@@ -15,7 +15,7 @@
 #include <SDL2/SDL.h>
 #include "Renderer.hpp"
 #include "Assets.hpp"
-
+#include "Constants.hpp"
 using std::string;
 
 //Color constants
@@ -26,7 +26,7 @@ using std::string;
 class UIElement : public Renderable {
     
     public :
-    UIElement(int xpos, int ypos, string text, string font, SDL_Color& color);
+    UIElement(int xpos, int ypos, string text, string font, SDL_Color color);
     ~UIElement();
     void setText();
     void updateText(string text);
