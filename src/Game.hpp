@@ -32,6 +32,10 @@ using std::vector;
 
 //Foward reference for circle header include
 class Character;
+class Enemy;
+class Bullet;
+class Tower;
+
 class Game{
     
 public:
@@ -45,8 +49,8 @@ public:
     bool running();
     
     //Public calls enabled for static instance
-    void addBulletToList(Character *bullet);
-    void removeBulletToList(Character *bullet);
+    void addBulletToList(Bullet *bullet);
+    void removeCharacterFromList(Character *character);
     void updateCurrency(int currency);
 private:
     void setupUI();
@@ -61,9 +65,9 @@ private:
     Input *input;
     Physics *physics;
     UserInterface *UI;
-    vector<Character*> _enemies;
-    vector<Character*> _towers;
-    vector<Character*> _bullets;
+    vector<Enemy*> _enemies;
+    vector<Tower*> _towers;
+    vector<Bullet*> _bullets;
 
     int slotsGrid[GRID_WIDTH * GRID_HEIGHT];
     
