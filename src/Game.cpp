@@ -11,6 +11,7 @@
 Game* Game::instance = 0;
 
 Renderable *cursor;
+Renderable *uielement;
 Vector2 cursorGridPos;
 std::chrono::milliseconds timer;
 std::chrono::time_point<std::chrono::system_clock> lastSpawn;
@@ -24,9 +25,11 @@ Game::~Game(){
 }
 
 void Game::init(const char *title, int xpos, int ypos, int width, int height, bool fullscreen){
+    
+    
     int flags = fullscreen ? SDL_WINDOW_FULLSCREEN : 0;
     
-    if(SDL_Init(SDL_INIT_EVERYTHING) == 0){
+    if(SDL_Init(SDL_INIT_EVERYTHING) == 0 && TTF_Init() == 0){
         std::cout<< "SDL Subsystens Initialized..."<< std::endl;
         //TODO: Remove New (Use shared_ptr instead of raw pointer)
         renderer = new Renderer();
@@ -36,13 +39,23 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
         isRunning = true;
         
         physics = new Physics();
+        Assets::instance->addFont("arial", "fonts/arial.ttf", 50);
     }else{
         isRunning = false;
     }
+    
     //Create cursor
     createGameGrid();
     createCursor();
     lastSpawn = std::chrono::system_clock::now();
+    timer = std::chrono::milliseconds(3000);
+
+    
+    //Debug UI
+    
+    SDL_Color color = {255,0,0,255};
+    uielement = new UIElement(120, 120, "Debug Text2", "arial", color);
+    renderer->addRenderableToList(uielement);
 
 }
 
@@ -57,6 +70,7 @@ void Game::windowEvents(){
 }
 
 void Game::update(){
+    std::cout <<uielement->_texture << std::endl;
     renderer->render();
     physics->simulate();
     //Move Cursor
@@ -141,6 +155,7 @@ void Game::placeTower(Vector2 gridSlot){
 //Create enemies
 void Game::enemySpawner(){
     
+  
     int slot = (std::rand() % GRID_HEIGHT);
     //Placeholder Spawner
     SDL_Texture *texture = renderer->createTexture("assets/pixelEnemy.png");

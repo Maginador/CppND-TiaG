@@ -7,7 +7,14 @@
 
 #include "Assets.hpp"
 
+Assets* Assets::instance = 0;
+Assets::Assets(){
+    if(instance == nullptr)
+    instance = this;
+    
+}
 
+Assets::~Assets(){};
 SDL_Texture* Assets::loadAsset(SDL_Renderer* renderer, const char *path){
     
     SDL_Texture *texture = NULL;
@@ -30,4 +37,12 @@ SDL_Texture* Assets::loadAsset(SDL_Renderer* renderer, const char *path){
     
     return NULL;
     
+}
+
+void Assets::addFont(string id, const char* path, int fontSize){
+    fonts.emplace(id, TTF_OpenFont(path, fontSize));
+    std::cout << "Fonts available : "<<fonts.size()<<std::endl;
+}
+TTF_Font* Assets::getFont(string id){
+    return fonts[id];
 }

@@ -17,6 +17,7 @@
 #include "GameObject.hpp"
 #include "Physics.hpp"
 #include "Character.hpp"
+#include "UserInterface.hpp"
 #include <chrono>
 #include <random>
 
@@ -40,7 +41,7 @@ const int GRID_HEIGHT = 5;
 const int ENEMY_SPAWN_X = CURSOR_INIT_POSITION_X + (GRID_WIDTH * MOVE_INTENSITY_X);
 const int ENEMY_SPAWN_Y = ((GRID_HEIGHT-1) * MOVE_INTENSITY_Y);
 
-const int SPAWNING_TIME_LOWER_RANGE = 4;
+const int SPAWNING_TIME_LOWER_RANGE = 8;
 const int SPAWNING_TIME_UPPER_RANGE = 15;
 
 const int FRAMES_PER_SECOND = 60;

@@ -18,9 +18,16 @@ void Renderer::render(){
     SDL_RenderClear(renderer);
    
     for(int i =0; i<renderablesList.size();i++){
-        if(!renderablesList[i] || !renderablesList[i]->_texture) renderablesList.erase(renderablesList.begin()+i);
+        
+        
+        if(!renderablesList[i] || !renderablesList[i]->_texture){
+            std::cout << "Renderable Texture being removed: "<< renderablesList[i]->_texture << std::endl;
+            renderablesList.erase(renderablesList.begin()+i); continue;
+        }
         SDL_RenderCopy(renderer, renderablesList[i]->_texture, NULL, renderablesList[i]->_transform);
     }
+    
+    
     //TODO: Create list of renderable objects and loop rendering
     
     SDL_RenderPresent(renderer);
@@ -62,9 +69,8 @@ void Renderer::removeRenderableFromList(Renderable *obj){
     for(int i =0; i<renderablesList.size(); i++) if(renderablesList[i] == obj) renderablesList.erase(renderablesList.begin() + i);
 }
 void Renderer::addRenderableToList(Renderable *obj){
-    if(obj != nullptr)
+    std::cout << "UIElement Added "<< obj <<std::endl;
         renderablesList.emplace_back(obj);
-    
 }
 Renderable* Renderer::createRenderable(const char *assetPath, int width, int height, int x = 0, int y = 0){
     Assets asset = Assets();
@@ -79,6 +85,11 @@ SDL_Texture* Renderer::createTexture(const char *assetPath){
     SDL_Texture* texture = asset.loadAsset(renderer, assetPath);
     
     return std::move(texture);
+}
+
+SDL_Renderer* Renderer::getRenderer(){
+
+    return renderer;
 }
 
 //TODO: create lists of custom structure for animations and states

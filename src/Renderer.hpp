@@ -17,6 +17,7 @@
 
 class Renderable{
     public :
+    Renderable(){};
     Renderable(SDL_Texture *texture, int width, int height, int initX, int initY);
     ~Renderable();
     SDL_Texture *_texture;
@@ -43,6 +44,8 @@ class Renderer{
     private :
     //TODO: Replace with shared_ptr
     std::vector<Renderable*> renderablesList;
+
+    
     static SDL_Renderer *renderer;
     SDL_Window *window;
     
