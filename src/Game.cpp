@@ -90,7 +90,7 @@ void Game::update(){
     physics->simulate();
     UI->updateData();
     //Move Cursor
-    if(Input::getKeyDown() == Input::inputKey::down && cursor->_transform->y < CURSOR_INIT_POSITION_Y + MOVE_INTENSITY_Y * GRID_HEIGHT){
+    if(Input::getKeyDown() == Input::inputKey::down && cursor->_transform->y < CURSOR_INIT_POSITION_Y + MOVE_INTENSITY_Y * (GRID_HEIGHT -1)){
         cursor->_transform->y += MOVE_INTENSITY_Y;
         cursorGridPos._y +=1;
     }
@@ -98,7 +98,7 @@ void Game::update(){
         cursor->_transform->y -= MOVE_INTENSITY_Y;
         cursorGridPos._y -=1;
     }
-    else if(Input::getKeyDown() == Input::inputKey::right && cursor->_transform->x < CURSOR_INIT_POSITION_X + MOVE_INTENSITY_X * GRID_WIDTH){
+    else if(Input::getKeyDown() == Input::inputKey::right && cursor->_transform->x < CURSOR_INIT_POSITION_X + MOVE_INTENSITY_X * (GRID_WIDTH -1)){
         cursor->_transform->x += MOVE_INTENSITY_X;
         cursorGridPos._x +=1;
     }
