@@ -27,7 +27,7 @@ Game::~Game(){
 int Game::enemySpawner(void* data){
     
   
-    if(Time::timedAction(std::chrono::milliseconds(1000))){
+    if(Time::timedAction(std::chrono::milliseconds(10000))){
         int slot = (std::rand() % GRID_HEIGHT);
         //Placeholder Spawner
         SDL_Texture *texture = instance->renderer->createTexture("assets/pixelEnemy.png");
@@ -72,7 +72,7 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
     lastSpawn = std::chrono::system_clock::now();
     timer = std::chrono::milliseconds(3000);
     int data = 10;
-    SDL_Thread* threadID = SDL_CreateThread(enemySpawner, "Teste", (void*)data);    
+    SDL_Thread* threadID = SDL_CreateThread(enemySpawner, "Teste", (void*)data);
 }
 
 void Game::windowEvents(){
@@ -113,11 +113,11 @@ void Game::update(){
     //Update enemies
     for(int i =0; i<_enemies.size(); i++){
         if(!_enemies[i]) _enemies.erase(_enemies.begin()+i);
-        _enemies[i]->act();
+        SDL_Thread* threadID = SDL_CreateThread(Enemy::act, "EnemyAct", (Character*)_enemies[i]);
     }
     for(int i =0; i<_towers.size(); i++){
         if(!_towers[i]) _towers.erase(_towers.begin()+i);
-        _towers[i]->act();
+        SDL_Thread* threadID = SDL_CreateThread(Tower::act, "TowerAct", (Character*)_towers[i]);
     }
     for(int i =0; i<_bullets.size(); i++){
         if(!_bullets[i]) _bullets.erase(_bullets.begin()+i);
@@ -190,23 +190,6 @@ void Game::removeCharacterFromList(Character *character){
     if(enemy){
         for(int i =0; i<_enemies.size(); i++) if(_enemies[i] == enemy) _enemies.erase(_enemies.begin() + i);
     }
-}
-
-//TODO: Replace all spawnning methods by a separate class
-void Game::enemyTimmedSpawnning(){
-    
-    
-    auto timeNow = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now() - lastSpawn);
-    if(timer<= timeNow){
-        //Setup timer back
-        std::chrono::milliseconds cycleTime = std::chrono::milliseconds((std::rand() %(SPAWNING_TIME_UPPER_RANGE-SPAWNING_TIME_LOWER_RANGE + 1) + SPAWNING_TIME_LOWER_RANGE));
-        timer = cycleTime + timeNow;
-        lastSpawn = std::chrono::system_clock::now();
-        
-        //Spawn Enemy
-       // enemySpawner();
-    }
-    
 }
 
 void Game::updateCurrency(int c){

@@ -70,6 +70,16 @@ Enemy::Enemy(GameObject *go) : Character(go){
     attackType = AttackType::Melle;
     _lootCurrency=100;
 }
+
+int Enemy::act(void* data){
+    
+    Enemy *enemy = (Enemy *)data;
+    
+    enemy->act();
+    
+    
+    return 0;
+}
 void Enemy::act(){
     Character::preAct();
     if(col) {
@@ -93,24 +103,29 @@ Tower::Tower(GameObject *go) : Character(go){
 }
 void Tower::act(){
     Character::preAct();
-
-    auto timeNow = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now() - bulletLastSpawn);
-    if(bulletTimer<= timeNow){
-        //Setup timer back
-        std::chrono::milliseconds cycleTime = std::chrono::milliseconds(_colldown);
-        bulletTimer = cycleTime + timeNow;
-        bulletLastSpawn = std::chrono::system_clock::now();
+    if(!timer) timer = new Time(std::chrono::milliseconds(1000), true);
+    if(timer->timedAction()){
+        SDL_Texture *texture = Renderer::createTexture("assets/bullet.png");
+        GameObject *go = new GameObject("Bullet", Vector2(entity->getRenderable()->_transform->x + entity->getRenderable()->_transform->w/2 + 30, entity->getRenderable()->_transform->y), texture, Vector2(60,60), true);
+            auto *bullet = new class Bullet(go);
         
-   
-    SDL_Texture *texture = Renderer::createTexture("assets/bullet.png");
-    GameObject *go = new GameObject("Bullet", Vector2(entity->getRenderable()->_transform->x + entity->getRenderable()->_transform->w/2 + 30, entity->getRenderable()->_transform->y), texture, Vector2(60,60), true);
-        auto *bullet = new class Bullet(go);
-    
-    Game::instance->addBulletToList(bullet);
-    Renderer::instance->addRenderableToList(go->getRenderable());
+        Game::instance->addBulletToList(bullet);
+        Renderer::instance->addRenderableToList(go->getRenderable());
+        Character::act();
+        return;
     }
-    Character::act();
+   
+    
+}
 
+int Tower::act(void* data){
+    
+    auto *tower = (Tower *)data;
+    std::cout << "Tower act thread" << std::endl;
+    tower->act();
+    
+    
+    return 0;
 }
 
 //Bullet
