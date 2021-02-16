@@ -11,13 +11,13 @@
 
 Time::Time(std::chrono::milliseconds time, bool repeat){
     _timeAddition = time;
-    _timer = std::chrono::high_resolution_clock::now();
+    _timer = std::chrono::system_clock::now();
     _loop = repeat;
 }
 
 bool Time::timedAction(){
     
-    auto now = std::chrono::high_resolution_clock::now();
+    auto now = std::chrono::system_clock::now();
     auto elapsed = _timer - now;
     std::cout << elapsed.count()<<std::endl;
     std::this_thread::sleep_for(std::chrono::milliseconds(1));

@@ -19,7 +19,7 @@ public:
     bool timedAction();
     static bool timedAction(std::chrono::milliseconds time);
 private:
-    std::chrono::time_point<std::chrono::high_resolution_clock> _timer;
+    std::chrono::time_point<std::chrono::system_clock> _timer;
     bool _loop = false;
     std::chrono::milliseconds _timeAddition;
 };
