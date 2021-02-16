@@ -12,9 +12,7 @@ class Enemy;
 
 
 //TODO: add specialized classes for tower, bullet and enemy instead of enum selection
-Character::Character(){
-    
-}
+Character::Character(){}
 Character::~Character(){
     entity = nullptr;
     
@@ -22,8 +20,6 @@ Character::~Character(){
 Character::Character(GameObject *go){
     entity = go;
     //reset timers
-    bulletTimer = std::chrono::milliseconds(_colldown);
-    bulletLastSpawn = std::chrono::system_clock::now();
     
     entity->addCharacter(this);
 }
@@ -37,16 +33,13 @@ void Character::preAct(){
     if(thiscol){
         col = entity->getCollider()->isColliding();
     }
-    mult = 1;
+    moveMultiplier = 1;
 }
 void Character::act(){
-    std::cout<<"Enter act for Character" << std::endl;
-
-    
     //Move
     //Only if no enemy collision is detected
     if(entity)
-        entity->getRenderable()->_transform->x += speed * mult;
+        entity->getRenderable()->_transform->x += speed * moveMultiplier;
 }
 
 int Character::takeDamage(int damage){
@@ -67,17 +60,14 @@ void Character::die(){
 Enemy::Enemy(GameObject *go) : Character(go){
     health = 100;
     speed = -1;
-    attackType = AttackType::Melle;
     _lootCurrency=100;
+    if(!_colldownTimer) _colldownTimer = new Time(std::chrono::milliseconds(3000), true);
+
 }
 
 int Enemy::act(void* data){
-    
     Enemy *enemy = (Enemy *)data;
-    
     enemy->act();
-    
-    
     return 0;
 }
 void Enemy::act(){
@@ -87,7 +77,10 @@ void Enemy::act(){
         if(!target) return;
         auto tower = dynamic_cast<class Tower *>(target->getChar());
         if(tower){
-            mult = 0;
+            moveMultiplier = 0;
+            if(_colldownTimer->timedAction()){
+                tower->takeDamage(10);
+            }
         }
     }
     Character::act();
@@ -97,14 +90,14 @@ void Enemy::act(){
 Tower::Tower(GameObject *go) : Character(go){
     health = 300;
     speed = 0;
-    attackType = AttackType::Ranged;
     _colldown = 1000;
     _lootCurrency=0;
+    if(!_colldownTimer) _colldownTimer = new Time(std::chrono::milliseconds(10000), true);
+
 }
 void Tower::act(){
     Character::preAct();
-    if(!timer) timer = new Time(std::chrono::milliseconds(1000), true);
-    if(timer->timedAction()){
+    if(_colldownTimer->timedAction()){
         SDL_Texture *texture = Renderer::createTexture("assets/bullet.png");
         GameObject *go = new GameObject("Bullet", Vector2(entity->getRenderable()->_transform->x + entity->getRenderable()->_transform->w/2 + 30, entity->getRenderable()->_transform->y), texture, Vector2(60,60), true);
             auto *bullet = new class Bullet(go);
@@ -133,7 +126,6 @@ Bullet::Bullet(GameObject *go) : Character(go){
     
     health = 1;
     speed = 1;
-    attackType = AttackType::Melle;
     _lootCurrency=0;
 }
 void Bullet::act(){

@@ -18,8 +18,6 @@ class Collider;
 
 class Character{
     public :
-    enum CharacterType {Enemy, Tower, Bullet};
-    enum AttackType {None, Melle, Ranged};
     Character();
     Character(GameObject *go);
     ~Character();
@@ -33,13 +31,11 @@ class Character{
     int health;
     int speed;
     int _colldown;
+    Time *_colldownTimer;
     int _lootCurrency;
-    std::chrono::milliseconds bulletTimer;
-    std::chrono::time_point<std::chrono::system_clock> bulletLastSpawn;
-    AttackType attackType;
     void die();
     Collider *col;
-    int mult = 0;
+    int moveMultiplier = 0;
     
 };
 
@@ -66,8 +62,6 @@ class Tower : public Character{
     void act();
     static int act(void* data);
     private :
-    
-    Time *timer;
 
 };
 #endif /* Character_hpp */
