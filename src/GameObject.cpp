@@ -8,8 +8,11 @@
 using std::unique_ptr;
 using std::make_unique;
 
+vector<GameObject*> GameObject::gameObjectsReferences;
+
 GameObject::GameObject(const char *name, Vector2 initialPosition, SDL_Texture *tex, Vector2 size, bool hasCollider ){
     
+    globalIndex = (int)gameObjectsReferences.size();
     //GameObject
     _name = name;
     
@@ -23,19 +26,30 @@ GameObject::GameObject(const char *name, Vector2 initialPosition, SDL_Texture *t
     }
     //Collider
     if(hasCollider){
-        _collider = new Collider(this, _renderable->_transform);
+        _collider = new Collider(globalIndex, _renderable->_transform);
     }
+    
+    gameObjectsReferences.emplace_back(this);
 };
 
 GameObject::~GameObject(){
+    SDL_LockMutex( Renderer::instance->rendererMtx );
+    std::cout << "Lock mutex gameObject destructor"<< std::endl;
     //TODO: Object Destruction
     _name = nullptr;
     delete(_collider);
+    //TODO: bug when removing character, investigate
+    //delete(_character);
     delete(_transform);
-    delete(_character);
-    delete(_renderable);
+    Renderer::instance->addDeleteToSchedule(_renderable); 
+    std::cout << "Unlock mutex gameObject destructor"<< std::endl;
+    SDL_UnlockMutex( Renderer::instance->rendererMtx  );
+
 };
 
+Renderable* GameObject::getRenderable(){
+    return _renderable;
+}
 //Rule of five implementation
 //Copy Constructor
 GameObject::GameObject(const GameObject &b){
@@ -110,8 +124,8 @@ void GameObject::addRenderable(){
     //TODO: a way to add renderable on the fly
 }
 
-void GameObject::addCharacter(Character* character){
-    _character = character;
+void GameObject::addCharacter(Character** character){
+    _character = *character;
 }
 
 Vector2::Vector2(int x, int y){
@@ -121,8 +135,6 @@ Vector2::Vector2(int x, int y){
 }
 
 Vector2& Vector2::operator=(Vector2 &b){
-  
-    
     _x = b._x;
     _y = b._y;
     return *this;

@@ -9,6 +9,7 @@
 #define Character_hpp
 
 #include <stdio.h>
+#include <SDL2/SDL.h>
 #include "GameObject.hpp"
 #include "Game.hpp"
 #include "Time.hpp"
@@ -19,15 +20,15 @@ class Collider;
 class Character{
     public :
     Character();
-    Character(GameObject *go);
+    Character(int go);
     ~Character();
     virtual void preAct();
     virtual void act();
     int takeDamage(int damage);
-    GameObject* getEntity(){return entity;}
+    int getEntity(){return entity;}
     int getHealth() {return health;}
     protected :
-    GameObject *entity;
+    int entity;
     int health;
     int speed;
     int _colldown;
@@ -42,7 +43,7 @@ class Character{
 class Enemy : public Character{
     
     public :
-    Enemy(GameObject *go);
+    Enemy(int go);
     void act();
     static int act(void* data);
 
@@ -50,7 +51,7 @@ class Enemy : public Character{
 
 class Bullet : public Character{
     public :
-    Bullet(GameObject *go);
+    Bullet(int go);
     void act();
     
 
@@ -58,7 +59,7 @@ class Bullet : public Character{
 
 class Tower : public Character{
     public :
-    Tower(GameObject *go);
+    Tower(int go);
     void act();
     static int act(void* data);
     private :

@@ -9,6 +9,7 @@
 #define GameObject_hpp
 
 #include <stdio.h>
+#include <vector>
 #include "Physics.hpp"
 #include "Renderer.hpp"
 #include "Character.hpp"
@@ -48,6 +49,7 @@ class Transform{
 class GameObject{
   
     public :
+    static std::vector<GameObject*> gameObjectsReferences;
     GameObject(const char *name, Vector2 initialPosition, SDL_Texture *tex, Vector2 size, bool hasCollider );
     ~GameObject();
     //Rule of five
@@ -55,15 +57,16 @@ class GameObject{
     GameObject(const GameObject &cb);
     GameObject& operator=(GameObject &&cb);
     GameObject(GameObject &&cb );
-    
+    int getIndex(){ return globalIndex;}
     std::string getName(){ return _name;}
     Collider* getCollider(){ return _collider;}
-    Renderable* getRenderable(){ return _renderable;}
-    Character* getChar(){ return _character;}
+    Renderable* getRenderable();
+    Character* getChar(){return _character;}
     void addCollider(); 
     void addRenderable();
-    void addCharacter(Character *character);
+    void addCharacter(Character** character);
     private :
+    int globalIndex;
     Character *_character = nullptr;
     Collider *_collider = nullptr;
     Renderable *_renderable = nullptr;

@@ -18,8 +18,7 @@ Time::Time(std::chrono::milliseconds time, bool repeat){
 bool Time::timedAction(){
     
     auto now = std::chrono::system_clock::now();
-    auto elapsed = _timer - now;
-    std::cout << elapsed.count()<<std::endl;
+    auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(_timer - now);
     std::this_thread::sleep_for(std::chrono::milliseconds(1));
     if(elapsed.count() < 0)
     {

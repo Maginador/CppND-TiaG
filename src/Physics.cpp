@@ -53,7 +53,9 @@ void Physics::includeBodyToSimulation(Collider *col){
 }
 
 void Physics::removeBodyToSimulations(Collider *col){
+    if (col != NULL){
     for(int i =0; i<_simulationColliders.size(); i++) if(_simulationColliders[i] == col) _simulationColliders.erase(_simulationColliders.begin() + i);
+    }
 }
 
 bool Physics::calculateBoundingCollision(SDL_Rect *a, SDL_Rect *b){
@@ -107,6 +109,11 @@ bool Physics::calculateBoundingCollision(SDL_Rect *a, SDL_Rect *b){
 Collider::~Collider(){
     Physics::instance->removeBodyToSimulations(this);
     boundingBox = nullptr;
+    if(gameObject)
+    gameObject = 0;
+    collisor = nullptr; 
+    underCollision = false;
+    
 }
 //Copy Constructor
 Collider::Collider(const Collider &b){
@@ -144,7 +151,7 @@ Collider::Collider(Collider &&b){
     b.underCollision = nullptr;
     b.collisor = nullptr;
     b.boundingBox = NULL;
-    b.gameObject = nullptr;
+    b.gameObject = 0;
 
 }
 //Move Assignment
@@ -162,7 +169,7 @@ Collider& Collider::operator=(Collider &&b){
     b.underCollision = nullptr;
     b.collisor = nullptr;
     b.boundingBox = NULL;
-    b.gameObject = nullptr;
+    b.gameObject = 0;
 
     return *this;
 }
@@ -176,7 +183,7 @@ void Collider::setCollision(Collider *col){
     }
 
 }
-Collider::Collider(GameObject *go, SDL_Rect *rect){
+Collider::Collider(int go, SDL_Rect *rect){
     gameObject = go;
     boundingBox = rect;
     collisor = nullptr;
@@ -195,6 +202,6 @@ SDL_Rect* Collider::getRect(){
     return boundingBox;
 }
 
-GameObject* Collider::getGameObject(){
+int Collider::getGameObject(){
     return gameObject;
 }
