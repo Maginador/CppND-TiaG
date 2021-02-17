@@ -73,7 +73,7 @@ Enemy::Enemy(int go) : Character(go){
     health = 100;
     speed = -1;
     _lootCurrency=100;
-    if(!_colldownTimer) _colldownTimer = new Time(std::chrono::milliseconds(3000), true);
+    if(!_colldownTimer) _colldownTimer = new Time(3000, true);
 
 }
 
@@ -107,12 +107,12 @@ Tower::Tower(int go) : Character(go){
     speed = 0;
     _colldown = 1000;
     _lootCurrency=0;
-    if(!_colldownTimer) _colldownTimer = new Time(std::chrono::milliseconds(10000), true);
+    _colldownTimer = new Time(5000, true);
 
 }
 void Tower::act(){
     Character::preAct();
-    if(false && _colldownTimer->timedAction()){
+    if(_colldownTimer->timedAction()){
         SDL_LockMutex( Renderer::instance->rendererMtx );
         SDL_Texture *texture = Renderer::createTexture("assets/bullet.png");
         GameObject *go = new GameObject("Bullet", Vector2(GameObject::gameObjectsReferences[entity]->getRenderable()->_transform->x + GameObject::gameObjectsReferences[entity]->getRenderable()->_transform->w/2 + 30, GameObject::gameObjectsReferences[entity]->getRenderable()->_transform->y), texture, Vector2(60,60), true);
