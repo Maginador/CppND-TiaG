@@ -55,9 +55,11 @@ void Character::die(){
     std::cout << "Character died " << std::endl;
     Game::instance->removeCharacterFromList(this);
     Game::instance->updateCurrency(_lootCurrency);
-    if(auto c = col->isColliding()) c->setCollision(nullptr);
-    col->setCollision(nullptr);
-    delete(GameObject::gameObjectsReferences[entity]);
+    
+    if(col){
+    if(col->hasCollisor()){ auto c = col ->isColliding(); if(c)c->setCollision(nullptr);}
+        col->setCollision(nullptr);
+    }delete(GameObject::gameObjectsReferences[entity]);
     
     entity = -1;
 

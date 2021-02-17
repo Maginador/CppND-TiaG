@@ -27,6 +27,7 @@ class Collider{
     Collider& operator=(Collider &&cb);
     Collider(Collider &&cb );
     
+    bool hasCollisor(){return underCollision;}
     Collider* isColliding();
     void setCollision(Collider *col);
     int getGameObject();

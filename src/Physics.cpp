@@ -7,11 +7,13 @@
 
 #include "Physics.hpp"
 
+SDL_mutex* physicsMutex = SDL_CreateMutex();
 //***Physics***
 Physics* Physics::instance = 0;
+
 void Physics::simulate(){
     int collisionMatrix[_simulationColliders.size()] [_simulationColliders.size()];
-    
+    SDL_LockMutex(physicsMutex);
     //initialize colision matrix
     for ( int v = 0; v<_simulationColliders.size(); v++ ){
         for ( int e = 0; e<_simulationColliders.size(); e++ ){
@@ -46,16 +48,21 @@ void Physics::simulate(){
             collisionMatrix[i][o]=1;
         }
     }
+    SDL_UnlockMutex(physicsMutex);
 }
 
 void Physics::includeBodyToSimulation(Collider *col){
+    SDL_LockMutex(physicsMutex);
     _simulationColliders.emplace_back(col);
+    SDL_UnlockMutex(physicsMutex);
 }
 
 void Physics::removeBodyToSimulations(Collider *col){
+    SDL_LockMutex(physicsMutex);
     if (col != NULL){
     for(int i =0; i<_simulationColliders.size(); i++) if(_simulationColliders[i] == col) _simulationColliders.erase(_simulationColliders.begin() + i);
     }
+    SDL_UnlockMutex(physicsMutex);
 }
 
 bool Physics::calculateBoundingCollision(SDL_Rect *a, SDL_Rect *b){
