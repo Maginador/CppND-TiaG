@@ -165,8 +165,9 @@ void Game::createCursor(){
 //Create towers
 void Game::placeTower(Vector2 gridSlot){
     
-    if(currency >= TOWER_PRICE){
+    if(currency >= TOWER_PRICE && slotsGrid[gridSlot._y + (GRID_WIDTH*gridSlot._x) ] == 0){
         updateCurrency(-TOWER_PRICE);
+        slotsGrid[gridSlot._y + (GRID_WIDTH*gridSlot._x) ] = 1; 
         //Placeholder Spawner
         SDL_Texture *texture = renderer->createTexture("assets/tower01.png");
 
