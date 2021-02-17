@@ -192,10 +192,7 @@ Collider::Collider(int go, SDL_Rect *rect){
 
 
 Collider* Collider::isColliding(){
-    if(collisor)
-        return collisor;
-    else
-        return nullptr;
+    return collisor;
 }
 
 SDL_Rect* Collider::getRect(){

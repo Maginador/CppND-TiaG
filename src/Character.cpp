@@ -38,7 +38,6 @@ void Character::act(){
     //Move
     //Only if no enemy collision is detected
     SDL_LockMutex( Renderer::instance->rendererMtx );
-    std::cout << "Lock mutex character act destructor"<< std::endl;
     if(entity>=0)
         GameObject::gameObjectsReferences[entity]->getRenderable()->_transform->x += speed * moveMultiplier;
     SDL_UnlockMutex( Renderer::instance->rendererMtx );
@@ -54,8 +53,6 @@ int Character::takeDamage(int damage){
 
 void Character::die(){
     std::cout << "Character died " << std::endl;
-   // SDL_LockMutex( characterLock );
-    //SDL_LockMutex( Game::instance->towerMutex );
     Game::instance->removeCharacterFromList(this);
     Game::instance->updateCurrency(_lootCurrency);
     if(auto c = col->isColliding()) c->setCollision(nullptr);
@@ -63,8 +60,6 @@ void Character::die(){
     delete(GameObject::gameObjectsReferences[entity]);
     
     entity = -1;
-    //SDL_UnlockMutex( Game::instance->towerMutex );
-    //SDL_UnlockMutex( characterLock );
 
 }
 
@@ -152,8 +147,7 @@ void Bullet::act(){
         if(enemy){
             target->getCollider()->setCollision(nullptr);
             enemy->takeDamage(50);
-            health = 0;
-            return;
+            this->takeDamage(99999);
         }
     }
     Character::act();
