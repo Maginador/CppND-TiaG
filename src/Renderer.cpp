@@ -14,6 +14,10 @@ Renderer::Renderer(){
     if(instance == nullptr)
         instance = this;
 }
+
+Renderer::~Renderer(){
+    //TODO: review 
+}
 void Renderer::render(){
     
     runScheduledDelete();
@@ -76,11 +80,6 @@ bool Renderer::init(const char *title, int xpos, int ypos, int width, int height
         return false;
     }
     
-    //Placeholder texture TODO: Remove placeholder and create system for external addition
-    
-    //TODO: Remove New
-    
-    
     cursor.x = 50;
     cursor.y = 100;
     cursor.w = 0;
@@ -92,7 +91,7 @@ void Renderer::removeRenderableFromList(Renderable *obj){
     for(int i =0; i<renderablesList.size(); i++) if(renderablesList[i] == obj){
         renderablesList.erase(renderablesList.begin() + i);
         //renderablesList[i] = nullptr;
-        delete(obj);
+        //delete(obj);
     }
 }
 void Renderer::addRenderableToList(Renderable *obj){

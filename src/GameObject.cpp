@@ -9,35 +9,35 @@ using std::unique_ptr;
 using std::make_unique;
 SDL_mutex* goMutex = SDL_CreateMutex();
 
-vector<GameObject*> GameObject::gameObjectsReferences;
+vector<std::unique_ptr<GameObject>> GameObject::gameObjectsReferences;
 GameObject* GameObject::getGameObject(int index){
    
     SDL_LockMutex(goMutex);
     //TODO: check why weird indexes come sometimes
     if(index > gameObjectsReferences.size() || index < 0) return nullptr;
-    GameObject** obj = &gameObjectsReferences[index];
-    if(*obj == NULL) return nullptr;
+    GameObject* obj = gameObjectsReferences[index].get();
+    if(obj == NULL) return nullptr;
     SDL_UnlockMutex(goMutex);
-    return *obj;
+    return obj;
     
 }
-GameObject::GameObject(const char *name, Vector2 initialPosition, SDL_Texture *tex, Vector2 size, bool hasCollider ){
+GameObject::GameObject(const char *name, Vector2 initialPosition, SDL_Texture *tex, Vector2 size, bool hasCollider , Vector2 slot){
     
+    _slot = slot;
     globalIndex = (int)gameObjectsReferences.size();
     //GameObject
     _name = name;
     
     //Transform
-    _transform = new Transform(initialPosition);
+    _transform = std::make_unique<Transform>(initialPosition);
     
     //Renderable
     if(tex != nullptr){
-        //TODO: Add Renderable
-        _renderable = new Renderable(tex, size._x, size._y, _transform->_position->_x, _transform->_position->_y);
+        _renderable = std::make_shared<Renderable>(tex, size._x, size._y, _transform->_position->_x, _transform->_position->_y);
     }
     //Collider
     if(hasCollider){
-        _collider = new Collider(globalIndex, _renderable->_transform);
+        _collider = std::make_shared<Collider>(globalIndex, _renderable->_transform);
     }
     
     gameObjectsReferences.emplace_back(this);
@@ -46,19 +46,16 @@ GameObject::GameObject(const char *name, Vector2 initialPosition, SDL_Texture *t
 GameObject::~GameObject(){
     SDL_LockMutex( Renderer::instance->rendererMtx );
     std::cout << "Lock mutex gameObject destructor"<< std::endl;
-    //TODO: Object Destruction
     _name = nullptr;
-    delete(_collider);
     //TODO: bug when removing character, investigate
     //delete(_character);
-    delete(_transform);
-    Renderer::instance->addDeleteToSchedule(_renderable); 
+    Renderer::instance->addDeleteToSchedule(_renderable.get());
     std::cout << "Unlock mutex gameObject destructor"<< std::endl;
     SDL_UnlockMutex( Renderer::instance->rendererMtx  );
 
 };
 
-Renderable* GameObject::getRenderable(){
+std::shared_ptr<Renderable> GameObject::getRenderable(){
     return _renderable;
 }
 //Rule of five implementation
@@ -68,7 +65,7 @@ GameObject::GameObject(const GameObject &b){
     _name = b._name;
     _character = b._character;
     _collider = std::move(b._collider);
-    _transform = b._transform;
+    //_transform = std::make_unique<Transform>(b._transform);
     _renderable = b._renderable;
 }
 
@@ -82,7 +79,7 @@ GameObject& GameObject::operator=(const GameObject &b){
     _name = b._name;
     _character = b._character;
     _collider = b._collider;
-    _transform = b._transform;
+    //_transform = std::make_unique<Transform>(b._transform);
     _renderable = b._renderable;
 
     return *this;
@@ -94,7 +91,7 @@ GameObject::GameObject(GameObject &&b){
     _name = b._name;
     _character = b._character;
     _collider = b._collider;
-    _transform = b._transform;
+   // _transform = std::make_unique<Transform>(std::move(b._transform));
     _renderable = b._renderable;
     
     b._name = nullptr;
@@ -115,7 +112,7 @@ GameObject& GameObject::operator=(GameObject &&b){
     _name = b._name;
     _character = b._character;
     _collider = b._collider;
-    _transform = b._transform;
+   // _transform = std::make_unique<Transform>(std::move(b._transform));
     _renderable = b._renderable;
     
     b._name = nullptr;
@@ -135,8 +132,8 @@ void GameObject::addRenderable(){
     //TODO: a way to add renderable on the fly
 }
 
-void GameObject::addCharacter(Character** character){
-    _character = *character;
+void GameObject::addCharacter(std::shared_ptr<Character> character){
+    _character = character;
 }
 
 Vector2::Vector2(int x, int y){
@@ -156,6 +153,7 @@ Transform::Transform(int x, int y){
     _position = new Vector2(x,y);
     
 }
+
 
 Transform::Transform(Vector2 pos){
     _position = new Vector2(pos);

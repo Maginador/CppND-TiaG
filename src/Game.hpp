@@ -56,6 +56,7 @@ public:
     void removeCharacterFromList(Character *character);
     void updateCurrency(int currency);
     void runGameOver();
+    void cleanSlot(Vector2 slot);
     SDL_mutex* towerMutex = SDL_CreateMutex();
 private:
     void setupUI();
@@ -67,10 +68,10 @@ private:
     void placeTower(Vector2 gridSlot);
     bool isRunning;
     int currency=100;
-    Renderer *renderer;
-    Input *input;
-    Physics *physics;
-    UserInterface *UI;
+    std::unique_ptr<Renderer> renderer;
+    std::unique_ptr<Input> input;
+    std::unique_ptr<Physics> physics;
+    std::unique_ptr<UserInterface> UI;
     vector<Enemy*> _enemies;
     vector<Tower*> _towers;
     vector<Bullet*> _bullets;

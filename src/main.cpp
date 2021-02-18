@@ -10,10 +10,9 @@
 #include <SDL2/SDL.h>
 #include "Constants.hpp"
 
-//TODO: Replace pointer with unique_ptr
-Game *game = nullptr;
-Assets *assets = nullptr;
-Input *input = nullptr;
+unique_ptr<Game> game = nullptr;
+unique_ptr<Assets> assets = nullptr;
+unique_ptr<Input> input = nullptr;
 
 int main() {
     
@@ -21,10 +20,9 @@ int main() {
     Uint32 frameStart;
     int frameTime;
     
-    //TODO: Remove New
-    input = new Input();
-    game = new Game();
-    assets = new Assets();
+    input = std::make_unique<Input>();
+    game = std::make_unique<Game>();
+    assets = std::make_unique<Assets>();
     //TODO: make it possible to adjust values
     game->init("TiaG", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, false);
     
@@ -33,10 +31,8 @@ int main() {
         frameStart = SDL_GetTicks();
         input->handleEvents();
         game->windowEvents();
-        //TODO: create FPS Control (Time.cpp)
         game->update();
         
-        //TODO: Add Physics processing
         frameTime = SDL_GetTicks() - frameStart;
         
         if(SCREEN_TICKS_PER_FRAME > frameTime){

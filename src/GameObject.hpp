@@ -49,31 +49,33 @@ class Transform{
 class GameObject{
   
     public :
-    GameObject(const char *name, Vector2 initialPosition, SDL_Texture *tex, Vector2 size, bool hasCollider );
+    GameObject(const char *name, Vector2 initialPosition, SDL_Texture *tex, Vector2 size, bool hasCollider , Vector2 slot);
     ~GameObject();
     //Rule of five
     GameObject& operator=(const GameObject &cb);
     GameObject(const GameObject &cb);
     GameObject& operator=(GameObject &&cb);
     GameObject(GameObject &&cb );
-    
+    Vector2 getSlot() { return _slot;};
     int getIndex(){ return globalIndex;}
     static GameObject* getGameObject(int index);
     std::string getName(){ return _name;}
-    Collider* getCollider(){ return _collider;}
-    Renderable* getRenderable();
-    Character* getChar(){return _character;}
+    std::shared_ptr<Collider> getCollider(){ return _collider;}
+    std::shared_ptr<Renderable> getRenderable();
+    std::shared_ptr<Character> getChar(){return _character;}
     void addCollider(); 
     void addRenderable();
-    void addCharacter(Character** character);
+    void addCharacter(std::shared_ptr<Character> character);
     private :
     int globalIndex;
-    Character *_character = nullptr;
-    Collider *_collider = nullptr;
-    Renderable *_renderable = nullptr;
-    Transform *_transform = nullptr;
+    
+    std::shared_ptr<Character> _character = nullptr;
+    std::shared_ptr<Collider> _collider = nullptr;
+    std::shared_ptr<Renderable> _renderable = nullptr;
+    std::unique_ptr<Transform> _transform = nullptr;
     const char *_name = nullptr;
-    static std::vector<GameObject*> gameObjectsReferences;
+    Vector2 _slot;
+    static std::vector<std::unique_ptr<GameObject>> gameObjectsReferences;
 };
 
 
