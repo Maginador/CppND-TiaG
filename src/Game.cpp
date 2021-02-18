@@ -37,12 +37,12 @@ int Game::enemySpawner(void* data){
         SDL_Texture *texture = instance->renderer->createTexture("assets/pixelEnemy.png");
 
         GameObject *go = new GameObject("Enemy", Vector2(ENEMY_SPAWN_X, CURSOR_INIT_POSITION_Y + (slot *MOVE_INTENSITY_Y)), texture, Vector2(80,80), true, Vector2(-1,-1));
-        instance->renderer->addRenderableToList(go->getRenderable());
+        instance->renderer->addRenderableToList(go->getRenderable().get());
         
-        Enemy *enemy = new Enemy(go->getIndex());
-        auto character = static_cast<Character*>(enemy);
-        go->addCharacter(&character);
-        instance->_enemies.emplace_back(enemy);
+        std::shared_ptr<Enemy> enemy = std::shared_ptr<Enemy>(new Enemy(go->getIndex()));
+        //auto character = static_cast<std::shared_ptr<Character>>(enemy);
+        go->addCharacter(enemy);
+        instance->_enemies.emplace_back(enemy.get());
         int data = 10;
         //SDL_Thread* threadID = SDL_CreateThread(enemySpawner, "Teste", (void*)data);
         enemyMultiplier *= 1.1;
@@ -149,10 +149,10 @@ void Game::createFactories(){
     //grid iteration
         for(int o =0; o<GRID_HEIGHT; o++){
             GameObject *go = new GameObject("Factories", Vector2(CURSOR_INIT_POSITION_X + (-1*MOVE_INTENSITY_X), CURSOR_INIT_POSITION_Y + (o*MOVE_INTENSITY_Y)), texture, Vector2(80,80), true, Vector2(-1,o));
-            renderer->addRenderableToList(go->getRenderable());
+            renderer->addRenderableToList(go->getRenderable().get());
             Factory *factory = new class Factory(go->getIndex());
             auto character = static_cast<Character*>(factory);
-            go->addCharacter(&character);
+            go->addCharacter(std::shared_ptr<Character>(character));
             _towers.emplace_back(factory);
         }
 }
@@ -162,7 +162,7 @@ void Game::createGameGrid(){
     for(int i =0; i<GRID_WIDTH; i++){
         for(int o =0; o<GRID_HEIGHT; o++){
             GameObject *go = new GameObject("Environment_Slot", Vector2(CURSOR_INIT_POSITION_X + (i*MOVE_INTENSITY_X), CURSOR_INIT_POSITION_Y + (o*MOVE_INTENSITY_Y)), texture, Vector2(80,80), false, Vector2(-1,-1));
-            renderer->addRenderableToList(go->getRenderable());
+            renderer->addRenderableToList(go->getRenderable().get());
             slotsGrid[i + (GRID_WIDTH*o) ] = 0;
         }
     }
@@ -175,7 +175,7 @@ void Game::createBackground(){
     SDL_Texture *texture = renderer->createTexture("assets/bg.png");
 
     GameObject *go = new GameObject("Backbround", Vector2(0, 0 ), texture, Vector2(1280,920), false, Vector2(-1,-1));
-    renderer->addRenderableToList(go->getRenderable());
+    renderer->addRenderableToList(go->getRenderable().get());
 }
 
 void Game::createCursor(){
@@ -183,7 +183,7 @@ void Game::createCursor(){
     SDL_Texture *texture = renderer->createTexture("assets/cursor.png");
 
     GameObject *go = new GameObject("Cursor", Vector2(CURSOR_INIT_POSITION_X, CURSOR_INIT_POSITION_Y ), texture, Vector2(80,80), false, Vector2(-1,-1));
-    cursor = go->getRenderable();
+    cursor = go->getRenderable().get();
     renderer->addRenderableToList(cursor);
     cursorGridPos._x = 0;
     cursorGridPos._y = 0;
@@ -199,10 +199,10 @@ void Game::placeTower(Vector2 gridSlot){
         SDL_Texture *texture = renderer->createTexture("assets/tower01.png");
 
         GameObject *go = new GameObject("Tower", Vector2(CURSOR_INIT_POSITION_X + (gridSlot._x*MOVE_INTENSITY_X), CURSOR_INIT_POSITION_Y + (gridSlot._y*MOVE_INTENSITY_Y)), texture, Vector2(80,80), true, gridSlot);
-        renderer->addRenderableToList(go->getRenderable());
+        renderer->addRenderableToList(go->getRenderable().get());
         Tower *tower = new class Tower(go->getIndex());
         auto character = static_cast<Character*>(tower);
-        go->addCharacter(&character);
+        go->addCharacter(std::shared_ptr<Character>(character));
         _towers.emplace_back(tower);
         }
 }

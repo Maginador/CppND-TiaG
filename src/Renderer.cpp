@@ -91,7 +91,7 @@ void Renderer::removeRenderableFromList(Renderable *obj){
     for(int i =0; i<renderablesList.size(); i++) if(renderablesList[i] == obj){
         renderablesList.erase(renderablesList.begin() + i);
         //renderablesList[i] = nullptr;
-        delete(obj);
+        //delete(obj);
     }
 }
 void Renderer::addRenderableToList(Renderable *obj){
