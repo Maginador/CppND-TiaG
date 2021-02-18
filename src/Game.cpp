@@ -24,7 +24,7 @@ Game::~Game(){
 
 void Game::runGameOver(){
     gameOver = true;
-    renderer->createRenderable("assets/fade.png", SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0);
+    renderer->createUIRenderable("assets/fade.png", SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0);
     UI->gameOverScreen();
 }
 //Create enemies
@@ -115,7 +115,7 @@ void Game::update(){
             cursor->_transform->x -= MOVE_INTENSITY_X;
             cursorGridPos._x -=1;
         }
-        else if(Input::getKeyDown() == Input::inputKey::space){
+        else if(Input::getKeyDown() == Input::inputKey::f){
             placeTower(cursorGridPos);
         }
         

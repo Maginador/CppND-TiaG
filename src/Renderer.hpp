@@ -34,11 +34,13 @@ class Renderer{
     void render();
     void clean();
     //TODO: Replace with shared_ptr
+    Renderable* createUIRenderable(const char *assetPath, int width, int height, int x, int y);
     Renderable* createRenderable(const char *assetPath, int width, int height, int x, int y);
     static SDL_Texture* createTexture (const char *assetPath);
     bool init(const char *title, int xpos, int ypos, int width, int height, int flags);
     SDL_Renderer* getRenderer();
     SDL_Rect cursor;
+    void addUIElementToList(Renderable* obj);
     void addRenderableToList(Renderable* obj);
     void addDeleteToSchedule(Renderable* obj);
     void removeRenderableFromList(Renderable* obj);
@@ -48,6 +50,7 @@ class Renderer{
     private :
     //TODO: Replace with shared_ptr
     std::vector<Renderable*> renderablesList;
+    std::vector<Renderable*> uielementsList;
     std::vector<Renderable*> scheduledDelete;
     
     static SDL_Renderer *renderer;
