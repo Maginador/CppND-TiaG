@@ -27,7 +27,7 @@ Game::~Game(){
 int Game::enemySpawner(void* data){
     
   
-    if(Time::timedAction(std::chrono::milliseconds(1000))){
+    if(Time::timedAction(std::chrono::milliseconds(ENEMY_SPAWN_TIME))){
         int slot = (std::rand() % GRID_HEIGHT);
         //Placeholder Spawner
         SDL_Texture *texture = instance->renderer->createTexture("assets/pixelEnemy.png");
@@ -62,15 +62,18 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
         isRunning = true;
         physics = new Physics();
         UI = new UserInterface();
-        UI->buildUI();
-        UserInterface::updateTextValue("currency", std::to_string(currency));
+        
     }else{
         isRunning = false;
     }
     
+    createBackground();
     //Create cursor
     createGameGrid();
+    createFactories();
     createCursor();
+    UI->buildUI();
+    UserInterface::updateTextValue("currency", std::to_string(currency));
     lastSpawn = std::chrono::system_clock::now();
     timer = std::chrono::milliseconds(3000);
     int data = 10;
@@ -137,6 +140,18 @@ bool Game::running(){
     return isRunning;
 }
 
+void Game::createFactories(){
+    SDL_Texture *texture = renderer->createTexture("assets/factory.png");
+    //grid iteration
+        for(int o =0; o<GRID_HEIGHT; o++){
+            GameObject *go = new GameObject("Factories", Vector2(CURSOR_INIT_POSITION_X + (-1*MOVE_INTENSITY_X), CURSOR_INIT_POSITION_Y + (o*MOVE_INTENSITY_Y)), texture, Vector2(80,80), true);
+            renderer->addRenderableToList(go->getRenderable());
+            Factory *factory = new class Factory(go->getIndex());
+            auto character = static_cast<Character*>(factory);
+            go->addCharacter(&character);
+            _towers.emplace_back(factory);
+        }
+}
 void Game::createGameGrid(){
     SDL_Texture *texture = renderer->createTexture("assets/pixelSlot.png");
     //grid iteration
@@ -149,6 +164,14 @@ void Game::createGameGrid(){
     }
 
     
+}
+
+void Game::createBackground(){
+    
+    SDL_Texture *texture = renderer->createTexture("assets/bg.png");
+
+    GameObject *go = new GameObject("Backbround", Vector2(0, 0 ), texture, Vector2(1280,920), false);
+    renderer->addRenderableToList(go->getRenderable());
 }
 
 void Game::createCursor(){

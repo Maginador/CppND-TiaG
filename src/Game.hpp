@@ -59,7 +59,9 @@ public:
 private:
     void setupUI();
     void createGameGrid();
+    void createFactories();
     void createCursor();
+    void createBackground();
     void enemyTimmedSpawnning();
     void placeTower(Vector2 gridSlot);
     bool isRunning;

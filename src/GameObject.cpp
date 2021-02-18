@@ -13,6 +13,7 @@ vector<GameObject*> GameObject::gameObjectsReferences;
 GameObject* GameObject::getGameObject(int index){
    
     SDL_LockMutex(goMutex);
+    //TODO: check why weird indexes come sometimes
     if(index > gameObjectsReferences.size() || index < 0) return nullptr;
     GameObject** obj = &gameObjectsReferences[index];
     if(*obj == NULL) return nullptr;
