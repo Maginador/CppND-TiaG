@@ -8,7 +8,7 @@ This is a Game as you can see... My First game using **CPP + SDL**, probably not
 The project is a basic game engine writen with C++ ans SDL. 
 The core developed game is a PvZ clone (with some twists and simplifications)
 
-![Alt text](relative/path/to/print01.jpg?raw=true "Game Print")
+![Game Print](print01.png?raw=true "Game Print")
 
 Your goal is to survive as much as possible. 
 You can move using keyboard arrows and press f to place a tower in a slot 
