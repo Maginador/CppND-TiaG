@@ -102,9 +102,9 @@ void Enemy::act(){
 Tower::Tower(int go) : Character(go){
     health = 300;
     speed = 0;
-    _colldown = 1000;
+    _colldown = TOWER_COOLDOWN;
     _lootCurrency=0;
-    _colldownTimer = new Time(5000, true);
+    _colldownTimer = new Time(_colldown, true);
 
 }
 void Tower::act(){
@@ -132,6 +132,36 @@ int Tower::act(void* data){
     
     return 0;
 }
+
+//Factory
+Factory::Factory(int go) : Tower(go){
+    health = 1;
+    speed = 0;
+    _colldown = FACTORY_COOLDOWN;
+    _lootCurrency=50;
+    _colldownTimer = new Time(_colldown, true);
+
+}
+void Factory::act(){
+    Character::preAct();
+    if(_colldownTimer->timedAction()){
+        Game::instance->updateCurrency(_lootCurrency);
+
+    }
+    Character::act();
+    SDL_UnlockMutex( characterLock );
+}
+
+int Factory::act(void* data){
+    
+    auto *factory = (Factory *)data;
+    if(factory && factory->entity != -1)
+        factory->act();
+    
+    
+    return 0;
+}
+
 
 //Bullet
 Bullet::Bullet(int go) : Character(go){

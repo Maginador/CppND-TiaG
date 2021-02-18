@@ -65,4 +65,13 @@ class Tower : public Character{
     private :
 
 };
+
+class Factory : public Tower{
+    public :
+    Factory(int go);
+    void act();
+    static int act(void* data);
+    private :
+    
+};
 #endif /* Character_hpp */
