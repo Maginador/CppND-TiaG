@@ -55,6 +55,7 @@ public:
     void addBulletToList(Bullet *bullet);
     void removeCharacterFromList(Character *character);
     void updateCurrency(int currency);
+    void runGameOver();
     SDL_mutex* towerMutex = SDL_CreateMutex();
 private:
     void setupUI();
@@ -73,6 +74,7 @@ private:
     vector<Enemy*> _enemies;
     vector<Tower*> _towers;
     vector<Bullet*> _bullets;
+    bool gameOver = false;
 
     int slotsGrid[GRID_WIDTH * GRID_HEIGHT];
     

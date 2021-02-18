@@ -22,11 +22,16 @@ Game::~Game(){
     
 }
 
+void Game::runGameOver(){
+    gameOver = true;
+    renderer->createUIRenderable("assets/fade.png", SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0);
+    UI->gameOverScreen();
+}
 //Create enemies
 int Game::enemySpawner(void* data){
     
-  
     if(Time::timedAction(std::chrono::milliseconds((int)(ENEMY_SPAWN_TIME / enemyMultiplier)))){
+        if(Game::instance->gameOver) return 0;
         int slot = (std::rand() % GRID_HEIGHT);
         //Placeholder Spawner
         SDL_Texture *texture = instance->renderer->createTexture("assets/pixelEnemy.png");
@@ -93,43 +98,46 @@ void Game::update(){
     physics->simulate();
     UI->updateData();
     //Move Cursor
-    if(Input::getKeyDown() == Input::inputKey::down && cursor->_transform->y < CURSOR_INIT_POSITION_Y + MOVE_INTENSITY_Y * (GRID_HEIGHT -1)){
-        cursor->_transform->y += MOVE_INTENSITY_Y;
-        cursorGridPos._y +=1;
-    }
-    else if(Input::getKeyDown() == Input::inputKey::up && cursor->_transform->y > CURSOR_INIT_POSITION_Y){
-        cursor->_transform->y -= MOVE_INTENSITY_Y;
-        cursorGridPos._y -=1;
-    }
-    else if(Input::getKeyDown() == Input::inputKey::right && cursor->_transform->x < CURSOR_INIT_POSITION_X + MOVE_INTENSITY_X * (GRID_WIDTH -1)){
-        cursor->_transform->x += MOVE_INTENSITY_X;
-        cursorGridPos._x +=1;
-    }
-    else if(Input::getKeyDown() == Input::inputKey::left && cursor->_transform->x > CURSOR_INIT_POSITION_X){
-        cursor->_transform->x -= MOVE_INTENSITY_X;
-        cursorGridPos._x -=1;
-    }
-    else if(Input::getKeyDown() == Input::inputKey::space){
-        placeTower(cursorGridPos);
-    }
-    
-    //Update enemies
-    for(int i =0; i<_enemies.size(); i++){
-        if(!_enemies[i]) _enemies.erase(_enemies.begin()+i);
-        //SDL_CreateThread(Enemy::act, "EnemyAct", (Character*)_enemies[i]);
-        _enemies[i]->act();
-    }
-    SDL_LockMutex( towerMutex );
+    if(!gameOver){
+        if(Input::getKeyDown() == Input::inputKey::down && cursor->_transform->y < CURSOR_INIT_POSITION_Y + MOVE_INTENSITY_Y * (GRID_HEIGHT -1)){
+            cursor->_transform->y += MOVE_INTENSITY_Y;
+            cursorGridPos._y +=1;
+        }
+        else if(Input::getKeyDown() == Input::inputKey::up && cursor->_transform->y > CURSOR_INIT_POSITION_Y){
+            cursor->_transform->y -= MOVE_INTENSITY_Y;
+            cursorGridPos._y -=1;
+        }
+        else if(Input::getKeyDown() == Input::inputKey::right && cursor->_transform->x < CURSOR_INIT_POSITION_X + MOVE_INTENSITY_X * (GRID_WIDTH -1)){
+            cursor->_transform->x += MOVE_INTENSITY_X;
+            cursorGridPos._x +=1;
+        }
+        else if(Input::getKeyDown() == Input::inputKey::left && cursor->_transform->x > CURSOR_INIT_POSITION_X){
+            cursor->_transform->x -= MOVE_INTENSITY_X;
+            cursorGridPos._x -=1;
+        }
+        else if(Input::getKeyDown() == Input::inputKey::f){
+            placeTower(cursorGridPos);
+        }
+        
+        //Update enemies
+        for(int i =0; i<_enemies.size(); i++){
+            if(!_enemies[i]) _enemies.erase(_enemies.begin()+i);
+            //SDL_CreateThread(Enemy::act, "EnemyAct", (Character*)_enemies[i]);
+            _enemies[i]->act();
+        }
+        SDL_LockMutex( towerMutex );
 
-    for(int i =0; i<_towers.size(); i++){
-        if(!_towers[i]) _towers.erase(_towers.begin()+i);
-        //SDL_CreateThread(Tower::act, "TowerAct", (Character*)_towers[i]);
-        _towers[i]->act();
-    }
-    SDL_UnlockMutex( towerMutex );
-    for(int i =0; i<_bullets.size(); i++){
-        if(!_bullets[i]) _bullets.erase(_bullets.begin()+i);
-        _bullets[i]->act();
+        for(int i =0; i<_towers.size(); i++){
+            if(!_towers[i]) _towers.erase(_towers.begin()+i);
+            //SDL_CreateThread(Tower::act, "TowerAct", (Character*)_towers[i]);
+            _towers[i]->act();
+        }
+        SDL_UnlockMutex( towerMutex );
+        for(int i =0; i<_bullets.size(); i++){
+            if(!_bullets[i]) _bullets.erase(_bullets.begin()+i);
+            _bullets[i]->act();
+        }
+        
     }
 //    enemyTimmedSpawnning();
 }

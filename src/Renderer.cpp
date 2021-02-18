@@ -29,6 +29,14 @@ void Renderer::render(){
         SDL_RenderCopy(renderer, renderablesList[i]->_texture, NULL, renderablesList[i]->_transform);
     }
     
+    for(int i =0; i<uielementsList.size();i++){
+        
+        
+        if(!uielementsList[i] || !uielementsList[i]->_texture){
+            continue;
+        }
+        SDL_RenderCopy(renderer, uielementsList[i]->_texture, NULL, uielementsList[i]->_transform);
+    }
     SDL_RenderPresent(renderer);
     SDL_UnlockMutex( rendererMtx );
     
@@ -93,6 +101,22 @@ void Renderer::addRenderableToList(Renderable *obj){
     SDL_UnlockMutex(Renderer::instance->rendererMtx);
 
 }
+void Renderer::addUIElementToList(Renderable *obj){
+    SDL_LockMutex(Renderer::instance->rendererMtx);
+        uielementsList.emplace_back(obj);
+    SDL_UnlockMutex(Renderer::instance->rendererMtx);
+
+}
+
+Renderable* Renderer::createUIRenderable(const char *assetPath, int width, int height, int x = 0, int y = 0){
+    Assets asset = Assets();
+    
+    Renderable* rend = new Renderable(asset.loadAsset(renderer, assetPath), width, height, x, y);
+    uielementsList.emplace_back(rend);
+    return std::move(rend);
+}
+
+
 Renderable* Renderer::createRenderable(const char *assetPath, int width, int height, int x = 0, int y = 0){
     Assets asset = Assets();
     

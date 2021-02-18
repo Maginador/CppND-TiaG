@@ -15,15 +15,27 @@ UserInterface::UserInterface(){
     
 }
 
+void UserInterface::gameOverScreen(){
+    Assets::instance->addFont("big-Arial", "fonts/arial.ttf", 1000);
+
+    UIElement *died = new UIElement(400, 360, "You Died", "arial", ACOLOR_RED);
+    UIElement *gameover = new UIElement(400, 360 + 50, "Game Over", "arial", ACOLOR_RED);
+    
+    uiElements.emplace("died", died);
+    uiElements.emplace("gameOver", gameover);
+
+    
+}
 void UserInterface::buildUI(){
     Assets::instance->addFont("arial", "fonts/arial.ttf", 50);
 
     //TopBar
-    UIElement *currency = new UIElement(160, 60, "1000", "arial", ACOLOR_BLACK);
+    UIElement *currency = new UIElement(170, 70, "1000", "arial", ACOLOR_BLACK);
     uiElements.emplace("currency", currency);
     //LowerBar
     UIElement *commands = new UIElement(160, 800, "F", "arial", ACOLOR_BLACK);
     uiElements.emplace("cmd", commands);
+    Renderer::instance->createUIRenderable("assets/tower01.png", 80, 80, 65, 770);
 }
 
 void UserInterface::updateTextValue(string uIKey, string value)
@@ -43,7 +55,7 @@ UIElement:: UIElement(int xpos, int ypos, string text, string font, SDL_Color co
     _transform->x = xpos;
     _transform->y = ypos;
     setText();
-    Renderer::instance->addRenderableToList(std::move(this));
+    Renderer::instance->addUIElementToList(std::move(this));
 }
 
 UIElement::~UIElement(){};

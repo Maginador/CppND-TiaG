@@ -51,6 +51,7 @@ public:
     void clear();
     void updateData();
     void buildUI();
+    void gameOverScreen();
     static void updateTextValue(string uIKey, string value);
 private:
     typedef std::map<string,UIElement*> UIMap;
