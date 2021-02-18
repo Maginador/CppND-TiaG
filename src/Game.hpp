@@ -55,6 +55,7 @@ public:
     void addBulletToList(Bullet *bullet);
     void removeCharacterFromList(Character *character);
     void updateCurrency(int currency);
+    SDL_mutex* towerMutex = SDL_CreateMutex();
 private:
     void setupUI();
     void createGameGrid();

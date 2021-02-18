@@ -33,7 +33,7 @@ static const int SPAWNING_TIME_UPPER_RANGE = 15;
 static const int FRAMES_PER_SECOND = 60;
 static const int SCREEN_TICKS_PER_FRAME = 1000/FRAMES_PER_SECOND;
 
-static const int TOWER_PRICE = 100;
+static const int TOWER_PRICE = 1;
 //End constants area
 
 

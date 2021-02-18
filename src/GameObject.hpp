@@ -9,6 +9,7 @@
 #define GameObject_hpp
 
 #include <stdio.h>
+#include <vector>
 #include "Physics.hpp"
 #include "Renderer.hpp"
 #include "Character.hpp"
@@ -56,19 +57,23 @@ class GameObject{
     GameObject& operator=(GameObject &&cb);
     GameObject(GameObject &&cb );
     
+    int getIndex(){ return globalIndex;}
+    static GameObject* getGameObject(int index);
     std::string getName(){ return _name;}
     Collider* getCollider(){ return _collider;}
-    Renderable* getRenderable(){ return _renderable;}
-    Character* getChar(){ return _character;}
+    Renderable* getRenderable();
+    Character* getChar(){return _character;}
     void addCollider(); 
     void addRenderable();
-    void addCharacter(Character *character);
+    void addCharacter(Character** character);
     private :
+    int globalIndex;
     Character *_character = nullptr;
     Collider *_collider = nullptr;
     Renderable *_renderable = nullptr;
     Transform *_transform = nullptr;
     const char *_name = nullptr;
+    static std::vector<GameObject*> gameObjectsReferences;
 };
 
 

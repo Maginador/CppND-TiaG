@@ -8,20 +8,28 @@
 #include "Time.hpp"
 
 
-
-Time::Time(std::chrono::milliseconds time, bool repeat){
-    _timeAddition = time;
-    _timer = std::chrono::high_resolution_clock::now() + time;
+Uint32 Time::_now;
+SDL_mutex* Time:: _timeMutex= SDL_CreateMutex();
+Time::Time(int timeMS, bool repeat){
+    _timeAdditionMS = timeMS;
+    _timer = SDL_GetTicks();
     _loop = repeat;
+    //if(_timeMutex == nullptr)_timeMutex = SDL_CreateMutex();
 }
 
+//update static now reference, getting now directly from a thread using chrono was sometimes causing expection
+void Time::update(){
+    
+    Time::_now = SDL_GetTicks();
+}
 bool Time::timedAction(){
     
-    std::this_thread::sleep_for(std::chrono::milliseconds(1));
-    if(_timer < std::chrono::high_resolution_clock::now())
+    SDL_LockMutex(_timeMutex);
+    int elapsed = (_timer - _now);
+    SDL_UnlockMutex(_timeMutex);
+     if(elapsed<=0)
     {
-
-        if(_loop) _timer = std::chrono::high_resolution_clock::now() + _timeAddition;
+        if(_loop) _timer = _now + _timeAdditionMS;
         return true;
     }else{
         return false;
@@ -34,8 +42,6 @@ bool Time::timedAction(std::chrono::milliseconds time ){
     
     while(true){
         std::this_thread::sleep_for(std::chrono::milliseconds(1));
-        
-        std::cout << ((timer) -  std::chrono::high_resolution_clock::now()).count()<< std::endl;
         if(timer < std::chrono::high_resolution_clock::now()){
             timer = std::chrono::high_resolution_clock::now() + time;
             return true;

@@ -7,11 +7,13 @@
 
 #include "Physics.hpp"
 
+SDL_mutex* physicsMutex = SDL_CreateMutex();
 //***Physics***
 Physics* Physics::instance = 0;
+
 void Physics::simulate(){
     int collisionMatrix[_simulationColliders.size()] [_simulationColliders.size()];
-    
+    SDL_LockMutex(physicsMutex);
     //initialize colision matrix
     for ( int v = 0; v<_simulationColliders.size(); v++ ){
         for ( int e = 0; e<_simulationColliders.size(); e++ ){
@@ -46,14 +48,21 @@ void Physics::simulate(){
             collisionMatrix[i][o]=1;
         }
     }
+    SDL_UnlockMutex(physicsMutex);
 }
 
 void Physics::includeBodyToSimulation(Collider *col){
+    SDL_LockMutex(physicsMutex);
     _simulationColliders.emplace_back(col);
+    SDL_UnlockMutex(physicsMutex);
 }
 
 void Physics::removeBodyToSimulations(Collider *col){
+    SDL_LockMutex(physicsMutex);
+    if (col != NULL){
     for(int i =0; i<_simulationColliders.size(); i++) if(_simulationColliders[i] == col) _simulationColliders.erase(_simulationColliders.begin() + i);
+    }
+    SDL_UnlockMutex(physicsMutex);
 }
 
 bool Physics::calculateBoundingCollision(SDL_Rect *a, SDL_Rect *b){
@@ -107,6 +116,11 @@ bool Physics::calculateBoundingCollision(SDL_Rect *a, SDL_Rect *b){
 Collider::~Collider(){
     Physics::instance->removeBodyToSimulations(this);
     boundingBox = nullptr;
+    if(gameObject)
+    gameObject = 0;
+    collisor = nullptr; 
+    underCollision = false;
+    
 }
 //Copy Constructor
 Collider::Collider(const Collider &b){
@@ -144,7 +158,7 @@ Collider::Collider(Collider &&b){
     b.underCollision = nullptr;
     b.collisor = nullptr;
     b.boundingBox = NULL;
-    b.gameObject = nullptr;
+    b.gameObject = 0;
 
 }
 //Move Assignment
@@ -162,7 +176,7 @@ Collider& Collider::operator=(Collider &&b){
     b.underCollision = nullptr;
     b.collisor = nullptr;
     b.boundingBox = NULL;
-    b.gameObject = nullptr;
+    b.gameObject = 0;
 
     return *this;
 }
@@ -176,7 +190,7 @@ void Collider::setCollision(Collider *col){
     }
 
 }
-Collider::Collider(GameObject *go, SDL_Rect *rect){
+Collider::Collider(int go, SDL_Rect *rect){
     gameObject = go;
     boundingBox = rect;
     collisor = nullptr;
@@ -185,16 +199,13 @@ Collider::Collider(GameObject *go, SDL_Rect *rect){
 
 
 Collider* Collider::isColliding(){
-    if(collisor)
-        return collisor;
-    else
-        return nullptr;
+    return collisor;
 }
 
 SDL_Rect* Collider::getRect(){
     return boundingBox;
 }
 
-GameObject* Collider::getGameObject(){
+int Collider::getGameObject(){
     return gameObject;
 }

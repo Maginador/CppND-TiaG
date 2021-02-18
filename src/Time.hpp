@@ -11,16 +11,20 @@
 #include <iostream>
 #include <chrono>
 #include <thread>
+#include <SDL2/SDL.h>
 
 class Time{
   
 public:
-    Time(std::chrono::milliseconds time, bool repeat);
+    Time(int timeMS, bool repeat);
+    static void update();
     bool timedAction();
     static bool timedAction(std::chrono::milliseconds time);
+    static Uint32 _now;
 private:
-    std::chrono::time_point<std::chrono::high_resolution_clock> _timer;
+    Uint32 _timer;
     bool _loop = false;
-    std::chrono::milliseconds _timeAddition;
+    int _timeAdditionMS;
+    static SDL_mutex* _timeMutex;
 };
 #endif /* Time_hpp */

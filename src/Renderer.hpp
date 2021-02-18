@@ -40,15 +40,19 @@ class Renderer{
     SDL_Renderer* getRenderer();
     SDL_Rect cursor;
     void addRenderableToList(Renderable* obj);
+    void addDeleteToSchedule(Renderable* obj);
     void removeRenderableFromList(Renderable* obj);
+    void runScheduledDelete();
+    SDL_mutex* rendererMtx = SDL_CreateMutex();
+
     private :
     //TODO: Replace with shared_ptr
     std::vector<Renderable*> renderablesList;
-
+    std::vector<Renderable*> scheduledDelete;
     
     static SDL_Renderer *renderer;
     SDL_Window *window;
-    
+
     
 };
 #endif /* Renderer_hpp */

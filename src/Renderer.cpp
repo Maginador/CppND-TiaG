@@ -6,31 +6,46 @@
 //
 
 #include "Renderer.hpp"
-
 Renderer* Renderer::instance = 0;
 SDL_Renderer* Renderer::renderer = 0;
+
 Renderer::Renderer(){
     //Lazy initializtion
     if(instance == nullptr)
         instance = this;
 }
 void Renderer::render(){
+    
+    runScheduledDelete();
+    SDL_LockMutex( rendererMtx );
     SDL_RenderClear(renderer);
-   
+
     for(int i =0; i<renderablesList.size();i++){
         
         
         if(!renderablesList[i] || !renderablesList[i]->_texture){
-            std::cout << "Renderable Texture being removed: "<< renderablesList[i]->_texture << std::endl;
-            renderablesList.erase(renderablesList.begin()+i); continue;
+            continue;
         }
         SDL_RenderCopy(renderer, renderablesList[i]->_texture, NULL, renderablesList[i]->_transform);
     }
     
-    
-    //TODO: Create list of renderable objects and loop rendering
-    
     SDL_RenderPresent(renderer);
+    SDL_UnlockMutex( rendererMtx );
+    
+
+}
+
+void Renderer:: addDeleteToSchedule(Renderable *obj){
+    scheduledDelete.emplace_back(obj);
+}
+void Renderer::runScheduledDelete(){
+    
+    for(int i =0; i< scheduledDelete.size(); i++){
+        
+        removeRenderableFromList(scheduledDelete[i]);
+        
+    }
+    scheduledDelete.clear();
 }
 void Renderer::clean(){
     SDL_DestroyWindow(window);
@@ -66,10 +81,17 @@ bool Renderer::init(const char *title, int xpos, int ypos, int width, int height
 }
 
 void Renderer::removeRenderableFromList(Renderable *obj){
-    for(int i =0; i<renderablesList.size(); i++) if(renderablesList[i] == obj) renderablesList.erase(renderablesList.begin() + i);
+    for(int i =0; i<renderablesList.size(); i++) if(renderablesList[i] == obj){
+        renderablesList.erase(renderablesList.begin() + i);
+        //renderablesList[i] = nullptr;
+        delete(obj);
+    }
 }
 void Renderer::addRenderableToList(Renderable *obj){
+    SDL_LockMutex(Renderer::instance->rendererMtx);
         renderablesList.emplace_back(obj);
+    SDL_UnlockMutex(Renderer::instance->rendererMtx);
+
 }
 Renderable* Renderer::createRenderable(const char *assetPath, int width, int height, int x = 0, int y = 0){
     Assets asset = Assets();
@@ -93,6 +115,7 @@ SDL_Renderer* Renderer::getRenderer(){
 
 //TODO: create lists of custom structure for animations and states
 Renderable::Renderable(SDL_Texture *texture, int width, int height, int initX, int initY){
+    SDL_LockMutex(Renderer::instance->rendererMtx);
     _texture = texture;
     //TODO: Remove New
     _transform = new SDL_Rect();
@@ -100,11 +123,10 @@ Renderable::Renderable(SDL_Texture *texture, int width, int height, int initX, i
     _transform->h = height;
     _transform->x = initX;
     _transform->y = initY;
-
+    SDL_UnlockMutex(Renderer::instance->rendererMtx);
 };
 Renderable::~Renderable(){
     std::cout<< "Deconstructor for Renderable" << std::endl;
-    delete(_transform);
-    SDL_DestroyTexture(_texture);
-    Renderer::instance->removeRenderableFromList(this);
+    //SDL_DestroyTexture(_texture);
+    //_transform = nullptr;
 }

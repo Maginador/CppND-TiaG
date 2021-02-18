@@ -27,7 +27,7 @@ Game::~Game(){
 int Game::enemySpawner(void* data){
     
   
-    if(Time::timedAction(std::chrono::milliseconds(10000))){
+    if(Time::timedAction(std::chrono::milliseconds(1000))){
         int slot = (std::rand() % GRID_HEIGHT);
         //Placeholder Spawner
         SDL_Texture *texture = instance->renderer->createTexture("assets/pixelEnemy.png");
@@ -35,11 +35,13 @@ int Game::enemySpawner(void* data){
         GameObject *go = new GameObject("Enemy", Vector2(ENEMY_SPAWN_X, CURSOR_INIT_POSITION_Y + (slot *MOVE_INTENSITY_Y)), texture, Vector2(80,80), true);
         instance->renderer->addRenderableToList(go->getRenderable());
         
-        Enemy *enemy = new class Enemy(go);
+        Enemy *enemy = new Enemy(go->getIndex());
+        auto character = static_cast<Character*>(enemy);
+        go->addCharacter(&character);
         instance->_enemies.emplace_back(enemy);
         int data = 10;
-        SDL_Thread* threadID = SDL_CreateThread(enemySpawner, "Teste", (void*)data);
-        
+        //SDL_Thread* threadID = SDL_CreateThread(enemySpawner, "Teste", (void*)data);
+        enemySpawner(nullptr);
     }
     return 0;
 }
@@ -90,7 +92,7 @@ void Game::update(){
     physics->simulate();
     UI->updateData();
     //Move Cursor
-    if(Input::getKeyDown() == Input::inputKey::down && cursor->_transform->y < CURSOR_INIT_POSITION_Y + MOVE_INTENSITY_Y * GRID_HEIGHT){
+    if(Input::getKeyDown() == Input::inputKey::down && cursor->_transform->y < CURSOR_INIT_POSITION_Y + MOVE_INTENSITY_Y * (GRID_HEIGHT -1)){
         cursor->_transform->y += MOVE_INTENSITY_Y;
         cursorGridPos._y +=1;
     }
@@ -98,7 +100,7 @@ void Game::update(){
         cursor->_transform->y -= MOVE_INTENSITY_Y;
         cursorGridPos._y -=1;
     }
-    else if(Input::getKeyDown() == Input::inputKey::right && cursor->_transform->x < CURSOR_INIT_POSITION_X + MOVE_INTENSITY_X * GRID_WIDTH){
+    else if(Input::getKeyDown() == Input::inputKey::right && cursor->_transform->x < CURSOR_INIT_POSITION_X + MOVE_INTENSITY_X * (GRID_WIDTH -1)){
         cursor->_transform->x += MOVE_INTENSITY_X;
         cursorGridPos._x +=1;
     }
@@ -113,12 +115,17 @@ void Game::update(){
     //Update enemies
     for(int i =0; i<_enemies.size(); i++){
         if(!_enemies[i]) _enemies.erase(_enemies.begin()+i);
-        SDL_Thread* threadID = SDL_CreateThread(Enemy::act, "EnemyAct", (Character*)_enemies[i]);
+        //SDL_CreateThread(Enemy::act, "EnemyAct", (Character*)_enemies[i]);
+        _enemies[i]->act();
     }
+    SDL_LockMutex( towerMutex );
+
     for(int i =0; i<_towers.size(); i++){
         if(!_towers[i]) _towers.erase(_towers.begin()+i);
-        SDL_Thread* threadID = SDL_CreateThread(Tower::act, "TowerAct", (Character*)_towers[i]);
+        //SDL_CreateThread(Tower::act, "TowerAct", (Character*)_towers[i]);
+        _towers[i]->act();
     }
+    SDL_UnlockMutex( towerMutex );
     for(int i =0; i<_bullets.size(); i++){
         if(!_bullets[i]) _bullets.erase(_bullets.begin()+i);
         _bullets[i]->act();
@@ -158,14 +165,18 @@ void Game::createCursor(){
 //Create towers
 void Game::placeTower(Vector2 gridSlot){
     
-    if(currency >= TOWER_PRICE){
+    if(currency >= TOWER_PRICE && slotsGrid[gridSlot._y + (GRID_WIDTH*gridSlot._x) ] == 0){
         updateCurrency(-TOWER_PRICE);
+        //TODO: reenable setting tower when a tower die
+        slotsGrid[gridSlot._y + (GRID_WIDTH*gridSlot._x) ] = 1; 
         //Placeholder Spawner
         SDL_Texture *texture = renderer->createTexture("assets/tower01.png");
 
         GameObject *go = new GameObject("Tower", Vector2(CURSOR_INIT_POSITION_X + (gridSlot._x*MOVE_INTENSITY_X), CURSOR_INIT_POSITION_Y + (gridSlot._y*MOVE_INTENSITY_Y)), texture, Vector2(80,80), true);
         renderer->addRenderableToList(go->getRenderable());
-        Tower *tower = new class Tower(go);
+        Tower *tower = new class Tower(go->getIndex());
+        auto character = static_cast<Character*>(tower);
+        go->addCharacter(&character);
         _towers.emplace_back(tower);
         }
 }
@@ -176,16 +187,16 @@ void Game::addBulletToList(Bullet *bullet){
 }
 void Game::removeCharacterFromList(Character *character){
     
-    Bullet* bullet = static_cast<Bullet*> (character);
+    Bullet* bullet = dynamic_cast<Bullet*> (character);
     if(bullet){
         for(int i =0; i<_bullets.size(); i++) if(_bullets[i] == bullet) _bullets.erase(_bullets.begin() + i);
     }
-    Tower* tower = static_cast<Tower*> (character);
+    Tower* tower = dynamic_cast<Tower*> (character);
 
     if(tower){
         for(int i =0; i<_towers.size(); i++) if(_towers[i] == tower) _towers.erase(_towers.begin() + i);
     }
-    Enemy* enemy = static_cast<Enemy*> (character);
+    Enemy* enemy = dynamic_cast<Enemy*> (character);
 
     if(enemy){
         for(int i =0; i<_enemies.size(); i++) if(_enemies[i] == enemy) _enemies.erase(_enemies.begin() + i);

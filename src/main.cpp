@@ -27,9 +27,9 @@ int main() {
     assets = new Assets();
     //TODO: make it possible to adjust values
     game->init("TiaG", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, false);
-    SDL_Delay(1000);
+    
     while(game->running()){
-        
+        Time::update();
         frameStart = SDL_GetTicks();
         input->handleEvents();
         game->windowEvents();

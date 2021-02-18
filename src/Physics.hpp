@@ -18,7 +18,7 @@ class GameObject;
 
 class Collider{
     public :
-    Collider(GameObject *gameObject, SDL_Rect *rect);
+    Collider(int gameObject, SDL_Rect *rect);
     ~Collider();
     
     //Rule of five
@@ -27,13 +27,14 @@ class Collider{
     Collider& operator=(Collider &&cb);
     Collider(Collider &&cb );
     
+    bool hasCollisor(){return underCollision;}
     Collider* isColliding();
     void setCollision(Collider *col);
-    GameObject* getGameObject();
+    int getGameObject();
     SDL_Rect* getRect();
     
     private:
-    GameObject *gameObject = nullptr;
+    int gameObject = 0;
     SDL_Rect *boundingBox = nullptr;
     bool underCollision = false;
     Collider *collisor = nullptr;
