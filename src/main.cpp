@@ -20,7 +20,6 @@ int main() {
     Uint32 frameStart;
     int frameTime;
     
-    //TODO: Remove New
     input = std::make_unique<Input>();
     game = std::make_unique<Game>();
     assets = std::make_unique<Assets>();
@@ -32,10 +31,8 @@ int main() {
         frameStart = SDL_GetTicks();
         input->handleEvents();
         game->windowEvents();
-        //TODO: create FPS Control (Time.cpp)
         game->update();
         
-        //TODO: Add Physics processing
         frameTime = SDL_GetTicks() - frameStart;
         
         if(SCREEN_TICKS_PER_FRAME > frameTime){

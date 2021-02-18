@@ -14,6 +14,10 @@ Renderer::Renderer(){
     if(instance == nullptr)
         instance = this;
 }
+
+Renderer::~Renderer(){
+    //TODO: review 
+}
 void Renderer::render(){
     
     runScheduledDelete();

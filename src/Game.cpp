@@ -59,14 +59,12 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
     
     if(SDL_Init(SDL_INIT_EVERYTHING) == 0 && TTF_Init() == 0){
         std::cout<< "SDL Subsystens Initialized..."<< std::endl;
-        //TODO: Remove New (Use shared_ptr instead of raw pointer)
-        renderer = new Renderer();
+        renderer = std::make_unique<Renderer>();
         renderer->init(title, xpos, ypos, width, height, flags);
-        //TODO: Remove New (Use unique_ptr instead of raw pointer)
-        input = new Input();
+        input = std::make_unique<Input>();
         isRunning = true;
-        physics = new Physics();
-        UI = new UserInterface();
+        physics = std::make_unique<Physics>();
+        UI = std::make_unique<UserInterface>();
         
     }else{
         isRunning = false;

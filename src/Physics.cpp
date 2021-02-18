@@ -11,6 +11,10 @@ SDL_mutex* physicsMutex = SDL_CreateMutex();
 //***Physics***
 Physics* Physics::instance = 0;
 
+Physics::~Physics(){
+    //TODO: Review 
+}
+
 void Physics::simulate(){
     int collisionMatrix[_simulationColliders.size()] [_simulationColliders.size()];
     SDL_LockMutex(physicsMutex);
