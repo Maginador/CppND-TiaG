@@ -7,7 +7,7 @@
 
 #ifndef Constants_hpp
 #define Constants_hpp
-#include <SDL2/SDL.h>
+#include "SDL2.SDL.h" 
 //Screen dimension constants
 static const int SCREEN_WIDTH = 1280;
 static const int SCREEN_HEIGHT = 920;
