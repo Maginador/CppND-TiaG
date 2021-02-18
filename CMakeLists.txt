@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
 
-project(cpp-ting)
+project(cpp-tiag)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/CMake/")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
@@ -16,5 +16,5 @@ include_directories(${SDL2_TTF_DIRS})
 
 file(GLOB project_SRCS src/*.cpp) #src/*.h
 
-add_executable(cpp-ting ${project_SRCS})
-target_link_libraries(cpp-ting ${SDL2_IMAGE_LIBRARIES} ${SDL2_LIBRARIES}  ${SDL2_TTF_LIBRARIES})
+add_executable(cpp-tiag ${project_SRCS})
+target_link_libraries(cpp-tiag ${SDL2_IMAGE_LIBRARIES} ${SDL2_LIBRARIES}  ${SDL2_TTF_LIBRARIES})
