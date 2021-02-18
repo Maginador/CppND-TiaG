@@ -67,10 +67,9 @@ void Character::die(){
 
 //Enemy
 Enemy::Enemy(int go) : Character(go){
-    health = 100;
+    health = ENEMY_HEALTH;
     speed = -1;
-    _lootCurrency=100;
-    if(!_colldownTimer) _colldownTimer = new Time(3000, true);
+    _lootCurrency = ENEMY_LOOT;
 
 }
 
@@ -138,7 +137,7 @@ Factory::Factory(int go) : Tower(go){
     health = 1;
     speed = 0;
     _colldown = FACTORY_COOLDOWN;
-    _lootCurrency=50;
+    _lootCurrency = FACTORY_INCOME;
     _colldownTimer = new Time(_colldown, true);
 
 }

@@ -12,8 +12,7 @@ Game* Game::instance = 0;
 
 Renderable *cursor;
 Vector2 cursorGridPos;
-std::chrono::milliseconds timer;
-std::chrono::time_point<std::chrono::system_clock> lastSpawn;
+float enemyMultiplier = 1;
 Game::Game(){
     if(instance == nullptr)
         instance = this;
@@ -27,7 +26,7 @@ Game::~Game(){
 int Game::enemySpawner(void* data){
     
   
-    if(Time::timedAction(std::chrono::milliseconds(ENEMY_SPAWN_TIME))){
+    if(Time::timedAction(std::chrono::milliseconds((int)(ENEMY_SPAWN_TIME / enemyMultiplier)))){
         int slot = (std::rand() % GRID_HEIGHT);
         //Placeholder Spawner
         SDL_Texture *texture = instance->renderer->createTexture("assets/pixelEnemy.png");
@@ -41,6 +40,7 @@ int Game::enemySpawner(void* data){
         instance->_enemies.emplace_back(enemy);
         int data = 10;
         //SDL_Thread* threadID = SDL_CreateThread(enemySpawner, "Teste", (void*)data);
+        enemyMultiplier *= 1.1;
         enemySpawner(nullptr);
     }
     return 0;
@@ -74,8 +74,6 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
     createCursor();
     UI->buildUI();
     UserInterface::updateTextValue("currency", std::to_string(currency));
-    lastSpawn = std::chrono::system_clock::now();
-    timer = std::chrono::milliseconds(3000);
     int data = 10;
     SDL_Thread* threadID = SDL_CreateThread(enemySpawner, "Teste", (void*)data);
 }
