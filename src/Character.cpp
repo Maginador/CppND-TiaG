@@ -94,6 +94,10 @@ void Enemy::act(){
         }
     }
     Character::act();
+    if(entity>=0){ if(GameObject::getGameObject(entity)->getRenderable()->_transform->x < 0) {
+        Game::instance->runGameOver();
+        die();
+    }}
     SDL_UnlockMutex( characterLock );
 }
 
