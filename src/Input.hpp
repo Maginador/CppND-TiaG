@@ -9,7 +9,7 @@
 #define Input_hpp
 
 #include <iostream>
-#include "SDL2.SDL.h" 
+#include "SDL2/SDL.h" 
 
 class Input{
     public :

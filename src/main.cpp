@@ -7,7 +7,7 @@
 
 #include <iostream>
 #include "Game.hpp"
-#include "SDL2.SDL.h" 
+#include "SDL2/SDL.h" 
 #include "Constants.hpp"
 
 unique_ptr<Game> game = nullptr;

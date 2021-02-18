@@ -9,7 +9,7 @@
 #define Character_hpp
 
 #include <stdio.h>
-#include "SDL2.SDL.h" 
+#include "SDL2/SDL.h" 
 #include "GameObject.hpp"
 #include "Game.hpp"
 #include "Time.hpp"

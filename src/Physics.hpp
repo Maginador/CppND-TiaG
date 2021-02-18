@@ -12,7 +12,7 @@
 #include <stdio.h>
 #include "GameObject.hpp"
 #include "SDL2/SDL_image.h"
-#include "SDL2.SDL.h" 
+#include "SDL2/SDL.h" 
 //declaration for circle include 'GameObject/Collider'
 class GameObject;
 
