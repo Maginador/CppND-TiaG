@@ -69,7 +69,7 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
     }else{
         isRunning = false;
     }
-    
+    _towers.reserve(50);
     createBackground();
     //Create cursor
     createGameGrid();
@@ -153,7 +153,7 @@ void Game::createFactories(){
             Factory *factory = new class Factory(go->getIndex());
             auto character = static_cast<Character*>(factory);
             go->addCharacter(std::shared_ptr<Character>(character));
-            _towers.emplace_back(factory);
+            instance->_towers.emplace_back(factory);
         }
 }
 void Game::createGameGrid(){
@@ -203,7 +203,8 @@ void Game::placeTower(Vector2 gridSlot){
         Tower *tower = new class Tower(go->getIndex());
         auto character = static_cast<Character*>(tower);
         go->addCharacter(std::shared_ptr<Character>(character));
-        _towers.emplace_back(tower);
+        auto it = _towers.end();
+        instance->_towers.emplace_back(tower);
         }
 }
 
@@ -221,12 +222,14 @@ void Game::removeCharacterFromList(Character *character){
 
     if(tower){
         for(int i =0; i<_towers.size(); i++) if(_towers[i] == tower) _towers.erase(_towers.begin() + i);
+        
     }
     Enemy* enemy = dynamic_cast<Enemy*> (character);
 
     if(enemy){
         for(int i =0; i<_enemies.size(); i++) if(_enemies[i] == enemy) _enemies.erase(_enemies.begin() + i);
     }
+    delete(character);
 }
 
 void Game::updateCurrency(int c){

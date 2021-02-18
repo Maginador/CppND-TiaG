@@ -159,7 +159,7 @@ Collider::Collider(Collider &&b){
     collisor = b.collisor;
     underCollision = b.underCollision;
     
-    b.underCollision = nullptr;
+    b.underCollision = false;
     b.collisor = nullptr;
     b.boundingBox = NULL;
     b.gameObject = 0;
@@ -177,7 +177,7 @@ Collider& Collider::operator=(Collider &&b){
     collisor = b.collisor;
     underCollision = b.underCollision;
     
-    b.underCollision = nullptr;
+    b.underCollision = false;
     b.collisor = nullptr;
     b.boundingBox = NULL;
     b.gameObject = 0;
