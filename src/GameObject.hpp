@@ -49,7 +49,6 @@ class Transform{
 class GameObject{
   
     public :
-    static std::vector<GameObject*> gameObjectsReferences;
     GameObject(const char *name, Vector2 initialPosition, SDL_Texture *tex, Vector2 size, bool hasCollider );
     ~GameObject();
     //Rule of five
@@ -57,7 +56,9 @@ class GameObject{
     GameObject(const GameObject &cb);
     GameObject& operator=(GameObject &&cb);
     GameObject(GameObject &&cb );
+    
     int getIndex(){ return globalIndex;}
+    static GameObject* getGameObject(int index);
     std::string getName(){ return _name;}
     Collider* getCollider(){ return _collider;}
     Renderable* getRenderable();
@@ -72,6 +73,7 @@ class GameObject{
     Renderable *_renderable = nullptr;
     Transform *_transform = nullptr;
     const char *_name = nullptr;
+    static std::vector<GameObject*> gameObjectsReferences;
 };
 
 

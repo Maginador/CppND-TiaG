@@ -7,9 +7,19 @@
 #include "GameObject.hpp"
 using std::unique_ptr;
 using std::make_unique;
+SDL_mutex* goMutex = SDL_CreateMutex();
 
 vector<GameObject*> GameObject::gameObjectsReferences;
-
+GameObject* GameObject::getGameObject(int index){
+   
+    SDL_LockMutex(goMutex);
+    if(index > gameObjectsReferences.size() || index < 0) return nullptr;
+    GameObject** obj = &gameObjectsReferences[index];
+    if(*obj == NULL) return nullptr;
+    SDL_UnlockMutex(goMutex);
+    return *obj;
+    
+}
 GameObject::GameObject(const char *name, Vector2 initialPosition, SDL_Texture *tex, Vector2 size, bool hasCollider ){
     
     globalIndex = (int)gameObjectsReferences.size();
