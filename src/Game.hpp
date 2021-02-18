@@ -13,8 +13,8 @@
 #include <vector>
 #include "Assets.hpp"
 #include "Input.hpp"
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_thread.h>
+#include "SDL2.SDL.h" 
+#include "SDL2/SDL_thread.h"
 #include "Renderer.hpp"
 #include "GameObject.hpp"
 #include "Physics.hpp"
