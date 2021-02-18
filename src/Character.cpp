@@ -53,12 +53,14 @@ void Character::die(){
     std::cout << "Character died " << std::endl;
     Game::instance->removeCharacterFromList(this);
     Game::instance->updateCurrency(_lootCurrency);
-    Game::instance->cleanSlot(GameObject::getGameObject(entity)->getSlot());
-    
+    auto go =GameObject::getGameObject(entity);
+    if(go){
+        Game::instance->cleanSlot(GameObject::getGameObject(entity)->getSlot());
+        delete(GameObject::getGameObject(entity));}
     if(col){
     if(col->hasCollisor()){ auto c = col ->isColliding(); if(c)c->setCollision(nullptr);}
         col->setCollision(nullptr);
-    }delete(GameObject::getGameObject(entity));
+    }
     
     entity = -1;
 
