@@ -56,6 +56,7 @@ public:
     void removeCharacterFromList(Character *character);
     void updateCurrency(int currency);
     void runGameOver();
+    void cleanSlot(Vector2 slot);
     SDL_mutex* towerMutex = SDL_CreateMutex();
 private:
     void setupUI();

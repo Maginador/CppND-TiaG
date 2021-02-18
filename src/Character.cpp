@@ -11,8 +11,6 @@ class Tower;
 class Enemy;
 static SDL_mutex* characterLock = SDL_CreateMutex();
 
-
-//TODO: add specialized classes for tower, bullet and enemy instead of enum selection
 Character::Character(){}
 Character::~Character(){
     entity = -1;
@@ -55,6 +53,7 @@ void Character::die(){
     std::cout << "Character died " << std::endl;
     Game::instance->removeCharacterFromList(this);
     Game::instance->updateCurrency(_lootCurrency);
+    Game::instance->cleanSlot(GameObject::getGameObject(entity)->getSlot());
     
     if(col){
     if(col->hasCollisor()){ auto c = col ->isColliding(); if(c)c->setCollision(nullptr);}
@@ -115,7 +114,7 @@ void Tower::act(){
     if(_colldownTimer->timedAction()){
         SDL_LockMutex( Renderer::instance->rendererMtx );
         SDL_Texture *texture = Renderer::createTexture("assets/bullet.png");
-        GameObject *go = new GameObject("Bullet", Vector2(GameObject::getGameObject(entity)->getRenderable()->_transform->x + GameObject::getGameObject(entity)->getRenderable()->_transform->w/2 + 30, GameObject::getGameObject(entity)->getRenderable()->_transform->y), texture, Vector2(60,60), true);
+        GameObject *go = new GameObject("Bullet", Vector2(GameObject::getGameObject(entity)->getRenderable()->_transform->x + GameObject::getGameObject(entity)->getRenderable()->_transform->w/2 + 30, GameObject::getGameObject(entity)->getRenderable()->_transform->y), texture, Vector2(60,60), true, Vector2(-1,-1));
             auto *bullet = new class Bullet(go->getIndex());
         
         Game::instance->addBulletToList(bullet);
@@ -131,8 +130,6 @@ int Tower::act(void* data){
     auto *tower = (Tower *)data;
     if(tower && tower->entity != -1)
          tower->act();
-    
-    
     return 0;
 }
 

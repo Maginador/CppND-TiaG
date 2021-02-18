@@ -36,7 +36,7 @@ int Game::enemySpawner(void* data){
         //Placeholder Spawner
         SDL_Texture *texture = instance->renderer->createTexture("assets/pixelEnemy.png");
 
-        GameObject *go = new GameObject("Enemy", Vector2(ENEMY_SPAWN_X, CURSOR_INIT_POSITION_Y + (slot *MOVE_INTENSITY_Y)), texture, Vector2(80,80), true);
+        GameObject *go = new GameObject("Enemy", Vector2(ENEMY_SPAWN_X, CURSOR_INIT_POSITION_Y + (slot *MOVE_INTENSITY_Y)), texture, Vector2(80,80), true, Vector2(-1,-1));
         instance->renderer->addRenderableToList(go->getRenderable());
         
         Enemy *enemy = new Enemy(go->getIndex());
@@ -148,7 +148,7 @@ void Game::createFactories(){
     SDL_Texture *texture = renderer->createTexture("assets/factory.png");
     //grid iteration
         for(int o =0; o<GRID_HEIGHT; o++){
-            GameObject *go = new GameObject("Factories", Vector2(CURSOR_INIT_POSITION_X + (-1*MOVE_INTENSITY_X), CURSOR_INIT_POSITION_Y + (o*MOVE_INTENSITY_Y)), texture, Vector2(80,80), true);
+            GameObject *go = new GameObject("Factories", Vector2(CURSOR_INIT_POSITION_X + (-1*MOVE_INTENSITY_X), CURSOR_INIT_POSITION_Y + (o*MOVE_INTENSITY_Y)), texture, Vector2(80,80), true, Vector2(-1,o));
             renderer->addRenderableToList(go->getRenderable());
             Factory *factory = new class Factory(go->getIndex());
             auto character = static_cast<Character*>(factory);
@@ -161,7 +161,7 @@ void Game::createGameGrid(){
     //grid iteration
     for(int i =0; i<GRID_WIDTH; i++){
         for(int o =0; o<GRID_HEIGHT; o++){
-            GameObject *go = new GameObject("Environment_Slot", Vector2(CURSOR_INIT_POSITION_X + (i*MOVE_INTENSITY_X), CURSOR_INIT_POSITION_Y + (o*MOVE_INTENSITY_Y)), texture, Vector2(80,80), false);
+            GameObject *go = new GameObject("Environment_Slot", Vector2(CURSOR_INIT_POSITION_X + (i*MOVE_INTENSITY_X), CURSOR_INIT_POSITION_Y + (o*MOVE_INTENSITY_Y)), texture, Vector2(80,80), false, Vector2(-1,-1));
             renderer->addRenderableToList(go->getRenderable());
             slotsGrid[i + (GRID_WIDTH*o) ] = 0;
         }
@@ -174,7 +174,7 @@ void Game::createBackground(){
     
     SDL_Texture *texture = renderer->createTexture("assets/bg.png");
 
-    GameObject *go = new GameObject("Backbround", Vector2(0, 0 ), texture, Vector2(1280,920), false);
+    GameObject *go = new GameObject("Backbround", Vector2(0, 0 ), texture, Vector2(1280,920), false, Vector2(-1,-1));
     renderer->addRenderableToList(go->getRenderable());
 }
 
@@ -182,7 +182,7 @@ void Game::createCursor(){
     
     SDL_Texture *texture = renderer->createTexture("assets/cursor.png");
 
-    GameObject *go = new GameObject("Cursor", Vector2(CURSOR_INIT_POSITION_X, CURSOR_INIT_POSITION_Y ), texture, Vector2(80,80), false);
+    GameObject *go = new GameObject("Cursor", Vector2(CURSOR_INIT_POSITION_X, CURSOR_INIT_POSITION_Y ), texture, Vector2(80,80), false, Vector2(-1,-1));
     cursor = go->getRenderable();
     renderer->addRenderableToList(cursor);
     cursorGridPos._x = 0;
@@ -192,14 +192,13 @@ void Game::createCursor(){
 //Create towers
 void Game::placeTower(Vector2 gridSlot){
     
-    if(currency >= TOWER_PRICE && slotsGrid[gridSlot._y + (GRID_WIDTH*gridSlot._x) ] == 0){
+    if(currency >= TOWER_PRICE && slotsGrid[gridSlot._x + (GRID_WIDTH*gridSlot._y) ] == 0){
         updateCurrency(-TOWER_PRICE);
-        //TODO: reenable setting tower when a tower die
-        slotsGrid[gridSlot._y + (GRID_WIDTH*gridSlot._x) ] = 1; 
+        slotsGrid[gridSlot._x + (GRID_WIDTH*gridSlot._y) ] = 1;
         //Placeholder Spawner
         SDL_Texture *texture = renderer->createTexture("assets/tower01.png");
 
-        GameObject *go = new GameObject("Tower", Vector2(CURSOR_INIT_POSITION_X + (gridSlot._x*MOVE_INTENSITY_X), CURSOR_INIT_POSITION_Y + (gridSlot._y*MOVE_INTENSITY_Y)), texture, Vector2(80,80), true);
+        GameObject *go = new GameObject("Tower", Vector2(CURSOR_INIT_POSITION_X + (gridSlot._x*MOVE_INTENSITY_X), CURSOR_INIT_POSITION_Y + (gridSlot._y*MOVE_INTENSITY_Y)), texture, Vector2(80,80), true, gridSlot);
         renderer->addRenderableToList(go->getRenderable());
         Tower *tower = new class Tower(go->getIndex());
         auto character = static_cast<Character*>(tower);
@@ -234,6 +233,11 @@ void Game::updateCurrency(int c){
     currency += c;
     UserInterface::updateTextValue("currency", std::to_string(currency));
 
+}
+
+void Game::cleanSlot(Vector2 slot){
+    
+    slotsGrid[slot._x + (GRID_WIDTH*slot._y) ] = 0;
 }
 void Game::setupUI(){
     

@@ -21,8 +21,9 @@ GameObject* GameObject::getGameObject(int index){
     return *obj;
     
 }
-GameObject::GameObject(const char *name, Vector2 initialPosition, SDL_Texture *tex, Vector2 size, bool hasCollider ){
+GameObject::GameObject(const char *name, Vector2 initialPosition, SDL_Texture *tex, Vector2 size, bool hasCollider , Vector2 slot){
     
+    _slot = slot;
     globalIndex = (int)gameObjectsReferences.size();
     //GameObject
     _name = name;
@@ -32,7 +33,6 @@ GameObject::GameObject(const char *name, Vector2 initialPosition, SDL_Texture *t
     
     //Renderable
     if(tex != nullptr){
-        //TODO: Add Renderable
         _renderable = new Renderable(tex, size._x, size._y, _transform->_position->_x, _transform->_position->_y);
     }
     //Collider
@@ -46,7 +46,6 @@ GameObject::GameObject(const char *name, Vector2 initialPosition, SDL_Texture *t
 GameObject::~GameObject(){
     SDL_LockMutex( Renderer::instance->rendererMtx );
     std::cout << "Lock mutex gameObject destructor"<< std::endl;
-    //TODO: Object Destruction
     _name = nullptr;
     delete(_collider);
     //TODO: bug when removing character, investigate
