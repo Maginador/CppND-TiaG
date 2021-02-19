@@ -21,6 +21,13 @@ GameObject* GameObject::getGameObject(int index){
     return obj;
     
 }
+void GameObject::clear(){
+    
+    
+    Renderer::instance->addDeleteToSchedule(_renderable);
+    
+    
+}
 GameObject::GameObject(const char *name, Vector2 initialPosition, SDL_Texture *tex, Vector2 size, bool hasCollider , Vector2 slot){
     
     _slot = slot;
@@ -49,7 +56,7 @@ GameObject::~GameObject(){
     _name = nullptr;
     //TODO: bug when removing character, investigate
     //delete(_character);
-    Renderer::instance->addDeleteToSchedule(_renderable.get());
+    Renderer::instance->addDeleteToSchedule(_renderable);
     std::cout << "Unlock mutex gameObject destructor"<< std::endl;
     SDL_UnlockMutex( Renderer::instance->rendererMtx  );
 

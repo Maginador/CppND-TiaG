@@ -20,7 +20,7 @@ Renderer::~Renderer(){
 }
 void Renderer::render(){
     
-    runScheduledDelete();
+    
     SDL_LockMutex( rendererMtx );
     SDL_RenderClear(renderer);
 
@@ -43,11 +43,11 @@ void Renderer::render(){
     }
     SDL_RenderPresent(renderer);
     SDL_UnlockMutex( rendererMtx );
-    
+    runScheduledDelete();
 
 }
 
-void Renderer:: addDeleteToSchedule(Renderable *obj){
+void Renderer:: addDeleteToSchedule(std::shared_ptr<Renderable> obj){
     scheduledDelete.emplace_back(obj);
 }
 void Renderer::runScheduledDelete(){
@@ -87,41 +87,41 @@ bool Renderer::init(const char *title, int xpos, int ypos, int width, int height
     return true;
 }
 
-void Renderer::removeRenderableFromList(Renderable *obj){
+void Renderer::removeRenderableFromList(std::shared_ptr<Renderable> obj){
     for(int i =0; i<renderablesList.size(); i++) if(renderablesList[i] == obj){
         renderablesList.erase(renderablesList.begin() + i);
         //renderablesList[i] = nullptr;
         //delete(obj);
     }
 }
-void Renderer::addRenderableToList(Renderable *obj){
+void Renderer::addRenderableToList(std::shared_ptr<Renderable> obj){
     SDL_LockMutex(Renderer::instance->rendererMtx);
         renderablesList.emplace_back(obj);
     SDL_UnlockMutex(Renderer::instance->rendererMtx);
 
 }
-void Renderer::addUIElementToList(Renderable *obj){
+void Renderer::addUIElementToList(std::shared_ptr<Renderable> obj){
     SDL_LockMutex(Renderer::instance->rendererMtx);
         uielementsList.emplace_back(obj);
     SDL_UnlockMutex(Renderer::instance->rendererMtx);
 
 }
 
-Renderable* Renderer::createUIRenderable(const char *assetPath, int width, int height, int x = 0, int y = 0){
+std::shared_ptr<Renderable> Renderer::createUIRenderable(const char *assetPath, int width, int height, int x = 0, int y = 0){
     Assets asset = Assets();
     
     Renderable* rend = new Renderable(asset.loadAsset(renderer, assetPath), width, height, x, y);
     uielementsList.emplace_back(rend);
-    return std::move(rend);
+    return std::shared_ptr<Renderable>(rend);
 }
 
 
-Renderable* Renderer::createRenderable(const char *assetPath, int width, int height, int x = 0, int y = 0){
+std::shared_ptr<Renderable> Renderer::createRenderable(const char *assetPath, int width, int height, int x = 0, int y = 0){
     Assets asset = Assets();
     
     Renderable* rend = new Renderable(asset.loadAsset(renderer, assetPath), width, height, x, y);
     renderablesList.emplace_back(rend);
-    return std::move(rend);
+    return std::shared_ptr<Renderable>(rend);
 }
 
 SDL_Texture* Renderer::createTexture(const char *assetPath){

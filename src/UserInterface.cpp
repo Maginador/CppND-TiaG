@@ -55,7 +55,7 @@ UIElement:: UIElement(int xpos, int ypos, string text, string font, SDL_Color co
     _transform->x = xpos;
     _transform->y = ypos;
     setText();
-    Renderer::instance->addUIElementToList(std::move(this));
+    Renderer::instance->addUIElementToList(std::shared_ptr<Renderable>(this));
 }
 
 UIElement::~UIElement(){};

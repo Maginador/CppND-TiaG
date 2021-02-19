@@ -52,5 +52,9 @@ static const SDL_Color ACOLOR_BLUE {0,0,255,255};
 static const SDL_Color ACOLOR_GREEN {0,255,0,255};
 static const SDL_Color ACOLOR_RED {255,0,0,255};
 
+//TAGS
+static const char* TOWER_ID = "TOWER";
+static const char* ENEMY_ID = "ENEMY";
+static const char* BULLET_ID = "BULLET";
 
 #endif /* Constants_hpp */

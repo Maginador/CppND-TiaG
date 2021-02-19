@@ -28,15 +28,16 @@ class Character{
     int getEntity(){return entity;}
     int getHealth() {return health;}
     protected :
-    int entity;
-    int health;
-    int speed;
-    int _colldown;
+    int entity=0;
+    int health=0;
+    int speed=0;
+    int _colldown=0;
     Time *_colldownTimer;
-    int _lootCurrency;
+    int _lootCurrency=0;
     void die();
     Collider *col;
     int moveMultiplier = 0;
+    
     
 };
 
