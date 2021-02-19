@@ -21,7 +21,7 @@ The project is being developed using Mac OS and Linux. **Linux** is the main pla
 ## Building the Game
     Install the dependency libraries 
     create a build folder 
-    copy and paste the folders fonts and assets inside it 
+    copy and paste the folders __fonts and assets (that are in the root of the project)__ inside it 
     open terminal inside build folder 
     run "cmake .." 
     run "make"
@@ -42,7 +42,7 @@ The project is being developed using Mac OS and Linux. **Linux** is the main pla
 
 To install the dependencies follow the steps bellow 
 
-*Linux 
+* Linux 
     apt-get install libsdl2-ttf-dev
     apt-get install libsdl2-image-dev
 
