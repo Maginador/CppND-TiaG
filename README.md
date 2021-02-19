@@ -19,13 +19,13 @@ The project is being developed using Mac OS and Linux. **Linux** is the main pla
 `_Android and Windows_ are future candidates for long term`
 
 ## Building the Game
-    Install the dependency libraries 
-    create a build folder 
-    copy and paste the folders __fonts and assets (that are in the root of the project)__ inside it 
-    open terminal inside build folder 
-    run "cmake .." 
-    run "make"
-    run "./cpp-tiag" to play the game 
+* Install the dependency libraries 
+* create a build folder 
+* copy and paste the folders **'fonts' and 'assets' (that are in the root of the project)** inside it 
+* open terminal inside build folder 
+* run "cmake .." 
+* run "make"
+* run "./cpp-tiag" to play the game 
 
 ## Using the Engine 
     To be defined 
