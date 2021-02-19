@@ -66,6 +66,7 @@ class GameObject{
     void addCollider(); 
     void addRenderable();
     void addCharacter(std::shared_ptr<Character> character);
+    void clear();
     private :
     int globalIndex;
     

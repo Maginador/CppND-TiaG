@@ -35,7 +35,7 @@ void UserInterface::buildUI(){
     //LowerBar
     UIElement *commands = new UIElement(160, 800, "F", "arial", ACOLOR_BLACK);
     uiElements.emplace("cmd", commands);
-    Renderer::instance->createUIRenderable("assets/tower01.png", 80, 80, 65, 770);
+    Renderer::instance->createRenderable("assets/tower01.png", 80, 80, 65, 770);
 }
 
 void UserInterface::updateTextValue(string uIKey, string value)
@@ -55,7 +55,7 @@ UIElement:: UIElement(int xpos, int ypos, string text, string font, SDL_Color co
     _transform->x = xpos;
     _transform->y = ypos;
     setText();
-    Renderer::instance->addUIElementToList(std::move(this));
+    Renderer::instance->addUIElementToList(std::shared_ptr<Renderable>(std::move(this)));
 }
 
 UIElement::~UIElement(){};
