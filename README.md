@@ -40,6 +40,13 @@ The project is being developed using Mac OS and Linux. **Linux** is the main pla
 * [SDL2_image](https://www.libsdl.org/projects/SDL_image/)
 * [SDL2_ttf](https://www.libsdl.org/projects/SDL_ttf/)
 
+To install the dependencies follow the steps bellow 
+
+*Linux 
+    apt-get install libsdl2-ttf-dev
+    apt-get install libsdl2-image-dev
+
+
 ## Rubric
 
 The project chosen as capstone is a game using SDL. Details about the game can be seen above. 
