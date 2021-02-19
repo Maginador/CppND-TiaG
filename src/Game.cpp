@@ -228,7 +228,6 @@ void Game::removeCharacterFromList(Character *character){
     if(enemy){
         for(int i =0; i<_enemies.size(); i++) if(_enemies[i] == enemy) _enemies.erase(_enemies.begin() + i);
     }
-    delete(character);
 }
 
 void Game::updateCurrency(int c){
@@ -241,11 +240,6 @@ void Game::cleanSlot(Vector2 slot){
     
     slotsGrid[slot._x + (GRID_WIDTH*slot._y) ] = 0;
 }
-void Game::setupUI(){
-    
-    //Resources (Upper bar)
-    
-    //Guide for commands (Lower bar)
-}
+
 
 

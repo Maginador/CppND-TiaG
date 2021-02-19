@@ -26,7 +26,7 @@ void Renderer::render(){
 
     for(int i =0; i<renderablesList.size();i++){
         
-        
+        //std::cout << "shared_ptr use_count : " << renderablesList[i].use_count()<<std::endl;
         if(!renderablesList[i] || !renderablesList[i]->_texture){
             continue;
         }
@@ -110,18 +110,18 @@ void Renderer::addUIElementToList(std::shared_ptr<Renderable> obj){
 std::shared_ptr<Renderable> Renderer::createUIRenderable(const char *assetPath, int width, int height, int x = 0, int y = 0){
     Assets asset = Assets();
     
-    Renderable* rend = new Renderable(asset.loadAsset(renderer, assetPath), width, height, x, y);
+    auto rend = std::make_shared<Renderable>(asset.loadAsset(renderer, assetPath), width, height, x, y);
     uielementsList.emplace_back(rend);
-    return std::shared_ptr<Renderable>(rend);
+    return rend;
 }
 
 
 std::shared_ptr<Renderable> Renderer::createRenderable(const char *assetPath, int width, int height, int x = 0, int y = 0){
     Assets asset = Assets();
     
-    Renderable* rend = new Renderable(asset.loadAsset(renderer, assetPath), width, height, x, y);
+    auto rend = std::make_shared<Renderable>(asset.loadAsset(renderer, assetPath), width, height, x, y);
     renderablesList.emplace_back(rend);
-    return std::shared_ptr<Renderable>(rend);
+    return rend;
 }
 
 SDL_Texture* Renderer::createTexture(const char *assetPath){
@@ -149,7 +149,7 @@ Renderable::Renderable(SDL_Texture *texture, int width, int height, int initX, i
     SDL_UnlockMutex(Renderer::instance->rendererMtx);
 };
 Renderable::~Renderable(){
-    std::cout<< "Deconstructor for Renderable" << std::endl;
+    std::cout<<"Renderable destructor"<<std::endl;
     //SDL_DestroyTexture(_texture);
     //_transform = nullptr;
 }

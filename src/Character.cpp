@@ -15,7 +15,7 @@ Character::Character(){}
 Character::~Character(){
     entity = -1;
     col = nullptr;
-    
+    std::cout<<"Character destructor"<<std::endl;
 }
 Character::Character(int go){
     entity = go;
@@ -53,6 +53,7 @@ void Character::die(){
     auto go = GameObject::getGameObject(entity);
     if(go){
         Game::instance->cleanSlot(GameObject::getGameObject(entity)->getSlot());
+        
         go->clear();
         
     }
@@ -60,6 +61,7 @@ void Character::die(){
     Game::instance->updateCurrency(_lootCurrency);
     
     if(col){
+        Physics::instance->removeBodyToSimulations(col);
     if(col->hasCollisor()){ auto c = col ->isColliding(); if(c)c->setCollision(nullptr);}
         col->setCollision(nullptr);
     }
