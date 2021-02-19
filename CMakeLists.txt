@@ -5,6 +5,12 @@ project(cpp-tiag)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/CMake/")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
 
+
+INCLUDE(FindPkgConfig)
+PKG_SEARCH_MODULE(SDL2 REQUIRED sdl2)
+PKG_SEARCH_MODULE(SDL2_image REQUIRED sdl2_image)
+PKG_SEARCH_MODULE(SDL2_ttf REQUIRED sdl2_ttf)
+
 find_package(SDL2 REQUIRED sdl2)
 find_package(SDL2_image REQUIRED SDL2_image>=2.0.0)
 find_package(SDL2_ttf REQUIRED SDL2_ttf>=2.0.0)
