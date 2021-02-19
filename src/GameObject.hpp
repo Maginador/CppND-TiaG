@@ -14,7 +14,7 @@
 #include "Renderer.hpp"
 #include "Character.hpp"
 #include <memory>
-#include "SDL2/SDL_image.h"
+#include "SDL2_image/SDL_image.h"
 using std::unique_ptr;
 //declaration for circle include 'GameObject/Collider'
 class Collider;
